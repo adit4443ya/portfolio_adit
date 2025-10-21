@@ -1019,3 +1019,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 })
+// Publication Card Click Handler
+document.addEventListener('DOMContentLoaded', function () {
+  // Handle publication card clicks
+  const publicationCards = document.querySelectorAll(
+    '.publication-card[data-url]'
+  )
+
+  publicationCards.forEach(card => {
+    card.addEventListener('click', function (e) {
+      // Don't trigger if clicking on the icon specifically
+      if (!e.target.closest('.publication-link-icon')) {
+        const url = this.getAttribute('data-url')
+        if (url) {
+          window.open(url, '_blank')
+        }
+      }
+    })
+
+    // Handle icon click specifically
+    const icon = card.querySelector('.publication-link-icon')
+    if (icon) {
+      icon.addEventListener('click', function (e) {
+        e.stopPropagation()
+        const url = card.getAttribute('data-url')
+        if (url) {
+          window.open(url, '_blank')
+        }
+      })
+    }
+  })
+})

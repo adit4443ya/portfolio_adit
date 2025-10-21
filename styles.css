@@ -1633,3 +1633,62 @@ blication Link Styles */
     cursor: pointer;
     transition: all 0.3s ease;
 }
+
+/* Publica
+tion Card Enhanced Styles */
+.publication-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.publication-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+}
+
+.publication-card[data-url]:hover {
+    border-color: var(--nebula-blue);
+}
+
+/* Publication Link Icon */
+.publication-link-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 32px;
+    height: 32px;
+    background: rgba(74, 144, 226, 0.1);
+    border: 1px solid rgba(74, 144, 226, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+    z-index: 10;
+}
+
+.publication-link-icon:hover {
+    background: rgba(74, 144, 226, 0.2);
+    border-color: var(--nebula-blue);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.publication-link-icon i {
+    font-size: 12px;
+    color: var(--nebula-blue);
+    transition: color 0.3s ease;
+}
+
+.publication-link-icon:hover i {
+    color: var(--star-white);
+}
+
+/* Publication header positioning */
+.publication-header {
+    position: relative;
+    padding-right: 50px;
+    /* Make space for the icon */
+}
