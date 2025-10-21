@@ -161,8 +161,9 @@
                                 </div>
                                 <div class="domain-content">
                                     <h4>Research & Publications</h4>
-                                    <p>Academic research in graph algorithms and parallel computing systems</p>
-                                    <div class="domain-highlight">IEEE HiPC • EuroMicro PDP</div>
+                                    <p>Dynamic graph algorithms, MIS maintenance, and parallel computing frameworks</p>
+                                    <div class="domain-highlight">ParMIS Framework • 47x Speedup • GPU Acceleration
+                                    </div>
                                 </div>
                                 <div class="domain-arrow">
                                     <i class="fas fa-arrow-right"></i>
@@ -474,43 +475,20 @@
                 <div class="publications-section">
                     <h2 class="section-title">Published Research</h2>
                     <div class="publications-grid">
-                        <div class="publication-card" data-project="paper2">
-                            <div class="publication-header">
-                                <div class="publication-venue">EuroMicro PDP 2025</div>
-                                <div class="publication-type">Conference Full Length Paper</div>
-                            </div>
-                            <h3 class="publication-title">Fast Maximal Independent Sets on Dynamic Graphs</h3>
-                            <div class="publication-authors">
-                                P. Nijhara, <strong>Aditya Trivedi</strong>, D.S. Banerjee
-                            </div>
-                            <p class="publication-abstract">
-                                Developed parallel algorithms achieving 15.64x speedup for insertions and 10.57x
-                                for deletions on graphs with 50M-1.2B edges using optimized multi-core load
-                                distribution.
-                            </p>
-                            <div class="publication-metrics">
-                                <div class="metric">
-                                    <span class="metric-value">Dynamic</span>
-                                    <span class="metric-label">Graph Updates</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">Parallel</span>
-                                    <span class="metric-label">Processing</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="publication-card" data-project="paper1">
+                        <div class="publication-card" data-project="paper4">
                             <div class="publication-header">
                                 <div class="publication-venue">IEEE HiPC 2024</div>
-                                <div class="publication-type">Conference SRS Paper</div>
+                                <div class="publication-type">Conference Full Length Paper</div>
                             </div>
-                            <h3 class="publication-title">Fast MIS on Incremental Graphs</h3>
+                            <h3 class="publication-title">Fast MIS on Dynamic Graphs</h3>
                             <div class="publication-authors">
                                 <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee
                             </div>
                             <p class="publication-abstract">
-                                Developed Data Structures and Algorithms for Graphs representations which led to quick
-                                look-ups for updates resulting in Low Latency MIS maintainence for Incremental Graphs.
+                                Proposed new data structures and techniques for computing MIS in parallel on dynamic
+                                graphs,
+                                specifically handling insertions and deletions in a batched setting with significant
+                                performance improvements.
                             </p>
                             <div class="publication-metrics">
                                 <div class="metric">
@@ -523,7 +501,104 @@
                                 </div>
                                 <div class="metric">
                                     <span class="metric-value">~0.18%</span>
-                                    <span class="metric-label">Race Conditions</span>
+                                    <span class="metric-label">Cardinality Variance</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="publication-card" data-project="paper5">
+                            <div class="publication-header">
+                                <div class="publication-venue">IEEE HiPC 2024</div>
+                                <div class="publication-type">Conference SRS Paper</div>
+                            </div>
+                            <h3 class="publication-title">Fast MIS on Incremental Graphs</h3>
+                            <div class="publication-authors">
+                                <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee
+                            </div>
+                            <p class="publication-abstract">
+                                Developed Tuple Valued Bitmap (TVB) and TVBL data structures to enhance parallelism and
+                                minimize
+                                search space for MIS maintenance in incremental dynamic graphs.
+                            </p>
+                            <div class="publication-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">15.64x</span>
+                                    <span class="metric-label">Insertion Speedup</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">TVB/TVBL</span>
+                                    <span class="metric-label">Novel Data Structures</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">1.2B</span>
+                                    <span class="metric-label">Edges Processed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="publications-section">
+                    <h2 class="section-title">Under Review & In Progress</h2>
+                    <div class="publications-grid">
+                        <div class="publication-card featured" data-project="paper1">
+                            <div class="publication-header">
+                                <div class="publication-venue">Elsevier FGCS 2025</div>
+                                <div class="publication-type">Journal Paper</div>
+                            </div>
+                            <h3 class="publication-title">ParMIS: Fast and Unified MIS Maintenance Framework for Large
+                                Scale Dynamic Graphs</h3>
+                            <div class="publication-authors">
+                                <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee
+                            </div>
+                            <p class="publication-abstract">
+                                Comprehensive framework supporting incremental, batch, and fully dynamic MIS updates
+                                with GPU streaming
+                                pipeline for billion-scale graphs. Introduces conflict resolution strategies and unified
+                                maintenance algorithms.
+                            </p>
+                            <div class="publication-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">47.27x</span>
+                                    <span class="metric-label">Batch Update Speedup</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">4.63x</span>
+                                    <span class="metric-label">GPU Speedup</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">Unified</span>
+                                    <span class="metric-label">Framework</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="publication-card" data-project="paper2">
+                            <div class="publication-header">
+                                <div class="publication-venue">IEEE HiPC 2025</div>
+                                <div class="publication-type">Conference Paper</div>
+                            </div>
+                            <h3 class="publication-title">Fast and Accurate MIS on Dynamic Graphs</h3>
+                            <div class="publication-authors">
+                                <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee
+                            </div>
+                            <p class="publication-abstract">
+                                BFS-based MIS maintenance algorithm that groups race-conflicting updates and executes
+                                them
+                                in order to overcome accuracy issues in parallel dynamic algorithms.
+                            </p>
+                            <div class="publication-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">32.4x</span>
+                                    <span class="metric-label">Speedup vs Static</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">BFS-based</span>
+                                    <span class="metric-label">Conflict Resolution</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">Accurate</span>
+                                    <span class="metric-label">Results</span>
                                 </div>
                             </div>
                         </div>
@@ -531,19 +606,21 @@
                 </div>
 
                 <div class="ongoing-research-section">
-                    <h2 class="section-title">Feb 2024 - Apr 2024</h2>
+                    <h2 class="section-title">Ongoing Research</h2>
                     <div class="research-card">
-                        <h3>Graph Analytics</h3>
+                        <h3>Semi-External Parallel Maximal Cliques Maintenance</h3>
                         <p class="research-description">
-                            Current research focus on <strong>Clustering techniques, Multi-GPU computation,</strong>
-                            and <strong>External Memory</strong> algorithms for large-scale graph processing.
+                            Developing a semi-external framework for maintaining maximal cliques in billion-scale
+                            dynamic graphs
+                            with <strong>150-300× memory reduction</strong> compared to full-graph methods while
+                            maintaining correctness.
                         </p>
                         <div class="research-areas">
-                            <span class="research-tag">Multi-GPU Computing</span>
-                            <span class="research-tag">Clustering Algorithms</span>
-                            <span class="research-tag">External Memory</span>
-                            <span class="research-tag">Parallel Computing</span>
-                            <span class="research-tag">Graph Theory</span>
+                            <span class="research-tag">Semi-External Memory</span>
+                            <span class="research-tag">Maximal Cliques</span>
+                            <span class="research-tag">GPU Computing</span>
+                            <span class="research-tag">Memory Optimization</span>
+                            <span class="research-tag">Parallel Algorithms</span>
                         </div>
                         <div class="advisor-info">
                             <strong>Research Advisor:</strong> Dr. Dip Sankar Banerjee, IIT Jodhpur
