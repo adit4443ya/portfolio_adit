@@ -491,10 +491,13 @@
                                 P. Nijhara, <strong>Aditya Trivedi</strong>, D.S. Banerjee
                             </div>
                             <p class="publication-abstract">
-                                Proposed new data structures and techniques for computing MIS in parallel on dynamic
-                                graphs,
-                                specifically handling insertions and deletions in a batched setting with significant
-                                performance improvements.
+                                Proposed novel parallel data structures and algorithmic techniques for efficiently computing Maximal
+                                Independent Sets (MIS) on dynamic graphs. Developed specialized approaches to handle batched edge
+                                insertions and deletions while maintaining correctness and maximizing parallelism. Achieved 15.64x
+                                speedup for insertion operations and 10.57x for deletion operations compared to recomputing from
+                                scratch, while maintaining approximately 0.18% cardinality variance. The work introduces innovative
+                                conflict resolution strategies that enable efficient parallel MIS maintenance on evolving graph structures,
+                                with applications in network analysis, distributed systems, and graph-based machine learning.
                             </p>
                             <div class="publication-metrics">
                                 <div class="metric">
@@ -528,10 +531,13 @@
                                 <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee
                             </div>
                             <p class="publication-abstract">
-                                Developed Tuple Valued Bitmap (TVB) and TVBL data structures to enhance parallelism
-                                and
-                                minimize
-                                search space for MIS maintenance in incremental dynamic graphs.
+                                Introduced novel Tuple Valued Bitmap (TVB) and TVBL data structures that fundamentally improve parallel
+                                MIS maintenance for incremental dynamic graphs. These data structures minimize the search space by
+                                encoding tuple-level information directly in bitmap representations, enabling efficient identification
+                                of affected regions during edge insertions. Achieved 15.64x speedup over static recomputation while
+                                successfully processing graphs with over 1.2 billion edges. The TVB/TVBL approach maximizes parallelism
+                                by reducing contention and enabling fine-grained concurrent updates, making it suitable for real-time
+                                applications requiring frequent graph modifications such as social network analysis and dynamic routing.
                             </p>
                             <div class="publication-metrics">
                                 <div class="metric">
@@ -566,10 +572,14 @@
                                 Pandey, D.S. Banerjee
                             </div>
                             <p class="publication-abstract">
-                                Comprehensive framework supporting incremental, batch, and fully dynamic MIS updates
-                                with GPU streaming
-                                pipeline for billion-scale graphs. Introduces conflict resolution strategies and unified
-                                maintenance algorithms.
+                                Presents ParMIS, a comprehensive unified framework for efficient MIS maintenance across all dynamic
+                                graph update scenarios including incremental, batch, and fully dynamic modifications. Designed a novel
+                                GPU streaming pipeline optimized for billion-scale graphs, achieving 4.63x GPU acceleration and 47.27x
+                                batch update speedup over static approaches. Introduces sophisticated conflict resolution strategies
+                                that harmonize race-conflicting updates in parallel execution while preserving correctness guarantees.
+                                The framework seamlessly handles mixed workloads of insertions and deletions, making it the first unified
+                                solution capable of maintaining MIS across diverse dynamic graph scenarios with consistently high
+                                performance, applicable to large-scale social networks, knowledge graphs, and streaming graph analytics.
                             </p>
                             <div class="publication-metrics">
                                 <div class="metric">
@@ -598,9 +608,14 @@
                                 Banerjee
                             </div>
                             <p class="publication-abstract">
-                                BFS-based MIS maintenance algorithm that groups race-conflicting updates and executes
-                                them
-                                in order to overcome accuracy issues in parallel dynamic algorithms.
+                                Developed an innovative BFS-based MIS maintenance algorithm that addresses fundamental accuracy
+                                challenges in parallel dynamic graph algorithms. The approach intelligently groups race-conflicting
+                                updates and executes them in topologically-ordered batches to prevent inconsistencies that plague
+                                conventional parallel methods. Achieved 32.4x speedup compared to static recomputation while guaranteeing
+                                accurate MIS results without approximation. The BFS-based conflict resolution mechanism identifies
+                                dependencies between concurrent updates and schedules their execution to maintain correctness invariants,
+                                making it particularly valuable for applications requiring exact solutions such as resource allocation,
+                                vertex coloring, and wireless network optimization in dynamic environments.
                             </p>
                             <div class="publication-metrics">
                                 <div class="metric">
@@ -628,10 +643,15 @@
                                 <strong>Aditya Trivedi</strong>, Dishit Sharma, Aditya Mundhara, D.S. Banerjee
                             </div>
                         <p class="research-description">
-                            Developing a semi-external framework for maintaining maximal cliques in billion-scale
-                            dynamic graphs
-                            with <strong>150-300× memory reduction</strong> compared to full-graph methods while
-                            maintaining correctness.
+                            Developing an innovative semi-external memory framework for efficient maximal clique maintenance in
+                            billion-scale dynamic graphs that exceed available RAM capacity. The approach strategically partitions
+                            the graph between fast in-memory storage and external memory (disk/SSD), achieving 150-300× memory
+                            reduction compared to traditional full-graph in-memory methods. Designed specialized data structures
+                            and algorithms that minimize I/O overhead while maintaining exact correctness guarantees for maximal
+                            clique enumeration. Leveraging GPU parallelism for in-memory computations combined with intelligent
+                            prefetching and caching strategies to overlap computation with I/O operations. This work enables
+                            processing of graphs previously intractable on single machines, with applications in bioinformatics
+                            (protein interaction networks), social network analysis (community detection), and knowledge graph mining.
                         </p>
                         <div class="research-areas">
                             <span class="research-tag">Semi-External Memory</span>
