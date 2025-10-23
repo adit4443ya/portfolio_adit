@@ -1563,7 +1563,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 })
-// Publication Card Click Handler
+// Publication Card Click Handler - Disabled to allow modal display
+// The Navigation class handles publication card clicks to show modals
+// External links are still accessible via the icon in publication cards
+/*
 document.addEventListener('DOMContentLoaded', function () {
   // Handle publication card clicks
   const publicationCards = document.querySelectorAll(
@@ -1594,3 +1597,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   })
 })
+*/
