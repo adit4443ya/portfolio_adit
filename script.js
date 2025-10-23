@@ -379,6 +379,124 @@ class Navigation {
                     <p>🔗 <a href="https://github.com/lfortran/lfortran" target="_blank">LFortran Repository</a></p>
                 `
       },
+      'distributed-ml': {
+        title: 'Distributed ML Framework for Fraud Detection',
+        content: `
+                    <h4>🧠 ML Systems Engineer | Feb 2025 - Apr 2025</h4>
+                    <p><strong>Focus:</strong> Privacy-Preserving Federated Learning</p>
+                    <p><strong>Tech Stack:</strong> Python, Azure ML, TensorFlow, LSTM, Federated Learning</p>
+
+                    <h5>Project Overview</h5>
+                    <p>Architected a comprehensive privacy-preserving federated learning system on Microsoft Azure for credit card fraud detection, incorporating differential privacy guarantees and distributed training capabilities.</p>
+
+                    <h5>Key Achievements</h5>
+                    <ul>
+                        <li>Achieved <strong>92% accuracy</strong> in fraud detection while maintaining privacy constraints</li>
+                        <li>Reduced training time by <strong>73%</strong> through optimized distributed learning algorithms</li>
+                        <li>Implemented differential privacy with <strong>ε ≈ 1.5</strong> privacy budget</li>
+                        <li>Designed scalable federated learning architecture supporting multiple clients</li>
+                        <li>Integrated LSTM models for sequential transaction pattern analysis</li>
+                    </ul>
+
+                    <h5>Technical Innovations</h5>
+                    <ul>
+                        <li>Privacy-preserving gradient aggregation mechanisms</li>
+                        <li>Adaptive learning rate scheduling for federated environments</li>
+                        <li>Secure multi-party computation protocols</li>
+                        <li>Real-time fraud detection pipeline with low latency</li>
+                    </ul>
+
+                    <h5>Links & Resources</h5>
+                    <p>💻 <a href="https://github.com/adit4443ya/Distributed-Learning-on-Cloud" target="_blank">Source Code Repository</a></p>
+                `
+      },
+      musify: {
+        title: 'Musify Music Recommendation System',
+        content: `
+                    <h4>🎵 ML Engineer | Ongoing Project</h4>
+                    <p><strong>Focus:</strong> AI-Powered Music Classification & Recommendation</p>
+                    <p><strong>Tech Stack:</strong> Python, Machine Learning, Audio Processing, Feature Extraction</p>
+
+                    <h5>Project Overview</h5>
+                    <p>Comprehensive music genre classifier and recommendation system that utilizes machine learning to analyze audio features and provide personalized song recommendations based on user preferences and listening patterns.</p>
+
+                    <h5>Key Features</h5>
+                    <ul>
+                        <li>Developed a genre classification system achieving 92.42% accuracy using LightGBM on GTZAN audio files, leveraging
+Librosa for feature extraction.</li>
+                        <li>Employed cosine similarity, manhattan, and euclidean distances in the Recommender Model, and utilized t-SNE, PCA,
+and LDA for clustering and dimensionality reduction.</li>
+                    </ul>
+
+
+                    <h5>Links & Resources</h5>
+                    <p>💻 <a href="https://github.com/adit4443ya/Musify" target="_blank">Source Code Repository</a></p>
+                `
+      },
+      workhub: {
+        title: 'WorkHubPro Enterprise Task Management Platform',
+        content: `
+                    <h4>⚙️ Full-Stack Developer | Feb 2024 - Aug 2024</h4>
+                    <p><strong>Focus:</strong> Enterprise-Grade Project Management</p>
+                    <p><strong>Tech Stack:</strong> Kotlin, Jetpack Compose, Go, PostgreSQL, WebSockets</p>
+
+                    <h5>Project Overview</h5>
+                    <p>Developed a comprehensive enterprise-grade task management platform with real-time collaboration features, advanced PostgreSQL optimizations, and service-oriented architecture designed for large-scale organizational use.</p>
+
+                    <h5>Key Achievements</h5>
+                    <ul>
+                        <li>Delivered <strong>140+ commits</strong> across frontend and backend development</li>
+                        <li>Implemented <strong>real-time WebSocket updates</strong> for instant collaboration</li>
+                        <li>Designed <strong>role-based access control (RBAC)</strong> security model</li>
+                        <li>Achieved <strong>sub-second response times</strong> through database optimization</li>
+                        <li>Built scalable microservices architecture supporting concurrent users</li>
+                    </ul>
+
+                    <h5>Technical Architecture</h5>
+                    <ul>
+                        <li><strong>Frontend:</strong> Modern Android app using Kotlin and Jetpack Compose</li>
+                        <li><strong>Backend:</strong> High-performance Go microservices with RESTful APIs</li>
+                        <li><strong>Database:</strong> PostgreSQL with advanced indexing and query optimization</li>
+                        <li><strong>Real-time:</strong> WebSocket implementation for live updates</li>
+                        <li><strong>Security:</strong> JWT authentication with role-based permissions</li>
+                    </ul>
+
+                    <h5>Links & Resources</h5>
+                    <p>💻 <a href="https://github.com/adit4443ya/WorkHub-Pro" target="_blank">Source Code Repository</a></p>
+                `
+      },
+      crawler: {
+        title: 'Multi-Threaded Web Crawler',
+        content: `
+                    <h4>🕷️ Systems Programmer | Completed Project</h4>
+                    <p><strong>Focus:</strong> High-Performance Web Scraping</p>
+                    <p><strong>Tech Stack:</strong> C++, Curl, Gumbo Parser, Multi-threading, JSON</p>
+
+                    <h5>Project Overview</h5>
+                    <p>High-performance web crawler built in C++ with multi-threaded architecture for parallel website crawling. Features configurable crawl depth, HTML parsing capabilities, and efficient metadata extraction with JSON output.</p>
+
+                    <h5>Key Features</h5>
+                    <ul>
+                        <li><strong>Multi-threaded architecture</strong> for parallel crawling operations</li>
+                        <li><strong>Configurable crawl depth</strong> with intelligent link discovery</li>
+                        <li><strong>HTML parsing</strong> using Google's Gumbo library</li>
+                        <li><strong>JSON metadata extraction</strong> for structured data output</li>
+                        <li><strong>Efficient memory management</strong> for large-scale crawling</li>
+                    </ul>
+
+                    <h5>Technical Implementation</h5>
+                    <ul>
+                        <li>Thread pool management for optimal resource utilization</li>
+                        <li>HTTP request handling with libcurl for robust web communication</li>
+                        <li>DOM parsing and content extraction using Gumbo HTML parser</li>
+                        <li>Concurrent data structures for thread-safe operations</li>
+                        <li>URL normalization and duplicate detection algorithms</li>
+                    </ul>
+
+                    <h5>Links & Resources</h5>
+                    <p>💻 <a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank">Source Code Repository</a></p>
+                `
+      },
       paper4: {
         title: 'Fast MIS on Dynamic Graphs',
         content: `
