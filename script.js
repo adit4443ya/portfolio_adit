@@ -345,10 +345,10 @@ class Navigation {
                     <h4>🌟 Open Source Contributor | May 2025 - Present</h4>
                     <p><strong>Organization:</strong> LFortran (under NumFOCUS)</p>
                     <p><strong>Tech Stack:</strong> C++, Fortran, OpenMP 6.0, CUDA, GPU Computing</p>
-                    
+
                     <h5>Project Scope</h5>
                     <p>Implementing next-generation OpenMP 6.0 features with GPU target offloading capabilities for the LFortran compiler, enabling advanced parallel computing on heterogeneous systems.</p>
-                    
+
                     <h5>Major Contributions</h5>
                     <ul>
                         <li>Designed and refactored <strong>OMPRegion-based Abstract Semantic Representation (ASR)</strong> architecture</li>
@@ -357,7 +357,7 @@ class Navigation {
                         <li>Extended C-backend for <strong>OpenMP Target Offloading on NVIDIA GPUs</strong></li>
                         <li>Built lightweight GPU emulator as runtime library for testing and development</li>
                     </ul>
-                    
+
                     <h5>Technical Achievements</h5>
                     <ul>
                         <li>Scalable OpenMP 6.0 features support in compiler infrastructure</li>
@@ -365,18 +365,231 @@ class Navigation {
                         <li>Host-device dual-mode code generation capabilities</li>
                         <li>Integration of OpenMP-CUDA code generation pipeline</li>
                     </ul>
-                    
+
                     <h5>Impact on Open Source Community</h5>
                     <ul>
                         <li>Advancing Fortran compiler technology for modern HPC</li>
                         <li>Enabling GPU computing for scientific applications</li>
                         <li>Contributing to open-source parallel computing ecosystem</li>
                     </ul>
-                    
+
                     <h5>Links & Resources</h5>
                     <p>📝 <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">GSoC Development Blogs</a></p>
                     <p>📋 <a href="https://gist.github.com/adit4443ya/9364dfff705d880cd64a77ea98f8cb9c" target="_blank">Final Project Evaluation</a></p>
                     <p>🔗 <a href="https://github.com/lfortran/lfortran" target="_blank">LFortran Repository</a></p>
+                `
+      },
+      paper4: {
+        title: 'Fast MIS on Dynamic Graphs',
+        content: `
+                    <h4>📄 EuroMicro PDP 2025 | Conference Full Length Paper</h4>
+                    <p><strong>Authors:</strong> P. Nijhara, <strong>Aditya Trivedi</strong>, D.S. Banerjee</p>
+                    <p><strong>Venue:</strong> 33rd Euromicro International Conference on Parallel, Distributed and Network-based Processing</p>
+
+                    <h5>Abstract</h5>
+                    <p>Finding the Maximal Independent Set (MIS) in a graph is a well-known problem with applications in resource allocation, load balancing, and routing optimization. This task is particularly challenging for large graphs as it requires multiple iterations over the entire set of vertices. Recently, there has been significant interest in developing techniques to maintain the MIS dynamically in evolving graphs rather than re-computing from scratch. In this paper, we propose new data structures and techniques for computing MIS in parallel on dynamic graphs. We specifically propose techniques to handle insertions and deletions in a batched setting.</p>
+
+                    <h5>Key Contributions</h5>
+                    <ul>
+                        <li>Novel parallel data structures for efficient MIS maintenance on dynamic graphs</li>
+                        <li>Specialized algorithms for batched edge insertions and deletions</li>
+                        <li>Innovative conflict resolution strategies for parallel execution</li>
+                        <li>Comprehensive experimental evaluation on large-scale graphs</li>
+                    </ul>
+
+                    <h5>Experimental Results</h5>
+                    <ul>
+                        <li><strong>15.64x speedup</strong> for insertion operations over recomputation baselines</li>
+                        <li><strong>10.57x speedup</strong> for deletion operations</li>
+                        <li><strong>~0.18% cardinality variance</strong> compared to state-of-the-art methods</li>
+                        <li>Evaluated on graphs ranging from <strong>50 million to 1.2 billion edges</strong></li>
+                    </ul>
+
+                    <h5>Applications</h5>
+                    <ul>
+                        <li>Network analysis and graph-based machine learning</li>
+                        <li>Distributed systems resource management</li>
+                        <li>Real-time graph analytics on evolving networks</li>
+                    </ul>
+
+                    <h5>Links & Resources</h5>
+                    <p>🔗 <a href="https://ieeexplore.ieee.org/document/10974793/" target="_blank">IEEE Xplore Paper</a></p>
+                `
+      },
+      paper5: {
+        title: 'Fast MIS on Incremental Graphs',
+        content: `
+                    <h4>📄 IEEE HiPC 2024 | Conference SRS Paper</h4>
+                    <p><strong>Authors:</strong> <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee</p>
+                    <p><strong>Venue:</strong> IEEE International Conference on High Performance Computing, Data, and Analytics</p>
+
+                    <h5>Abstract</h5>
+                    <p>Maintaining the Maximal Independent Set (MIS) in dynamic graphs is crucial for applications like resource allocation, load balancing, and network optimization. Traditional approaches require complete re-computation, making them inefficient for large and evolving graphs. Our proposed methods utilize Tuple Valued Bitmap (TVB) and its extension with levels, TVBL, to enhance parallelism and minimize search space.</p>
+
+                    <h5>Key Innovations</h5>
+                    <ul>
+                        <li><strong>Tuple Valued Bitmap (TVB)</strong>: Novel data structure encoding tuple-level information in bitmap representations</li>
+                        <li><strong>TVBL (TVB with Levels)</strong>: Extended TVB for hierarchical graph representation</li>
+                        <li>Efficient identification of affected regions during edge insertions</li>
+                        <li>Fine-grained concurrent updates with reduced contention</li>
+                    </ul>
+
+                    <h5>Performance Achievements</h5>
+                    <ul>
+                        <li><strong>15.64x speedup</strong> for insertion operations over static recomputation</li>
+                        <li>Successfully processed graphs with over <strong>1.2 billion edges</strong></li>
+                        <li><strong>Minimal cardinality impact</strong> while maintaining correctness</li>
+                        <li>Maximized parallelism through reduced search space</li>
+                    </ul>
+
+                    <h5>Applications & Impact</h5>
+                    <ul>
+                        <li>Real-time applications requiring frequent graph modifications</li>
+                        <li>Social network analysis and community detection</li>
+                        <li>Dynamic routing in communication networks</li>
+                        <li>Paves the way for optimization in fully dynamic and streaming settings</li>
+                    </ul>
+
+                    <h5>Links & Resources</h5>
+                    <p>🔗 <a href="https://ieeexplore.ieee.org/document/10898364/" target="_blank">IEEE Xplore Paper</a></p>
+                `
+      },
+      paper1: {
+        title: 'ParMIS: Fast and Unified MIS Maintenance Framework',
+        content: `
+                    <h4>📄 Elsevier FGCS 2025 | Journal Paper (Under Review)</h4>
+                    <p><strong>Authors:</strong> P. Nijhara, <strong>Aditya Trivedi</strong>, A. H. Singh, Neha Sharma, Avaneesh Pandey, D.S. Banerjee</p>
+                    <p><strong>Venue:</strong> Future Generation Computer Systems (Elsevier)</p>
+
+                    <h5>Abstract</h5>
+                    <p>Finding the Maximal Independent Set (MIS) in a graph is a fundamental problem with applications in resource allocation, scheduling, and network optimization. Maintaining MIS on large evolving graphs is challenging, as recomputation from scratch is infeasible and existing dynamic methods are often restricted to incremental updates. In this work, we present ParMIS, a fast and unified framework for MIS maintenance on large-scale dynamic graphs.</p>
+
+                    <h5>Framework Innovations</h5>
+                    <ul>
+                        <li><strong>Unified Framework</strong>: First framework supporting incremental, batch, and fully dynamic MIS updates</li>
+                        <li><strong>GPU Streaming Pipeline</strong>: Novel streaming architecture for billion-scale graph processing</li>
+                        <li><strong>Conflict Resolution Strategies</strong>: Sophisticated mechanisms to mitigate race conditions</li>
+                        <li><strong>Work Efficiency Optimization</strong>: Improved computational efficiency in parallel execution</li>
+                    </ul>
+
+                    <h5>Performance Metrics</h5>
+                    <ul>
+                        <li><strong>Incremental MIS Updates (IMU):</strong> Up to 2.70× speedup vs. state-of-the-art</li>
+                        <li><strong>Batch MIS Updates (BMU):</strong> Up to 47.27× speedup over static approaches</li>
+                        <li><strong>Fully Dynamic MIS Updates (FDMU):</strong> 3.70× on CPUs, 4.63× on GPUs</li>
+                        <li><strong>Accuracy:</strong> ~0.18% cardinality variance with guaranteed correctness</li>
+                    </ul>
+
+                    <h5>Technical Contributions</h5>
+                    <ul>
+                        <li>Novel fully dynamic batch parallel algorithm supporting insertions and deletions</li>
+                        <li>GPU-optimized streaming pipeline for billion-scale graphs</li>
+                        <li>Conflict resolution preserving correctness in parallel execution</li>
+                        <li>Seamless handling of mixed insertion/deletion workloads</li>
+                    </ul>
+
+                    <h5>Applications</h5>
+                    <ul>
+                        <li>Large-scale social network analysis</li>
+                        <li>Knowledge graph maintenance and querying</li>
+                        <li>Streaming graph analytics platforms</li>
+                        <li>Dynamic network optimization systems</li>
+                    </ul>
+                `
+      },
+      paper2: {
+        title: 'Fast and Accurate MIS on Dynamic Graphs',
+        content: `
+                    <h4>📄 IEEE HiPC 2025 | Conference Paper (Under Review)</h4>
+                    <p><strong>Authors:</strong> A. H. Singh, <strong>Aditya Trivedi</strong>, Neha Sharma, Avaneesh Pandey, D.S. Banerjee</p>
+                    <p><strong>Venue:</strong> IEEE International Conference on High Performance Computing, Data, and Analytics</p>
+
+                    <h5>Abstract</h5>
+                    <p>A Maximal Independent Set (MIS) is a challenging problem due to its high search space. In dynamic graphs where edge/vertex updates are frequent, maintaining MIS becomes more difficult. Recomputing MIS from scratch is infeasible when graphs undergo frequent structural updates. Parallel dynamic algorithms, although they maintain MIS quickly, are prone to producing inaccurate results because of race conditions. To overcome these challenges, we propose a BFS-based MIS maintenance algorithm that works by grouping possible race-conflicting updates and executing them in order.</p>
+
+                    <h5>Key Innovations</h5>
+                    <ul>
+                        <li><strong>BFS-based Conflict Resolution</strong>: Novel approach to identify and resolve race conditions</li>
+                        <li><strong>Topologically-Ordered Execution</strong>: Intelligent grouping of race-conflicting updates</li>
+                        <li><strong>Guaranteed Accuracy</strong>: Maintains exact MIS without approximations</li>
+                        <li><strong>Dependency Analysis</strong>: Identifies dependencies between concurrent updates</li>
+                    </ul>
+
+                    <h5>Performance Results</h5>
+                    <ul>
+                        <li><strong>32.4× speedup</strong> compared to state-of-the-art static graph algorithms</li>
+                        <li><strong>100% accuracy</strong> - produces exact MIS results without errors</li>
+                        <li>Efficient handling of race-conflicting update scenarios</li>
+                        <li>Maintains correctness invariants in parallel execution</li>
+                    </ul>
+
+                    <h5>Algorithmic Contributions</h5>
+                    <ul>
+                        <li>BFS-based mechanism to prevent inconsistencies in parallel methods</li>
+                        <li>Scheduling system for execution order of dependent updates</li>
+                        <li>Correctness-preserving parallel dynamic graph algorithm</li>
+                    </ul>
+
+                    <h5>Applications</h5>
+                    <ul>
+                        <li>Resource allocation systems requiring exact solutions</li>
+                        <li>Vertex coloring in dynamic networks</li>
+                        <li>Wireless network optimization</li>
+                        <li>Scheduling problems in dynamic environments</li>
+                    </ul>
+                `
+      },
+      'ongoing-research': {
+        title: 'Semi-External Parallel Maximal Cliques Maintenance',
+        content: `
+                    <h4>🔬 Ongoing Research Project</h4>
+                    <p><strong>Authors:</strong> <strong>Aditya Trivedi</strong>, Dishit Sharma, Aditya Mundhara, D.S. Banerjee</p>
+                    <p><strong>Research Advisor:</strong> Dr. Dip Sankar Banerjee, IIT Jodhpur</p>
+
+                    <h5>Abstract</h5>
+                    <p>Maintaining maximal cliques in billion-scale dynamic graphs presents dual challenges: computational complexity from continuous edge updates and memory constraints that prevent full graph loading onto accelerators. State-of-the-art approaches either recompute cliques periodically or assume complete in-memory representation, rendering them impractical for evolving networks exceeding GPU capacity. We propose a semi-external framework that maintains multiple maximal cliques in parallel by transferring only non-clique neighbor lists rather than full subgraphs.</p>
+
+                    <h5>Research Innovations</h5>
+                    <ul>
+                        <li><strong>Semi-External Memory Framework</strong>: Strategic graph partitioning between RAM and external storage</li>
+                        <li><strong>Selective Data Transfer</strong>: Transfer only non-clique neighbor lists (O(K·d̄) memory per clique)</li>
+                        <li><strong>Natural Independence Exploitation</strong>: Parallel maintenance with dedicated threads per clique</li>
+                        <li><strong>I/O Optimization</strong>: Intelligent prefetching and caching to overlap computation with I/O</li>
+                    </ul>
+
+                    <h5>Preliminary Results</h5>
+                    <ul>
+                        <li><strong>150-300× memory reduction</strong> compared to full-graph in-memory methods</li>
+                        <li><strong>Near-linear speedup</strong> through scalable concurrent maintenance</li>
+                        <li><strong>Correctness guaranteed</strong> across sustained update streams</li>
+                        <li>Successfully processes billion-edge networks exceeding GPU capacity</li>
+                        <li>Smaller cliques expose greater parallelism through higher clique counts</li>
+                    </ul>
+
+                    <h5>Technical Approach</h5>
+                    <ul>
+                        <li>Memory complexity: O(K·d̄) device memory per clique (K = size, d̄ = avg degree)</li>
+                        <li>GPU parallelism for in-memory computations</li>
+                        <li>Specialized data structures minimizing I/O overhead</li>
+                        <li>Exact correctness guarantees for maximal clique enumeration</li>
+                    </ul>
+
+                    <h5>Research Areas</h5>
+                    <ul>
+                        <li>Semi-External Memory Algorithms</li>
+                        <li>GPU Computing & Parallel Processing</li>
+                        <li>Maximal Clique Enumeration</li>
+                        <li>Memory Optimization Techniques</li>
+                        <li>Dynamic Graph Algorithms</li>
+                    </ul>
+
+                    <h5>Real-World Applications</h5>
+                    <ul>
+                        <li><strong>Bioinformatics:</strong> Protein interaction network analysis</li>
+                        <li><strong>Social Networks:</strong> Community detection and analysis</li>
+                        <li><strong>Knowledge Graphs:</strong> Dense subgraph mining</li>
+                        <li><strong>Scientific Computing:</strong> Large-scale network analysis</li>
+                    </ul>
                 `
       }
     }
@@ -896,10 +1109,10 @@ and LDA for clustering and dimensionality reduction.</li>
                     <h4>🕷️ Systems Programmer | Completed Project</h4>
                     <p><strong>Focus:</strong> High-Performance Web Scraping</p>
                     <p><strong>Tech Stack:</strong> C++, Curl, Gumbo Parser, Multi-threading, JSON</p>
-                    
+
                     <h5>Project Overview</h5>
                     <p>High-performance web crawler built in C++ with multi-threaded architecture for parallel website crawling. Features configurable crawl depth, HTML parsing capabilities, and efficient metadata extraction with JSON output.</p>
-                    
+
                     <h5>Key Features</h5>
                     <ul>
                         <li><strong>Multi-threaded architecture</strong> for parallel crawling operations</li>
@@ -908,7 +1121,7 @@ and LDA for clustering and dimensionality reduction.</li>
                         <li><strong>JSON metadata extraction</strong> for structured data output</li>
                         <li><strong>Efficient memory management</strong> for large-scale crawling</li>
                     </ul>
-                    
+
                     <h5>Technical Implementation</h5>
                     <ul>
                         <li>Thread pool management for optimal resource utilization</li>
@@ -917,9 +1130,222 @@ and LDA for clustering and dimensionality reduction.</li>
                         <li>Concurrent data structures for thread-safe operations</li>
                         <li>URL normalization and duplicate detection algorithms</li>
                     </ul>
-                    
+
                     <h5>Links & Resources</h5>
                     <p>💻 <a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank">Source Code Repository</a></p>
+                `
+      },
+      paper4: {
+        title: 'Fast MIS on Dynamic Graphs',
+        content: `
+                    <h4>📄 EuroMicro PDP 2025 | Conference Full Length Paper</h4>
+                    <p><strong>Authors:</strong> P. Nijhara, <strong>Aditya Trivedi</strong>, D.S. Banerjee</p>
+                    <p><strong>Venue:</strong> 33rd Euromicro International Conference on Parallel, Distributed and Network-based Processing</p>
+
+                    <h5>Abstract</h5>
+                    <p>Finding the Maximal Independent Set (MIS) in a graph is a well-known problem with applications in resource allocation, load balancing, and routing optimization. This task is particularly challenging for large graphs as it requires multiple iterations over the entire set of vertices. Recently, there has been significant interest in developing techniques to maintain the MIS dynamically in evolving graphs rather than re-computing from scratch. In this paper, we propose new data structures and techniques for computing MIS in parallel on dynamic graphs. We specifically propose techniques to handle insertions and deletions in a batched setting.</p>
+
+                    <h5>Key Contributions</h5>
+                    <ul>
+                        <li>Novel parallel data structures for efficient MIS maintenance on dynamic graphs</li>
+                        <li>Specialized algorithms for batched edge insertions and deletions</li>
+                        <li>Innovative conflict resolution strategies for parallel execution</li>
+                        <li>Comprehensive experimental evaluation on large-scale graphs</li>
+                    </ul>
+
+                    <h5>Experimental Results</h5>
+                    <ul>
+                        <li><strong>15.64x speedup</strong> for insertion operations over recomputation baselines</li>
+                        <li><strong>10.57x speedup</strong> for deletion operations</li>
+                        <li><strong>~0.18% cardinality variance</strong> compared to state-of-the-art methods</li>
+                        <li>Evaluated on graphs ranging from <strong>50 million to 1.2 billion edges</strong></li>
+                    </ul>
+
+                    <h5>Applications</h5>
+                    <ul>
+                        <li>Network analysis and graph-based machine learning</li>
+                        <li>Distributed systems resource management</li>
+                        <li>Real-time graph analytics on evolving networks</li>
+                    </ul>
+
+                    <h5>Links & Resources</h5>
+                    <p>🔗 <a href="https://ieeexplore.ieee.org/document/10974793/" target="_blank">IEEE Xplore Paper</a></p>
+                `
+      },
+      paper5: {
+        title: 'Fast MIS on Incremental Graphs',
+        content: `
+                    <h4>📄 IEEE HiPC 2024 | Conference SRS Paper</h4>
+                    <p><strong>Authors:</strong> <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee</p>
+                    <p><strong>Venue:</strong> IEEE International Conference on High Performance Computing, Data, and Analytics</p>
+
+                    <h5>Abstract</h5>
+                    <p>Maintaining the Maximal Independent Set (MIS) in dynamic graphs is crucial for applications like resource allocation, load balancing, and network optimization. Traditional approaches require complete re-computation, making them inefficient for large and evolving graphs. Our proposed methods utilize Tuple Valued Bitmap (TVB) and its extension with levels, TVBL, to enhance parallelism and minimize search space.</p>
+
+                    <h5>Key Innovations</h5>
+                    <ul>
+                        <li><strong>Tuple Valued Bitmap (TVB)</strong>: Novel data structure encoding tuple-level information in bitmap representations</li>
+                        <li><strong>TVBL (TVB with Levels)</strong>: Extended TVB for hierarchical graph representation</li>
+                        <li>Efficient identification of affected regions during edge insertions</li>
+                        <li>Fine-grained concurrent updates with reduced contention</li>
+                    </ul>
+
+                    <h5>Performance Achievements</h5>
+                    <ul>
+                        <li><strong>15.64x speedup</strong> for insertion operations over static recomputation</li>
+                        <li>Successfully processed graphs with over <strong>1.2 billion edges</strong></li>
+                        <li><strong>Minimal cardinality impact</strong> while maintaining correctness</li>
+                        <li>Maximized parallelism through reduced search space</li>
+                    </ul>
+
+                    <h5>Applications & Impact</h5>
+                    <ul>
+                        <li>Real-time applications requiring frequent graph modifications</li>
+                        <li>Social network analysis and community detection</li>
+                        <li>Dynamic routing in communication networks</li>
+                        <li>Paves the way for optimization in fully dynamic and streaming settings</li>
+                    </ul>
+
+                    <h5>Links & Resources</h5>
+                    <p>🔗 <a href="https://ieeexplore.ieee.org/document/10898364/" target="_blank">IEEE Xplore Paper</a></p>
+                `
+      },
+      paper1: {
+        title: 'ParMIS: Fast and Unified MIS Maintenance Framework',
+        content: `
+                    <h4>📄 Elsevier FGCS 2025 | Journal Paper (Under Review)</h4>
+                    <p><strong>Authors:</strong> P. Nijhara, <strong>Aditya Trivedi</strong>, A. H. Singh, Neha Sharma, Avaneesh Pandey, D.S. Banerjee</p>
+                    <p><strong>Venue:</strong> Future Generation Computer Systems (Elsevier)</p>
+
+                    <h5>Abstract</h5>
+                    <p>Finding the Maximal Independent Set (MIS) in a graph is a fundamental problem with applications in resource allocation, scheduling, and network optimization. Maintaining MIS on large evolving graphs is challenging, as recomputation from scratch is infeasible and existing dynamic methods are often restricted to incremental updates. In this work, we present ParMIS, a fast and unified framework for MIS maintenance on large-scale dynamic graphs.</p>
+
+                    <h5>Framework Innovations</h5>
+                    <ul>
+                        <li><strong>Unified Framework</strong>: First framework supporting incremental, batch, and fully dynamic MIS updates</li>
+                        <li><strong>GPU Streaming Pipeline</strong>: Novel streaming architecture for billion-scale graph processing</li>
+                        <li><strong>Conflict Resolution Strategies</strong>: Sophisticated mechanisms to mitigate race conditions</li>
+                        <li><strong>Work Efficiency Optimization</strong>: Improved computational efficiency in parallel execution</li>
+                    </ul>
+
+                    <h5>Performance Metrics</h5>
+                    <ul>
+                        <li><strong>Incremental MIS Updates (IMU):</strong> Up to 2.70× speedup vs. state-of-the-art</li>
+                        <li><strong>Batch MIS Updates (BMU):</strong> Up to 47.27× speedup over static approaches</li>
+                        <li><strong>Fully Dynamic MIS Updates (FDMU):</strong> 3.70× on CPUs, 4.63× on GPUs</li>
+                        <li><strong>Accuracy:</strong> ~0.18% cardinality variance with guaranteed correctness</li>
+                    </ul>
+
+                    <h5>Technical Contributions</h5>
+                    <ul>
+                        <li>Novel fully dynamic batch parallel algorithm supporting insertions and deletions</li>
+                        <li>GPU-optimized streaming pipeline for billion-scale graphs</li>
+                        <li>Conflict resolution preserving correctness in parallel execution</li>
+                        <li>Seamless handling of mixed insertion/deletion workloads</li>
+                    </ul>
+
+                    <h5>Applications</h5>
+                    <ul>
+                        <li>Large-scale social network analysis</li>
+                        <li>Knowledge graph maintenance and querying</li>
+                        <li>Streaming graph analytics platforms</li>
+                        <li>Dynamic network optimization systems</li>
+                    </ul>
+                `
+      },
+      paper2: {
+        title: 'Fast and Accurate MIS on Dynamic Graphs',
+        content: `
+                    <h4>📄 IEEE HiPC 2025 | Conference Paper (Under Review)</h4>
+                    <p><strong>Authors:</strong> A. H. Singh, <strong>Aditya Trivedi</strong>, Neha Sharma, Avaneesh Pandey, D.S. Banerjee</p>
+                    <p><strong>Venue:</strong> IEEE International Conference on High Performance Computing, Data, and Analytics</p>
+
+                    <h5>Abstract</h5>
+                    <p>A Maximal Independent Set (MIS) is a challenging problem due to its high search space. In dynamic graphs where edge/vertex updates are frequent, maintaining MIS becomes more difficult. Recomputing MIS from scratch is infeasible when graphs undergo frequent structural updates. Parallel dynamic algorithms, although they maintain MIS quickly, are prone to producing inaccurate results because of race conditions. To overcome these challenges, we propose a BFS-based MIS maintenance algorithm that works by grouping possible race-conflicting updates and executing them in order.</p>
+
+                    <h5>Key Innovations</h5>
+                    <ul>
+                        <li><strong>BFS-based Conflict Resolution</strong>: Novel approach to identify and resolve race conditions</li>
+                        <li><strong>Topologically-Ordered Execution</strong>: Intelligent grouping of race-conflicting updates</li>
+                        <li><strong>Guaranteed Accuracy</strong>: Maintains exact MIS without approximations</li>
+                        <li><strong>Dependency Analysis</strong>: Identifies dependencies between concurrent updates</li>
+                    </ul>
+
+                    <h5>Performance Results</h5>
+                    <ul>
+                        <li><strong>32.4× speedup</strong> compared to state-of-the-art static graph algorithms</li>
+                        <li><strong>100% accuracy</strong> - produces exact MIS results without errors</li>
+                        <li>Efficient handling of race-conflicting update scenarios</li>
+                        <li>Maintains correctness invariants in parallel execution</li>
+                    </ul>
+
+                    <h5>Algorithmic Contributions</h5>
+                    <ul>
+                        <li>BFS-based mechanism to prevent inconsistencies in parallel methods</li>
+                        <li>Scheduling system for execution order of dependent updates</li>
+                        <li>Correctness-preserving parallel dynamic graph algorithm</li>
+                    </ul>
+
+                    <h5>Applications</h5>
+                    <ul>
+                        <li>Resource allocation systems requiring exact solutions</li>
+                        <li>Vertex coloring in dynamic networks</li>
+                        <li>Wireless network optimization</li>
+                        <li>Scheduling problems in dynamic environments</li>
+                    </ul>
+                `
+      },
+      'ongoing-research': {
+        title: 'Semi-External Parallel Maximal Cliques Maintenance',
+        content: `
+                    <h4>🔬 Ongoing Research Project</h4>
+                    <p><strong>Authors:</strong> <strong>Aditya Trivedi</strong>, Dishit Sharma, Aditya Mundhara, D.S. Banerjee</p>
+                    <p><strong>Research Advisor:</strong> Dr. Dip Sankar Banerjee, IIT Jodhpur</p>
+
+                    <h5>Abstract</h5>
+                    <p>Maintaining maximal cliques in billion-scale dynamic graphs presents dual challenges: computational complexity from continuous edge updates and memory constraints that prevent full graph loading onto accelerators. State-of-the-art approaches either recompute cliques periodically or assume complete in-memory representation, rendering them impractical for evolving networks exceeding GPU capacity. We propose a semi-external framework that maintains multiple maximal cliques in parallel by transferring only non-clique neighbor lists rather than full subgraphs.</p>
+
+                    <h5>Research Innovations</h5>
+                    <ul>
+                        <li><strong>Semi-External Memory Framework</strong>: Strategic graph partitioning between RAM and external storage</li>
+                        <li><strong>Selective Data Transfer</strong>: Transfer only non-clique neighbor lists (O(K·d̄) memory per clique)</li>
+                        <li><strong>Natural Independence Exploitation</strong>: Parallel maintenance with dedicated threads per clique</li>
+                        <li><strong>I/O Optimization</strong>: Intelligent prefetching and caching to overlap computation with I/O</li>
+                    </ul>
+
+                    <h5>Preliminary Results</h5>
+                    <ul>
+                        <li><strong>150-300× memory reduction</strong> compared to full-graph in-memory methods</li>
+                        <li><strong>Near-linear speedup</strong> through scalable concurrent maintenance</li>
+                        <li><strong>Correctness guaranteed</strong> across sustained update streams</li>
+                        <li>Successfully processes billion-edge networks exceeding GPU capacity</li>
+                        <li>Smaller cliques expose greater parallelism through higher clique counts</li>
+                    </ul>
+
+                    <h5>Technical Approach</h5>
+                    <ul>
+                        <li>Memory complexity: O(K·d̄) device memory per clique (K = size, d̄ = avg degree)</li>
+                        <li>GPU parallelism for in-memory computations</li>
+                        <li>Specialized data structures minimizing I/O overhead</li>
+                        <li>Exact correctness guarantees for maximal clique enumeration</li>
+                    </ul>
+
+                    <h5>Research Areas</h5>
+                    <ul>
+                        <li>Semi-External Memory Algorithms</li>
+                        <li>GPU Computing & Parallel Processing</li>
+                        <li>Maximal Clique Enumeration</li>
+                        <li>Memory Optimization Techniques</li>
+                        <li>Dynamic Graph Algorithms</li>
+                    </ul>
+
+                    <h5>Real-World Applications</h5>
+                    <ul>
+                        <li><strong>Bioinformatics:</strong> Protein interaction network analysis</li>
+                        <li><strong>Social Networks:</strong> Community detection and analysis</li>
+                        <li><strong>Knowledge Graphs:</strong> Dense subgraph mining</li>
+                        <li><strong>Scientific Computing:</strong> Large-scale network analysis</li>
+                    </ul>
                 `
       }
     }
