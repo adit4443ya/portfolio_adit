@@ -1,348 +1,564 @@
-// Professional Portfolio - Realistic Space Background
-class SpaceBackground {
-  constructor () {
-    this.scene = null
-    this.camera = null
-    this.renderer = null
-    this.stars = null
-    this.mouseX = 0
-    this.mouseY = 0
+// ============================================
+// ADITYA TRIVEDI - PORTFOLIO
+// Advanced Cyberpunk/Web3 Interface
+// ============================================
 
-    this.init()
-  }
+// ============================================
+// CUSTOM CURSOR
+// ============================================
+class CustomCursor {
+    constructor() {
+        this.dot = document.querySelector('.cursor-dot');
+        this.ring = document.querySelector('.cursor-ring');
+        this.mouseX = 0;
+        this.mouseY = 0;
+        this.ringX = 0;
+        this.ringY = 0;
 
-  init () {
-    this.setupScene()
-    this.createStarField()
-    this.setupEventListeners()
-    this.animate()
-  }
-
-  setupScene () {
-    // Scene setup
-    this.scene = new THREE.Scene()
-
-    // Camera setup
-    this.camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    )
-    this.camera.position.z = 1
-
-    // Renderer setup
-    this.renderer = new THREE.WebGLRenderer({
-      canvas: document.getElementById('space-canvas'),
-      antialias: true,
-      alpha: true
-    })
-    this.renderer.setSize(window.innerWidth, window.innerHeight)
-    this.renderer.setClearColor(0x000000, 0)
-  }
-
-  createStarField () {
-    const starGeometry = new THREE.BufferGeometry()
-    const starCount = 1500
-    const positions = new Float32Array(starCount * 3)
-    const colors = new Float32Array(starCount * 3)
-    const sizes = new Float32Array(starCount)
-
-    for (let i = 0; i < starCount; i++) {
-      const i3 = i * 3
-
-      // Positions - spread across a large area
-      positions[i3] = (Math.random() - 0.5) * 2000
-      positions[i3 + 1] = (Math.random() - 0.5) * 2000
-      positions[i3 + 2] = (Math.random() - 0.5) * 1000
-
-      // Colors - realistic star colors
-      const temp = Math.random()
-      if (temp < 0.7) {
-        // White/blue-white stars (most common)
-        colors[i3] = 0.9 + Math.random() * 0.1
-        colors[i3 + 1] = 0.9 + Math.random() * 0.1
-        colors[i3 + 2] = 1.0
-      } else if (temp < 0.9) {
-        // Yellow/orange stars
-        colors[i3] = 1.0
-        colors[i3 + 1] = 0.8 + Math.random() * 0.2
-        colors[i3 + 2] = 0.6 + Math.random() * 0.2
-      } else {
-        // Red stars
-        colors[i3] = 1.0
-        colors[i3 + 1] = 0.3 + Math.random() * 0.3
-        colors[i3 + 2] = 0.2 + Math.random() * 0.2
-      }
-
-      // Sizes - varied star sizes
-      sizes[i] = Math.random() * 2 + 0.5
+        this.init();
     }
 
-    starGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(positions, 3)
-    )
-    starGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
-    starGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
+    init() {
+        if (!this.dot || !this.ring) return;
 
-    const starMaterial = new THREE.PointsMaterial({
-      size: 1,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.8,
-      sizeAttenuation: true
-    })
+        document.addEventListener('mousemove', (e) => {
+            this.mouseX = e.clientX;
+            this.mouseY = e.clientY;
 
-    this.stars = new THREE.Points(starGeometry, starMaterial)
-    this.scene.add(this.stars)
-  }
+            this.dot.style.left = this.mouseX + 'px';
+            this.dot.style.top = this.mouseY + 'px';
+        });
 
-  setupEventListeners () {
-    document.addEventListener('mousemove', event => {
-      this.mouseX = (event.clientX / window.innerWidth) * 2 - 1
-      this.mouseY = -(event.clientY / window.innerHeight) * 2 + 1
-    })
-
-    window.addEventListener('resize', () => this.onWindowResize())
-  }
-
-  animate () {
-    requestAnimationFrame(() => this.animate())
-
-    // Subtle rotation
-    if (this.stars) {
-      this.stars.rotation.x += 0.0001
-      this.stars.rotation.y += 0.0002
+        this.animate();
+        this.setupHoverEffects();
     }
 
-    // Subtle camera movement based on mouse
-    this.camera.position.x +=
-      (this.mouseX * 0.05 - this.camera.position.x) * 0.02
-    this.camera.position.y +=
-      (this.mouseY * 0.05 - this.camera.position.y) * 0.02
-    this.camera.lookAt(this.scene.position)
+    animate() {
+        this.ringX += (this.mouseX - this.ringX) * 0.15;
+        this.ringY += (this.mouseY - this.ringY) * 0.15;
 
-    this.renderer.render(this.scene, this.camera)
-  }
+        this.ring.style.left = this.ringX + 'px';
+        this.ring.style.top = this.ringY + 'px';
 
-  onWindowResize () {
-    this.camera.aspect = window.innerWidth / window.innerHeight
-    this.camera.updateProjectionMatrix()
-    this.renderer.setSize(window.innerWidth, window.innerHeight)
-  }
+        requestAnimationFrame(() => this.animate());
+    }
+
+    setupHoverEffects() {
+        const hoverElements = document.querySelectorAll('a, button, .domain-card, .project-card, .publication-card, .ongoing-card');
+
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                this.ring.classList.add('hover');
+            });
+
+            el.addEventListener('mouseleave', () => {
+                this.ring.classList.remove('hover');
+            });
+        });
+    }
 }
-// Navigation System
+
+// ============================================
+// MATRIX RAIN EFFECT
+// ============================================
+class MatrixRain {
+    constructor() {
+        this.canvas = document.getElementById('matrix-rain');
+        if (!this.canvas) return;
+
+        this.ctx = this.canvas.getContext('2d');
+        this.characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        this.fontSize = 14;
+        this.columns = 0;
+        this.drops = [];
+
+        this.init();
+    }
+
+    init() {
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        this.animate();
+    }
+
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.columns = Math.floor(this.canvas.width / this.fontSize);
+        this.drops = new Array(this.columns).fill(1);
+    }
+
+    animate() {
+        this.ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.fillStyle = '#00f5ff';
+        this.ctx.font = this.fontSize + 'px monospace';
+
+        for (let i = 0; i < this.drops.length; i++) {
+            const text = this.characters[Math.floor(Math.random() * this.characters.length)];
+            const x = i * this.fontSize;
+            const y = this.drops[i] * this.fontSize;
+
+            this.ctx.fillText(text, x, y);
+
+            if (y > this.canvas.height && Math.random() > 0.975) {
+                this.drops[i] = 0;
+            }
+
+            this.drops[i]++;
+        }
+
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// ============================================
+// 3D SPACE BACKGROUND (Three.js)
+// ============================================
+class SpaceBackground {
+    constructor() {
+        this.canvas = document.getElementById('space-canvas');
+        if (!this.canvas || typeof THREE === 'undefined') return;
+
+        this.scene = null;
+        this.camera = null;
+        this.renderer = null;
+        this.stars = null;
+        this.nebulae = [];
+        this.wormhole = null;
+        this.mouseX = 0;
+        this.mouseY = 0;
+
+        this.init();
+    }
+
+    init() {
+        this.setupScene();
+        this.createStarField();
+        this.createNebulae();
+        this.createWormhole();
+        this.setupEventListeners();
+        this.animate();
+    }
+
+    setupScene() {
+        this.scene = new THREE.Scene();
+
+        this.camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            2000
+        );
+        this.camera.position.z = 5;
+
+        this.renderer = new THREE.WebGLRenderer({
+            canvas: this.canvas,
+            antialias: true,
+            alpha: true
+        });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.setClearColor(0x000000, 0);
+    }
+
+    createStarField() {
+        const geometry = new THREE.BufferGeometry();
+        const starCount = 3000;
+        const positions = new Float32Array(starCount * 3);
+        const colors = new Float32Array(starCount * 3);
+        const sizes = new Float32Array(starCount);
+
+        for (let i = 0; i < starCount; i++) {
+            const i3 = i * 3;
+
+            // Spherical distribution
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r = 300 + Math.random() * 700;
+
+            positions[i3] = r * Math.sin(phi) * Math.cos(theta);
+            positions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+            positions[i3 + 2] = r * Math.cos(phi);
+
+            // Star colors (blue, cyan, white, yellow)
+            const colorChoice = Math.random();
+            if (colorChoice < 0.3) {
+                colors[i3] = 0;
+                colors[i3 + 1] = 0.96;
+                colors[i3 + 2] = 1;
+            } else if (colorChoice < 0.6) {
+                colors[i3] = 1;
+                colors[i3 + 1] = 1;
+                colors[i3 + 2] = 1;
+            } else if (colorChoice < 0.8) {
+                colors[i3] = 0.75;
+                colors[i3 + 1] = 0;
+                colors[i3 + 2] = 1;
+            } else {
+                colors[i3] = 1;
+                colors[i3 + 1] = 0.8;
+                colors[i3 + 2] = 0.4;
+            }
+
+            sizes[i] = Math.random() * 2 + 0.5;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+        const material = new THREE.PointsMaterial({
+            size: 1.5,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.9,
+            sizeAttenuation: true
+        });
+
+        this.stars = new THREE.Points(geometry, material);
+        this.scene.add(this.stars);
+    }
+
+    createNebulae() {
+        const nebulaConfigs = [
+            { x: -200, y: 100, z: -400, color: 0x00f5ff, size: 150 },
+            { x: 250, y: -80, z: -350, color: 0xbf00ff, size: 120 },
+            { x: -100, y: -150, z: -500, color: 0xff00a8, size: 100 }
+        ];
+
+        nebulaConfigs.forEach(config => {
+            const geometry = new THREE.PlaneGeometry(config.size, config.size);
+            const material = new THREE.MeshBasicMaterial({
+                color: config.color,
+                transparent: true,
+                opacity: 0.08,
+                side: THREE.DoubleSide
+            });
+
+            for (let i = 0; i < 5; i++) {
+                const plane = new THREE.Mesh(geometry, material.clone());
+                plane.material.opacity = 0.08 - i * 0.015;
+                plane.position.set(
+                    config.x + (Math.random() - 0.5) * 50,
+                    config.y + (Math.random() - 0.5) * 50,
+                    config.z + (Math.random() - 0.5) * 50
+                );
+                plane.rotation.set(
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI
+                );
+                plane.scale.setScalar(1 + i * 0.3);
+                this.nebulae.push(plane);
+                this.scene.add(plane);
+            }
+        });
+    }
+
+    createWormhole() {
+        const geometry = new THREE.TorusGeometry(80, 30, 16, 100);
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x00f5ff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.1
+        });
+
+        this.wormhole = new THREE.Mesh(geometry, material);
+        this.wormhole.position.z = -500;
+        this.scene.add(this.wormhole);
+
+        // Inner rings
+        for (let i = 1; i <= 3; i++) {
+            const innerGeometry = new THREE.TorusGeometry(80 - i * 15, 10, 8, 50);
+            const innerMaterial = new THREE.MeshBasicMaterial({
+                color: i === 1 ? 0xbf00ff : (i === 2 ? 0xff00a8 : 0x00ff88),
+                wireframe: true,
+                transparent: true,
+                opacity: 0.05 + i * 0.02
+            });
+            const innerRing = new THREE.Mesh(innerGeometry, innerMaterial);
+            innerRing.position.z = -500 + i * 30;
+            innerRing.userData = { speed: 0.005 * i };
+            this.scene.add(innerRing);
+            this.nebulae.push(innerRing);
+        }
+    }
+
+    setupEventListeners() {
+        document.addEventListener('mousemove', (e) => {
+            this.mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            this.mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        window.addEventListener('resize', () => this.onResize());
+    }
+
+    onResize() {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    animate() {
+        requestAnimationFrame(() => this.animate());
+
+        const time = Date.now() * 0.001;
+
+        // Rotate stars
+        if (this.stars) {
+            this.stars.rotation.x += 0.0002;
+            this.stars.rotation.y += 0.0003;
+        }
+
+        // Animate nebulae
+        this.nebulae.forEach((nebula, i) => {
+            if (nebula.userData && nebula.userData.speed) {
+                nebula.rotation.z += nebula.userData.speed;
+            } else {
+                nebula.rotation.z += 0.001 * (i % 2 === 0 ? 1 : -1);
+            }
+        });
+
+        // Animate wormhole
+        if (this.wormhole) {
+            this.wormhole.rotation.x += 0.003;
+            this.wormhole.rotation.y += 0.002;
+        }
+
+        // Camera movement based on mouse
+        this.camera.position.x += (this.mouseX * 2 - this.camera.position.x) * 0.02;
+        this.camera.position.y += (this.mouseY * 2 - this.camera.position.y) * 0.02;
+        this.camera.lookAt(0, 0, -300);
+
+        this.renderer.render(this.scene, this.camera);
+    }
+}
+
+// ============================================
+// BOOT SEQUENCE
+// ============================================
+class BootSequence {
+    constructor() {
+        this.container = document.getElementById('boot-sequence');
+        if (!this.container) return;
+
+        this.lines = document.querySelectorAll('.boot-line');
+        this.progressFill = document.querySelector('.progress-fill');
+        this.progressText = document.querySelector('.progress-text');
+        this.currentStep = 0;
+
+        this.init();
+    }
+
+    init() {
+        this.animateBootSequence();
+    }
+
+    animateBootSequence() {
+        const totalSteps = this.lines.length;
+        const stepDuration = 500;
+
+        const animateStep = () => {
+            if (this.currentStep < totalSteps) {
+                const line = this.lines[this.currentStep];
+                line.classList.add('active');
+
+                const progress = ((this.currentStep + 1) / totalSteps) * 100;
+                this.progressFill.style.width = progress + '%';
+                this.progressText.textContent = Math.round(progress) + '%';
+
+                this.currentStep++;
+                setTimeout(animateStep, stepDuration);
+            } else {
+                setTimeout(() => this.hideBootSequence(), 800);
+            }
+        };
+
+        setTimeout(animateStep, 500);
+    }
+
+    hideBootSequence() {
+        this.container.classList.add('hidden');
+        setTimeout(() => {
+            this.container.style.display = 'none';
+        }, 1000);
+    }
+}
+
+// ============================================
+// NAVIGATION SYSTEM
+// ============================================
 class Navigation {
-  constructor () {
-    this.currentPage = 'home'
-    this.pages = document.querySelectorAll('.page')
-    this.navLinks = document.querySelectorAll('.nav-link')
-    this.projectCards = document.querySelectorAll('.project-card')
-    this.publicationCards = document.querySelectorAll('.publication-card')
+    constructor() {
+        this.currentSection = 'home';
+        this.navLinks = document.querySelectorAll('.nav-link');
+        this.mobileLinks = document.querySelectorAll('.mobile-link');
+        this.sections = document.querySelectorAll('.section');
+        this.navToggle = document.querySelector('.nav-toggle');
+        this.mobileMenu = document.querySelector('.mobile-menu');
+        this.domainCards = document.querySelectorAll('.domain-card');
+        this.ctaLinks = document.querySelectorAll('.cta-primary, .cta-secondary');
 
-    this.init()
-  }
-
-  init () {
-    // Navigation link clicks
-    this.navLinks.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault()
-        const pageId = link.getAttribute('href').substring(1)
-        this.navigateToPage(pageId)
-      })
-    })
-
-    // Project card clicks
-    this.projectCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const projectId = card.getAttribute('data-project')
-        this.showProjectModal(projectId)
-      })
-    })
-
-    // Publication card clicks
-    this.publicationCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const projectId = card.getAttribute('data-project')
-        this.showProjectModal(projectId)
-      })
-    })
-
-    // Mobile navigation toggle
-    const navToggle = document.querySelector('.nav-toggle')
-    const navMenu = document.querySelector('.nav-menu')
-
-    if (navToggle) {
-      navToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('active')
-      })
+        this.init();
     }
 
-    // Close mobile menu on link click
-    this.navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('active')
-      })
-    })
+    init() {
+        // Desktop nav links
+        this.navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.getAttribute('href').substring(1);
+                this.navigateTo(section);
+            });
+        });
 
-    // Domain card clicks (new)
-    const domainCards = document.querySelectorAll('.domain-card')
-    console.log('Found domain cards:', domainCards.length)
-    domainCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const domain = card.getAttribute('data-domain')
-        console.log('Domain card clicked:', domain)
-        this.navigateToPage(domain)
-      })
-    })
-  }
+        // Mobile nav links
+        this.mobileLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.getAttribute('href').substring(1);
+                this.navigateTo(section);
+                this.closeMobileMenu();
+            });
+        });
 
-  navigateToPage (pageId) {
-    if (pageId === this.currentPage) return
+        // Mobile toggle
+        if (this.navToggle) {
+            this.navToggle.addEventListener('click', () => this.toggleMobileMenu());
+        }
 
-    // Hide current page
-    const currentPageEl = document.getElementById(this.currentPage)
-    if (currentPageEl) {
-      currentPageEl.classList.remove('active')
+        // Domain cards
+        this.domainCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const domain = card.getAttribute('data-domain');
+                this.navigateTo(domain);
+            });
+        });
+
+        // CTA links
+        this.ctaLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    this.navigateTo(href.substring(1));
+                }
+            });
+        });
     }
 
-    // Show new page
-    setTimeout(() => {
-      const newPageEl = document.getElementById(pageId)
-      if (newPageEl) {
-        newPageEl.classList.add('active')
-        this.currentPage = pageId
+    navigateTo(sectionId) {
+        if (sectionId === this.currentSection) return;
 
-        // Update active nav link
-        this.updateActiveNavLink(pageId)
+        // Hide current section
+        this.sections.forEach(section => {
+            section.classList.remove('active');
+        });
 
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }
-    }, 150)
-  }
-
-  updateActiveNavLink (pageId) {
-    this.navLinks.forEach(link => {
-      link.classList.remove('active')
-      if (link.getAttribute('href') === `#${pageId}`) {
-        link.classList.add('active')
-      }
-    })
-  }
-
-  showProjectModal (projectId) {
-    const modal = document.getElementById('project-modal')
-    const modalTitle = modal.querySelector('.modal-title')
-    const modalBody = modal.querySelector('.modal-body')
-
-    const projectData = this.getProjectData(projectId)
-
-    modalTitle.textContent = projectData.title
-    modalBody.innerHTML = projectData.content
-
-    modal.style.display = 'flex'
-
-    // Close modal functionality
-    const closeBtn = modal.querySelector('.modal-close')
-    closeBtn.onclick = () => {
-      modal.style.display = 'none'
+        // Show new section
+        setTimeout(() => {
+            const newSection = document.getElementById(sectionId);
+            if (newSection) {
+                newSection.classList.add('active');
+                this.currentSection = sectionId;
+                this.updateActiveLinks(sectionId);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }, 150);
     }
 
-    // Close on outside click
-    modal.onclick = e => {
-      if (e.target === modal) {
-        modal.style.display = 'none'
-      }
+    updateActiveLinks(sectionId) {
+        // Update desktop links
+        this.navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + sectionId) {
+                link.classList.add('active');
+            }
+        });
+
+        // Update mobile links
+        this.mobileLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + sectionId) {
+                link.classList.add('active');
+            }
+        });
     }
 
-    // Close on escape key
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && modal.style.display === 'flex') {
-        modal.style.display = 'none'
-      }
-    })
-  }
+    toggleMobileMenu() {
+        this.mobileMenu.classList.toggle('active');
+    }
 
-  getProjectData (projectId) {
-    const projects = {
-      lfortran: {
-        title: 'LFortran Compiler Development',
-        content: `
-                    <h4>🚀 Compiler Development Engineer | Sept 2024 - Present</h4>
-                    <p><strong>Organization:</strong> LFortran Project</p>
-                    <p><strong>Tech Stack:</strong> C++, Fortran, OpenMP, Python, MPI</p>
-                    
-                    <h5>Project Overview</h5>
-                    <p>Leading compiler optimization efforts for the LFortran project, focusing on MPI-based scientific computing applications and performance improvements.</p>
-                    
-                    <h5>Key Achievements</h5>
-                    <ul>
-                        <li><strong>0.95x compilation speedup</strong> and <strong>0.75x runtime performance</strong> improvement compared to GFortran for POT3D codebase</li>
-                        <li>Built pure Fortran-based MPI wrappers using ISO_C_BINDING, eliminating C-wrapper overhead</li>
-                        <li>Implemented <strong>30+ MPI subroutine implementations</strong> for enhanced parallel computing support</li>
-                        <li>Resolved <strong>50+ compiler issues</strong> across domains including OpenMP, OOPs, Structs, and Strings</li>
-                        <li>Contributed to compiler architecture improvements and code generation optimization</li>
-                    </ul>
-                    
-                    <h5>Technical Contributions</h5>
-                    <ul>
-                        <li>Advanced compiler optimization techniques for scientific computing workloads</li>
-                        <li>MPI integration and parallel computing support enhancement</li>
-                        <li>Performance profiling and bottleneck identification</li>
-                        <li>Cross-platform compatibility improvements</li>
-                    </ul>
-                    
-                    <h5>Links & Resources</h5>
-                    <p>🔗 <a href="https://github.com/lfortran/lfortran/issues?q=commenter%3Aadit4443ya%20sort%3Aupdated-desc%20OR%20author%3Aadit4443ya" target="_blank">GitHub Contributions</a></p>
-                    <p>📝 <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank">POT3D Compilation Blog</a></p>
-                    <p>🧬 <a href="https://github.com/lfortran/fortran_mpi/" target="_blank">Fortran MPI Implementation</a></p>
-                `
-      },
-      riscv: {
-        title: 'RISC-V Llama Inference Optimization',
-        content: `
-                    <h4>🔥 Parallel Computing Research | May 2025 - Aug 2025</h4>
-                    <p><strong>Focus:</strong> Edge Computing & Parallel LLM Inference</p>
-                    <p><strong>Tech Stack:</strong> C++, OpenMP, MPI, RISC-V Assembly, Edge Computing</p>
-                    
-                    <h5>Research Objective</h5>
-                    <p>Evaluated and optimized parallel inference strategies for transformer models (15M-1B parameters) on resource-constrained RISC-V architecture, focusing on edge computing scenarios.</p>
-                    
-                    <h5>Key Results</h5>
-                    <ul>
-                        <li>Achieved <strong>3.42x speedup</strong> using intra-layer MPI parallelization techniques</li>
-                        <li>Outperformed traditional OpenMP implementations by <strong>19.6%</strong> for 110M parameter models</li>
-                        <li>Optimized memory usage and computational efficiency for edge devices</li>
-                        <li>Developed novel parallelization strategies for transformer attention mechanisms</li>
-                    </ul>
-                    
-                    <h5>Technical Innovations</h5>
-                    <ul>
-                        <li>Intra-layer parallelization for transformer models</li>
-                        <li>Memory-efficient attention computation on RISC-V</li>
-                        <li>Load balancing algorithms for heterogeneous edge computing</li>
-                        <li>Performance profiling and optimization for resource-constrained environments</li>
-                    </ul>
-                    
-                    <h5>Impact & Applications</h5>
-                    <ul>
-                        <li>Enables efficient LLM inference on edge devices</li>
-                        <li>Reduces computational requirements for AI applications</li>
-                        <li>Contributes to sustainable AI computing practices</li>
-                    </ul>
-                    
-                    <h5>Links & Resources</h5>
-                    <p>💻 <a href="https://github.com/adit4443ya/llama2.c" target="_blank">Source Code Repository</a></p>
-                    <p>📊 <a href="https://llama-parallel-inference-presentati.vercel.app/" target="_blank">Research Presentation</a></p>
-                `
-      },
-      gsoc: {
-        title: 'Google Summer of Code 2025 - OpenMP 6.0',
-        content: `
-                    <h4>🌟 Open Source Contributor | May 2025 - Present</h4>
+    closeMobileMenu() {
+        this.mobileMenu.classList.remove('active');
+    }
+}
+
+// ============================================
+// PROJECT MODAL SYSTEM
+// ============================================
+class ProjectModal {
+    constructor() {
+        this.modal = document.getElementById('project-modal');
+        if (!this.modal) return;
+
+        this.modalTitle = this.modal.querySelector('.modal-title');
+        this.modalBody = this.modal.querySelector('.modal-body');
+        this.modalClose = this.modal.querySelector('.modal-close');
+        this.modalBackdrop = this.modal.querySelector('.modal-backdrop');
+
+        this.projectCards = document.querySelectorAll('.project-card, .project-featured, .publication-card, .ongoing-card');
+
+        this.projectData = this.getProjectData();
+
+        this.init();
+    }
+
+    init() {
+        this.projectCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't trigger if clicking on external link
+                if (e.target.closest('.pub-link')) return;
+
+                const projectId = card.getAttribute('data-project');
+                if (projectId && this.projectData[projectId]) {
+                    this.openModal(projectId);
+                }
+            });
+        });
+
+        this.modalClose.addEventListener('click', () => this.closeModal());
+        this.modalBackdrop.addEventListener('click', () => this.closeModal());
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+                this.closeModal();
+            }
+        });
+    }
+
+    openModal(projectId) {
+        const project = this.projectData[projectId];
+        this.modalTitle.textContent = project.title;
+        this.modalBody.innerHTML = project.content;
+        this.modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeModal() {
+        this.modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    getProjectData() {
+        return {
+            gsoc: {
+                title: 'Google Summer of Code 2025 - OpenMP 6.0',
+                content: `
+                    <h4>Open Source Contributor | May 2025 - Present</h4>
                     <p><strong>Organization:</strong> LFortran (under NumFOCUS)</p>
                     <p><strong>Tech Stack:</strong> C++, Fortran, OpenMP 6.0, CUDA, GPU Computing</p>
 
@@ -358,1243 +574,295 @@ class Navigation {
                         <li>Built lightweight GPU emulator as runtime library for testing and development</li>
                     </ul>
 
-                    <h5>Technical Achievements</h5>
-                    <ul>
-                        <li>Scalable OpenMP 6.0 features support in compiler infrastructure</li>
-                        <li>GPU-targeted Fortran code generation and optimization</li>
-                        <li>Host-device dual-mode code generation capabilities</li>
-                        <li>Integration of OpenMP-CUDA code generation pipeline</li>
-                    </ul>
-
-                    <h5>Impact on Open Source Community</h5>
-                    <ul>
-                        <li>Advancing Fortran compiler technology for modern HPC</li>
-                        <li>Enabling GPU computing for scientific applications</li>
-                        <li>Contributing to open-source parallel computing ecosystem</li>
-                    </ul>
-
                     <h5>Links & Resources</h5>
-                    <p>📝 <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">GSoC Development Blogs</a></p>
-                    <p>📋 <a href="https://gist.github.com/adit4443ya/9364dfff705d880cd64a77ea98f8cb9c" target="_blank">Final Project Evaluation</a></p>
-                    <p>🔗 <a href="https://github.com/lfortran/lfortran" target="_blank">LFortran Repository</a></p>
+                    <p><a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">GSoC Development Blogs</a></p>
+                    <p><a href="https://gist.github.com/adit4443ya/9364dfff705d880cd64a77ea98f8cb9c" target="_blank">Final Project Evaluation</a></p>
                 `
-      },
-      'distributed-ml': {
-        title: 'Distributed ML Framework for Fraud Detection',
-        content: `
-                    <h4>🧠 ML Systems Engineer | Feb 2025 - Apr 2025</h4>
-                    <p><strong>Focus:</strong> Privacy-Preserving Federated Learning</p>
-                    <p><strong>Tech Stack:</strong> Python, Azure ML, TensorFlow, LSTM, Federated Learning</p>
-
-                    <h5>Project Overview</h5>
-                    <p>Architected a comprehensive privacy-preserving federated learning system on Microsoft Azure for credit card fraud detection, incorporating differential privacy guarantees and distributed training capabilities.</p>
-
-                    <h5>Key Achievements</h5>
-                    <ul>
-                        <li>Achieved <strong>92% accuracy</strong> in fraud detection while maintaining privacy constraints</li>
-                        <li>Reduced training time by <strong>73%</strong> through optimized distributed learning algorithms</li>
-                        <li>Implemented differential privacy with <strong>ε ≈ 1.5</strong> privacy budget</li>
-                        <li>Designed scalable federated learning architecture supporting multiple clients</li>
-                        <li>Integrated LSTM models for sequential transaction pattern analysis</li>
-                    </ul>
-
-                    <h5>Technical Innovations</h5>
-                    <ul>
-                        <li>Privacy-preserving gradient aggregation mechanisms</li>
-                        <li>Adaptive learning rate scheduling for federated environments</li>
-                        <li>Secure multi-party computation protocols</li>
-                        <li>Real-time fraud detection pipeline with low latency</li>
-                    </ul>
-
-                    <h5>Links & Resources</h5>
-                    <p>💻 <a href="https://github.com/adit4443ya/Distributed-Learning-on-Cloud" target="_blank">Source Code Repository</a></p>
-                `
-      },
-      musify: {
-        title: 'Musify Music Recommendation System',
-        content: `
-                    <h4>🎵 ML Engineer | Ongoing Project</h4>
-                    <p><strong>Focus:</strong> AI-Powered Music Classification & Recommendation</p>
-                    <p><strong>Tech Stack:</strong> Python, Machine Learning, Audio Processing, Feature Extraction</p>
-
-                    <h5>Project Overview</h5>
-                    <p>Comprehensive music genre classifier and recommendation system that utilizes machine learning to analyze audio features and provide personalized song recommendations based on user preferences and listening patterns.</p>
-
-                    <h5>Key Features</h5>
-                    <ul>
-                        <li>Developed a genre classification system achieving 92.42% accuracy using LightGBM on GTZAN audio files, leveraging
-Librosa for feature extraction.</li>
-                        <li>Employed cosine similarity, manhattan, and euclidean distances in the Recommender Model, and utilized t-SNE, PCA,
-and LDA for clustering and dimensionality reduction.</li>
-                    </ul>
-
-
-                    <h5>Links & Resources</h5>
-                    <p>💻 <a href="https://github.com/adit4443ya/Musify" target="_blank">Source Code Repository</a></p>
-                `
-      },
-      workhub: {
-        title: 'WorkHubPro Enterprise Task Management Platform',
-        content: `
-                    <h4>⚙️ Full-Stack Developer | Feb 2024 - Aug 2024</h4>
-                    <p><strong>Focus:</strong> Enterprise-Grade Project Management</p>
-                    <p><strong>Tech Stack:</strong> Kotlin, Jetpack Compose, Go, PostgreSQL, WebSockets</p>
-
-                    <h5>Project Overview</h5>
-                    <p>Developed a comprehensive enterprise-grade task management platform with real-time collaboration features, advanced PostgreSQL optimizations, and service-oriented architecture designed for large-scale organizational use.</p>
-
-                    <h5>Key Achievements</h5>
-                    <ul>
-                        <li>Delivered <strong>140+ commits</strong> across frontend and backend development</li>
-                        <li>Implemented <strong>real-time WebSocket updates</strong> for instant collaboration</li>
-                        <li>Designed <strong>role-based access control (RBAC)</strong> security model</li>
-                        <li>Achieved <strong>sub-second response times</strong> through database optimization</li>
-                        <li>Built scalable microservices architecture supporting concurrent users</li>
-                    </ul>
-
-                    <h5>Technical Architecture</h5>
-                    <ul>
-                        <li><strong>Frontend:</strong> Modern Android app using Kotlin and Jetpack Compose</li>
-                        <li><strong>Backend:</strong> High-performance Go microservices with RESTful APIs</li>
-                        <li><strong>Database:</strong> PostgreSQL with advanced indexing and query optimization</li>
-                        <li><strong>Real-time:</strong> WebSocket implementation for live updates</li>
-                        <li><strong>Security:</strong> JWT authentication with role-based permissions</li>
-                    </ul>
-
-                    <h5>Links & Resources</h5>
-                    <p>💻 <a href="https://github.com/adit4443ya/WorkHub-Pro" target="_blank">Source Code Repository</a></p>
-                `
-      },
-      crawler: {
-        title: 'Multi-Threaded Web Crawler',
-        content: `
-                    <h4>🕷️ Systems Programmer | Completed Project</h4>
-                    <p><strong>Focus:</strong> High-Performance Web Scraping</p>
-                    <p><strong>Tech Stack:</strong> C++, Curl, Gumbo Parser, Multi-threading, JSON</p>
-
-                    <h5>Project Overview</h5>
-                    <p>High-performance web crawler built in C++ with multi-threaded architecture for parallel website crawling. Features configurable crawl depth, HTML parsing capabilities, and efficient metadata extraction with JSON output.</p>
-
-                    <h5>Key Features</h5>
-                    <ul>
-                        <li><strong>Multi-threaded architecture</strong> for parallel crawling operations</li>
-                        <li><strong>Configurable crawl depth</strong> with intelligent link discovery</li>
-                        <li><strong>HTML parsing</strong> using Google's Gumbo library</li>
-                        <li><strong>JSON metadata extraction</strong> for structured data output</li>
-                        <li><strong>Efficient memory management</strong> for large-scale crawling</li>
-                    </ul>
-
-                    <h5>Technical Implementation</h5>
-                    <ul>
-                        <li>Thread pool management for optimal resource utilization</li>
-                        <li>HTTP request handling with libcurl for robust web communication</li>
-                        <li>DOM parsing and content extraction using Gumbo HTML parser</li>
-                        <li>Concurrent data structures for thread-safe operations</li>
-                        <li>URL normalization and duplicate detection algorithms</li>
-                    </ul>
-
-                    <h5>Links & Resources</h5>
-                    <p>💻 <a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank">Source Code Repository</a></p>
-                `
-      },
-      paper4: {
-        title: 'Fast MIS on Dynamic Graphs',
-        content: `
-                    <h4>📄 EuroMicro PDP 2025 | Conference Full Length Paper</h4>
-                    <p><strong>Authors:</strong> P. Nijhara, <strong>Aditya Trivedi</strong>, D.S. Banerjee</p>
-                    <p><strong>Venue:</strong> 33rd Euromicro International Conference on Parallel, Distributed and Network-based Processing</p>
-
-                    <h5>Abstract</h5>
-                    <p>Finding the Maximal Independent Set (MIS) in a graph is a well-known problem with applications in resource allocation, load balancing, and routing optimization. This task is particularly challenging for large graphs as it requires multiple iterations over the entire set of vertices. Recently, there has been significant interest in developing techniques to maintain the MIS dynamically in evolving graphs rather than re-computing from scratch. In this paper, we propose new data structures and techniques for computing MIS in parallel on dynamic graphs. We specifically propose techniques to handle insertions and deletions in a batched setting.</p>
-
-                    <h5>Key Contributions</h5>
-                    <ul>
-                        <li>Novel parallel data structures for efficient MIS maintenance on dynamic graphs</li>
-                        <li>Specialized algorithms for batched edge insertions and deletions</li>
-                        <li>Innovative conflict resolution strategies for parallel execution</li>
-                        <li>Comprehensive experimental evaluation on large-scale graphs</li>
-                    </ul>
-
-                    <h5>Experimental Results</h5>
-                    <ul>
-                        <li><strong>15.64x speedup</strong> for insertion operations over recomputation baselines</li>
-                        <li><strong>10.57x speedup</strong> for deletion operations</li>
-                        <li><strong>~0.18% cardinality variance</strong> compared to state-of-the-art methods</li>
-                        <li>Evaluated on graphs ranging from <strong>50 million to 1.2 billion edges</strong></li>
-                    </ul>
-
-                    <h5>Applications</h5>
-                    <ul>
-                        <li>Network analysis and graph-based machine learning</li>
-                        <li>Distributed systems resource management</li>
-                        <li>Real-time graph analytics on evolving networks</li>
-                    </ul>
-
-                    <h5>Links & Resources</h5>
-                    <p>🔗 <a href="https://ieeexplore.ieee.org/document/10974793/" target="_blank">IEEE Xplore Paper</a></p>
-                `
-      },
-      paper5: {
-        title: 'Fast MIS on Incremental Graphs',
-        content: `
-                    <h4>📄 IEEE HiPC 2024 | Conference SRS Paper</h4>
-                    <p><strong>Authors:</strong> <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee</p>
-                    <p><strong>Venue:</strong> IEEE International Conference on High Performance Computing, Data, and Analytics</p>
-
-                    <h5>Abstract</h5>
-                    <p>Maintaining the Maximal Independent Set (MIS) in dynamic graphs is crucial for applications like resource allocation, load balancing, and network optimization. Traditional approaches require complete re-computation, making them inefficient for large and evolving graphs. Our proposed methods utilize Tuple Valued Bitmap (TVB) and its extension with levels, TVBL, to enhance parallelism and minimize search space.</p>
-
-                    <h5>Key Innovations</h5>
-                    <ul>
-                        <li><strong>Tuple Valued Bitmap (TVB)</strong>: Novel data structure encoding tuple-level information in bitmap representations</li>
-                        <li><strong>TVBL (TVB with Levels)</strong>: Extended TVB for hierarchical graph representation</li>
-                        <li>Efficient identification of affected regions during edge insertions</li>
-                        <li>Fine-grained concurrent updates with reduced contention</li>
-                    </ul>
-
-                    <h5>Performance Achievements</h5>
-                    <ul>
-                        <li><strong>15.64x speedup</strong> for insertion operations over static recomputation</li>
-                        <li>Successfully processed graphs with over <strong>1.2 billion edges</strong></li>
-                        <li><strong>Minimal cardinality impact</strong> while maintaining correctness</li>
-                        <li>Maximized parallelism through reduced search space</li>
-                    </ul>
-
-                    <h5>Applications & Impact</h5>
-                    <ul>
-                        <li>Real-time applications requiring frequent graph modifications</li>
-                        <li>Social network analysis and community detection</li>
-                        <li>Dynamic routing in communication networks</li>
-                        <li>Paves the way for optimization in fully dynamic and streaming settings</li>
-                    </ul>
-
-                    <h5>Links & Resources</h5>
-                    <p>🔗 <a href="https://ieeexplore.ieee.org/document/10898364/" target="_blank">IEEE Xplore Paper</a></p>
-                `
-      },
-      paper1: {
-        title: 'ParMIS: Fast and Unified MIS Maintenance Framework',
-        content: `
-                    <h4>📄 Elsevier FGCS 2025 | Journal Paper (Under Review)</h4>
-                    <p><strong>Authors:</strong> P. Nijhara, <strong>Aditya Trivedi</strong>, A. H. Singh, Neha Sharma, Avaneesh Pandey, D.S. Banerjee</p>
-                    <p><strong>Venue:</strong> Future Generation Computer Systems (Elsevier)</p>
-
-                    <h5>Abstract</h5>
-                    <p>Finding the Maximal Independent Set (MIS) in a graph is a fundamental problem with applications in resource allocation, scheduling, and network optimization. Maintaining MIS on large evolving graphs is challenging, as recomputation from scratch is infeasible and existing dynamic methods are often restricted to incremental updates. In this work, we present ParMIS, a fast and unified framework for MIS maintenance on large-scale dynamic graphs.</p>
-
-                    <h5>Framework Innovations</h5>
-                    <ul>
-                        <li><strong>Unified Framework</strong>: First framework supporting incremental, batch, and fully dynamic MIS updates</li>
-                        <li><strong>GPU Streaming Pipeline</strong>: Novel streaming architecture for billion-scale graph processing</li>
-                        <li><strong>Conflict Resolution Strategies</strong>: Sophisticated mechanisms to mitigate race conditions</li>
-                        <li><strong>Work Efficiency Optimization</strong>: Improved computational efficiency in parallel execution</li>
-                    </ul>
-
-                    <h5>Performance Metrics</h5>
-                    <ul>
-                        <li><strong>Incremental MIS Updates (IMU):</strong> Up to 2.70× speedup vs. state-of-the-art</li>
-                        <li><strong>Batch MIS Updates (BMU):</strong> Up to 47.27× speedup over static approaches</li>
-                        <li><strong>Fully Dynamic MIS Updates (FDMU):</strong> 3.70× on CPUs, 4.63× on GPUs</li>
-                        <li><strong>Accuracy:</strong> ~0.18% cardinality variance with guaranteed correctness</li>
-                    </ul>
-
-                    <h5>Technical Contributions</h5>
-                    <ul>
-                        <li>Novel fully dynamic batch parallel algorithm supporting insertions and deletions</li>
-                        <li>GPU-optimized streaming pipeline for billion-scale graphs</li>
-                        <li>Conflict resolution preserving correctness in parallel execution</li>
-                        <li>Seamless handling of mixed insertion/deletion workloads</li>
-                    </ul>
-
-                    <h5>Applications</h5>
-                    <ul>
-                        <li>Large-scale social network analysis</li>
-                        <li>Knowledge graph maintenance and querying</li>
-                        <li>Streaming graph analytics platforms</li>
-                        <li>Dynamic network optimization systems</li>
-                    </ul>
-                `
-      },
-      paper2: {
-        title: 'Fast and Accurate MIS on Dynamic Graphs',
-        content: `
-                    <h4>📄 IEEE HiPC 2025 | Conference Paper (Under Review)</h4>
-                    <p><strong>Authors:</strong> A. H. Singh, <strong>Aditya Trivedi</strong>, Neha Sharma, Avaneesh Pandey, D.S. Banerjee</p>
-                    <p><strong>Venue:</strong> IEEE International Conference on High Performance Computing, Data, and Analytics</p>
-
-                    <h5>Abstract</h5>
-                    <p>A Maximal Independent Set (MIS) is a challenging problem due to its high search space. In dynamic graphs where edge/vertex updates are frequent, maintaining MIS becomes more difficult. Recomputing MIS from scratch is infeasible when graphs undergo frequent structural updates. Parallel dynamic algorithms, although they maintain MIS quickly, are prone to producing inaccurate results because of race conditions. To overcome these challenges, we propose a BFS-based MIS maintenance algorithm that works by grouping possible race-conflicting updates and executing them in order.</p>
-
-                    <h5>Key Innovations</h5>
-                    <ul>
-                        <li><strong>BFS-based Conflict Resolution</strong>: Novel approach to identify and resolve race conditions</li>
-                        <li><strong>Topologically-Ordered Execution</strong>: Intelligent grouping of race-conflicting updates</li>
-                        <li><strong>Guaranteed Accuracy</strong>: Maintains exact MIS without approximations</li>
-                        <li><strong>Dependency Analysis</strong>: Identifies dependencies between concurrent updates</li>
-                    </ul>
-
-                    <h5>Performance Results</h5>
-                    <ul>
-                        <li><strong>32.4× speedup</strong> compared to state-of-the-art static graph algorithms</li>
-                        <li><strong>100% accuracy</strong> - produces exact MIS results without errors</li>
-                        <li>Efficient handling of race-conflicting update scenarios</li>
-                        <li>Maintains correctness invariants in parallel execution</li>
-                    </ul>
-
-                    <h5>Algorithmic Contributions</h5>
-                    <ul>
-                        <li>BFS-based mechanism to prevent inconsistencies in parallel methods</li>
-                        <li>Scheduling system for execution order of dependent updates</li>
-                        <li>Correctness-preserving parallel dynamic graph algorithm</li>
-                    </ul>
-
-                    <h5>Applications</h5>
-                    <ul>
-                        <li>Resource allocation systems requiring exact solutions</li>
-                        <li>Vertex coloring in dynamic networks</li>
-                        <li>Wireless network optimization</li>
-                        <li>Scheduling problems in dynamic environments</li>
-                    </ul>
-                `
-      },
-      'ongoing-research': {
-        title: 'Semi-External Parallel Maximal Cliques Maintenance',
-        content: `
-                    <h4>🔬 Ongoing Research Project</h4>
-                    <p><strong>Authors:</strong> <strong>Aditya Trivedi</strong>, Dishit Sharma, Aditya Mundhara, D.S. Banerjee</p>
-                    <p><strong>Research Advisor:</strong> Dr. Dip Sankar Banerjee, IIT Jodhpur</p>
-
-                    <h5>Abstract</h5>
-                    <p>Maintaining maximal cliques in billion-scale dynamic graphs presents dual challenges: computational complexity from continuous edge updates and memory constraints that prevent full graph loading onto accelerators. State-of-the-art approaches either recompute cliques periodically or assume complete in-memory representation, rendering them impractical for evolving networks exceeding GPU capacity. We propose a semi-external framework that maintains multiple maximal cliques in parallel by transferring only non-clique neighbor lists rather than full subgraphs.</p>
-
-                    <h5>Research Innovations</h5>
-                    <ul>
-                        <li><strong>Semi-External Memory Framework</strong>: Strategic graph partitioning between RAM and external storage</li>
-                        <li><strong>Selective Data Transfer</strong>: Transfer only non-clique neighbor lists (O(K·d̄) memory per clique)</li>
-                        <li><strong>Natural Independence Exploitation</strong>: Parallel maintenance with dedicated threads per clique</li>
-                        <li><strong>I/O Optimization</strong>: Intelligent prefetching and caching to overlap computation with I/O</li>
-                    </ul>
-
-                    <h5>Preliminary Results</h5>
-                    <ul>
-                        <li><strong>150-300× memory reduction</strong> compared to full-graph in-memory methods</li>
-                        <li><strong>Near-linear speedup</strong> through scalable concurrent maintenance</li>
-                        <li><strong>Correctness guaranteed</strong> across sustained update streams</li>
-                        <li>Successfully processes billion-edge networks exceeding GPU capacity</li>
-                        <li>Smaller cliques expose greater parallelism through higher clique counts</li>
-                    </ul>
-
-                    <h5>Technical Approach</h5>
-                    <ul>
-                        <li>Memory complexity: O(K·d̄) device memory per clique (K = size, d̄ = avg degree)</li>
-                        <li>GPU parallelism for in-memory computations</li>
-                        <li>Specialized data structures minimizing I/O overhead</li>
-                        <li>Exact correctness guarantees for maximal clique enumeration</li>
-                    </ul>
-
-                    <h5>Research Areas</h5>
-                    <ul>
-                        <li>Semi-External Memory Algorithms</li>
-                        <li>GPU Computing & Parallel Processing</li>
-                        <li>Maximal Clique Enumeration</li>
-                        <li>Memory Optimization Techniques</li>
-                        <li>Dynamic Graph Algorithms</li>
-                    </ul>
-
-                    <h5>Real-World Applications</h5>
-                    <ul>
-                        <li><strong>Bioinformatics:</strong> Protein interaction network analysis</li>
-                        <li><strong>Social Networks:</strong> Community detection and analysis</li>
-                        <li><strong>Knowledge Graphs:</strong> Dense subgraph mining</li>
-                        <li><strong>Scientific Computing:</strong> Large-scale network analysis</li>
-                    </ul>
-                `
-      }
-    }
-
-    return (
-      projects[projectId] || {
-        title: 'Project Information',
-        content: '<p>Detailed project information will be available soon.</p>'
-      }
-    )
-  }
-}
-
-// This section removed - using enhanced initialization below
-
-// Enhanced Space Background with Nebulae and Constellations
-class EnhancedSpaceBackground {
-  constructor () {
-    this.scene = null
-    this.camera = null
-    this.renderer = null
-    this.stars = null
-    this.nebulae = []
-    this.constellations = []
-    this.mouseX = 0
-    this.mouseY = 0
-
-    this.init()
-  }
-
-  init () {
-    this.setupScene()
-    this.createStarField()
-    this.createNebulae()
-    this.createConstellations()
-    this.setupEventListeners()
-    this.animate()
-  }
-
-  setupScene () {
-    this.scene = new THREE.Scene()
-
-    this.camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      2000
-    )
-    this.camera.position.z = 1
-
-    this.renderer = new THREE.WebGLRenderer({
-      canvas: document.getElementById('space-canvas'),
-      antialias: true,
-      alpha: true
-    })
-    this.renderer.setSize(window.innerWidth, window.innerHeight)
-    this.renderer.setClearColor(0x000000, 0)
-  }
-
-  createStarField () {
-    const starGeometry = new THREE.BufferGeometry()
-    const starCount = 2000
-    const positions = new Float32Array(starCount * 3)
-    const colors = new Float32Array(starCount * 3)
-    const sizes = new Float32Array(starCount)
-
-    for (let i = 0; i < starCount; i++) {
-      const i3 = i * 3
-
-      positions[i3] = (Math.random() - 0.5) * 3000
-      positions[i3 + 1] = (Math.random() - 0.5) * 3000
-      positions[i3 + 2] = (Math.random() - 0.5) * 1500
-
-      const temp = Math.random()
-      if (temp < 0.6) {
-        colors[i3] = 0.9 + Math.random() * 0.1
-        colors[i3 + 1] = 0.9 + Math.random() * 0.1
-        colors[i3 + 2] = 1.0
-      } else if (temp < 0.8) {
-        colors[i3] = 1.0
-        colors[i3 + 1] = 0.8 + Math.random() * 0.2
-        colors[i3 + 2] = 0.6 + Math.random() * 0.2
-      } else {
-        colors[i3] = 1.0
-        colors[i3 + 1] = 0.3 + Math.random() * 0.3
-        colors[i3 + 2] = 0.2 + Math.random() * 0.2
-      }
-
-      sizes[i] = Math.random() * 3 + 0.5
-    }
-
-    starGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(positions, 3)
-    )
-    starGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
-    starGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
-
-    const starMaterial = new THREE.PointsMaterial({
-      size: 1,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.8,
-      sizeAttenuation: true
-    })
-
-    this.stars = new THREE.Points(starGeometry, starMaterial)
-    this.scene.add(this.stars)
-  }
-
-  createNebulae () {
-    const nebulaConfigs = [
-      { position: [-800, 400, -1000], color: 0x4a90e2, size: 300 },
-      { position: [600, -300, -800], color: 0x9d4edd, size: 250 },
-      { position: [-400, -500, -600], color: 0x06b6d4, size: 200 }
-    ]
-
-    nebulaConfigs.forEach(config => {
-      const nebula = this.createNebula(config)
-      this.nebulae.push(nebula)
-      this.scene.add(nebula)
-    })
-  }
-
-  createNebula (config) {
-    const nebulaGroup = new THREE.Group()
-
-    for (let i = 0; i < 3; i++) {
-      const geometry = new THREE.PlaneGeometry(
-        config.size + i * 50,
-        config.size + i * 30
-      )
-      const material = new THREE.MeshBasicMaterial({
-        color: config.color,
-        transparent: true,
-        opacity: 0.05 - i * 0.01,
-        side: THREE.DoubleSide
-      })
-
-      const plane = new THREE.Mesh(geometry, material)
-      plane.position.set(
-        config.position[0] + (Math.random() - 0.5) * 100,
-        config.position[1] + (Math.random() - 0.5) * 100,
-        config.position[2] + (Math.random() - 0.5) * 100
-      )
-      plane.rotation.set(
-        Math.random() * Math.PI,
-        Math.random() * Math.PI,
-        Math.random() * Math.PI
-      )
-
-      plane.userData = { rotationSpeed: 0.0005 + Math.random() * 0.001 }
-      nebulaGroup.add(plane)
-    }
-
-    return nebulaGroup
-  }
-
-  createConstellations () {
-    const constellationData = [
-      // Orion-like constellation
-      {
-        stars: [
-          [-200, 300, -500],
-          [-150, 250, -500],
-          [-100, 200, -500],
-          [-180, 180, -500],
-          [-120, 150, -500],
-          [-160, 120, -500],
-          [-140, 100, -500]
-        ],
-        connections: [
-          [0, 1],
-          [1, 2],
-          [3, 4],
-          [4, 5],
-          [5, 6],
-          [0, 3],
-          [2, 4]
-        ]
-      },
-      // Big Dipper-like constellation
-      {
-        stars: [
-          [400, -200, -700],
-          [450, -180, -700],
-          [500, -160, -700],
-          [550, -140, -700],
-          [520, -100, -700],
-          [480, -80, -700],
-          [440, -60, -700]
-        ],
-        connections: [
-          [0, 1],
-          [1, 2],
-          [2, 3],
-          [3, 4],
-          [4, 5],
-          [5, 6]
-        ]
-      }
-    ]
-
-    constellationData.forEach(constellation => {
-      const group = new THREE.Group()
-
-      // Create constellation stars
-      constellation.stars.forEach(starPos => {
-        const starGeometry = new THREE.SphereGeometry(2, 8, 8)
-        const starMaterial = new THREE.MeshBasicMaterial({
-          color: 0x4a90e2,
-          transparent: true,
-          opacity: 0.8
-        })
-        const star = new THREE.Mesh(starGeometry, starMaterial)
-        star.position.set(...starPos)
-        group.add(star)
-      })
-
-      // Create constellation lines
-      constellation.connections.forEach(connection => {
-        const points = [
-          new THREE.Vector3(...constellation.stars[connection[0]]),
-          new THREE.Vector3(...constellation.stars[connection[1]])
-        ]
-        const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
-        const lineMaterial = new THREE.LineBasicMaterial({
-          color: 0x4a90e2,
-          transparent: true,
-          opacity: 0.3
-        })
-        const line = new THREE.Line(lineGeometry, lineMaterial)
-        group.add(line)
-      })
-
-      this.constellations.push(group)
-      this.scene.add(group)
-    })
-  }
-
-  setupEventListeners () {
-    document.addEventListener('mousemove', event => {
-      this.mouseX = (event.clientX / window.innerWidth) * 2 - 1
-      this.mouseY = -(event.clientY / window.innerHeight) * 2 + 1
-    })
-
-    window.addEventListener('resize', () => this.onWindowResize())
-  }
-
-  animate () {
-    requestAnimationFrame(() => this.animate())
-
-    const time = Date.now() * 0.001
-
-    // Rotate stars
-    if (this.stars) {
-      this.stars.rotation.x += 0.0001
-      this.stars.rotation.y += 0.0002
-    }
-
-    // Animate nebulae
-    this.nebulae.forEach(nebula => {
-      nebula.children.forEach(plane => {
-        plane.rotation.z += plane.userData.rotationSpeed
-      })
-    })
-
-    // Subtle constellation movement
-    this.constellations.forEach((constellation, index) => {
-      constellation.rotation.z += 0.0001 * (index + 1)
-    })
-
-    // Camera movement
-    this.camera.position.x +=
-      (this.mouseX * 0.1 - this.camera.position.x) * 0.02
-    this.camera.position.y +=
-      (this.mouseY * 0.1 - this.camera.position.y) * 0.02
-    this.camera.lookAt(this.scene.position)
-
-    this.renderer.render(this.scene, this.camera)
-  }
-
-  onWindowResize () {
-    this.camera.aspect = window.innerWidth / window.innerHeight
-    this.camera.updateProjectionMatrix()
-    this.renderer.setSize(window.innerWidth, window.innerHeight)
-  }
-}
-
-// Loading Screen Controller
-class LoadingController {
-  constructor () {
-    this.loadingScreen = document.getElementById('loading-screen')
-    this.steps = document.querySelectorAll('.step')
-    this.progressBar = document.querySelector('.progress-bar')
-    this.progressPercentage = document.querySelector('.progress-percentage')
-    this.currentStep = 0
-
-    this.init()
-  }
-
-  init () {
-    this.simulateLoading()
-  }
-
-  simulateLoading () {
-    const stepDuration = 800
-    const totalSteps = this.steps.length
-
-    const updateStep = () => {
-      if (this.currentStep < totalSteps) {
-        // Update step states
-        this.steps.forEach((step, index) => {
-          step.classList.remove('active')
-          if (index === this.currentStep) {
-            step.classList.add('active')
-          }
-        })
-
-        // Update progress
-        const progress = ((this.currentStep + 1) / totalSteps) * 100
-        this.progressBar.style.width = progress + '%'
-        this.progressPercentage.textContent = Math.round(progress) + '%'
-
-        this.currentStep++
-        setTimeout(updateStep, stepDuration)
-      } else {
-        setTimeout(() => {
-          this.hideLoadingScreen()
-        }, 1000)
-      }
-    }
-
-    updateStep()
-  }
-
-  hideLoadingScreen () {
-    this.loadingScreen.style.opacity = '0'
-    setTimeout(() => {
-      this.loadingScreen.style.display = 'none'
-    }, 1000)
-  }
-}
-
-// Enhanced Navigation with Transitions
-class EnhancedNavigation extends Navigation {
-  constructor () {
-    super()
-    this.transitionOverlay = document.getElementById('page-transition')
-  }
-
-  navigateToPage (pageId) {
-    if (pageId === this.currentPage) return
-
-    // Show transition
-    this.showPageTransition()
-
-    setTimeout(() => {
-      // Hide current page
-      const currentPageEl = document.getElementById(this.currentPage)
-      if (currentPageEl) {
-        currentPageEl.classList.remove('active')
-      }
-
-      // Show new page
-      const newPageEl = document.getElementById(pageId)
-      if (newPageEl) {
-        newPageEl.classList.add('active')
-        this.currentPage = pageId
-        this.updateActiveNavLink(pageId)
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }
-
-      // Hide transition
-      setTimeout(() => {
-        this.hidePageTransition()
-      }, 500)
-    }, 1200)
-  }
-
-  showPageTransition () {
-    this.transitionOverlay.style.display = 'flex'
-    this.transitionOverlay.style.opacity = '1'
-  }
-
-  hidePageTransition () {
-    this.transitionOverlay.style.opacity = '0'
-    setTimeout(() => {
-      this.transitionOverlay.style.display = 'none'
-    }, 500)
-  }
-
-  getProjectData (projectId) {
-    const projects = {
-      lfortran: {
-        title: 'LFortran Compiler Development',
-        content: `
-                    <h4>🚀 Compiler Development Engineer | Sept 2024 - Present</h4>
+            },
+            lfortran: {
+                title: 'LFortran Compiler Development',
+                content: `
+                    <h4>Compiler Development Engineer | Sept 2024 - Present</h4>
                     <p><strong>Organization:</strong> LFortran Project</p>
                     <p><strong>Tech Stack:</strong> C++, Fortran, OpenMP, Python, MPI</p>
-                    
+
                     <h5>Project Overview</h5>
                     <p>Leading compiler optimization efforts for the LFortran project, focusing on MPI-based scientific computing applications and performance improvements.</p>
-                    
+
                     <h5>Key Achievements</h5>
                     <ul>
                         <li><strong>0.95x compilation speedup</strong> and <strong>0.75x runtime performance</strong> improvement compared to GFortran for POT3D codebase</li>
                         <li>Built pure Fortran-based MPI wrappers using ISO_C_BINDING, eliminating C-wrapper overhead</li>
                         <li>Implemented <strong>30+ MPI subroutine implementations</strong> for enhanced parallel computing support</li>
                         <li>Resolved <strong>50+ compiler issues</strong> across domains including OpenMP, OOPs, Structs, and Strings</li>
-                        <li>Contributed to compiler architecture improvements and code generation optimization</li>
                     </ul>
-                    
-                    <h5>Technical Contributions</h5>
-                    <ul>
-                        <li>Advanced compiler optimization techniques for scientific computing workloads</li>
-                        <li>MPI integration and parallel computing support enhancement</li>
-                        <li>Performance profiling and bottleneck identification</li>
-                        <li>Cross-platform compatibility improvements</li>
-                    </ul>
-                    
+
                     <h5>Links & Resources</h5>
-                    <p>🔗 <a href="https://github.com/lfortran/lfortran/issues?q=commenter%3Aadit4443ya%20sort%3Aupdated-desc%20OR%20author%3Aadit4443ya" target="_blank">GitHub Contributions</a></p>
-                    <p>📝 <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank">POT3D Compilation Blog</a></p>
-                    <p>🧬 <a href="https://github.com/lfortran/fortran_mpi/" target="_blank">Fortran MPI Implementation</a></p>
+                    <p><a href="https://github.com/lfortran/lfortran" target="_blank">GitHub Repository</a></p>
+                    <p><a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank">POT3D Compilation Blog</a></p>
                 `
-      },
-      'distributed-ml': {
-        title: 'Distributed ML Framework for Fraud Detection',
-        content: `
-                    <h4>🧠 ML Systems Engineer | Feb 2025 - Apr 2025</h4>
+            },
+            riscv: {
+                title: 'RISC-V Llama Inference Optimization',
+                content: `
+                    <h4>Parallel Computing Research | May 2025 - Aug 2025</h4>
+                    <p><strong>Focus:</strong> Edge Computing & Parallel LLM Inference</p>
+                    <p><strong>Tech Stack:</strong> C++, OpenMP, MPI, RISC-V Assembly, Edge Computing</p>
+
+                    <h5>Research Objective</h5>
+                    <p>Evaluated and optimized parallel inference strategies for transformer models (15M-1B parameters) on resource-constrained RISC-V architecture.</p>
+
+                    <h5>Key Results</h5>
+                    <ul>
+                        <li>Achieved <strong>3.42x speedup</strong> using intra-layer MPI parallelization</li>
+                        <li>Outperformed traditional OpenMP by <strong>19.6%</strong> for 110M parameter models</li>
+                        <li>Optimized memory usage for edge devices</li>
+                    </ul>
+
+                    <h5>Links & Resources</h5>
+                    <p><a href="https://github.com/adit4443ya/llama2.c" target="_blank">Source Code</a></p>
+                    <p><a href="https://llama-parallel-inference-presentati.vercel.app/" target="_blank">Research Presentation</a></p>
+                `
+            },
+            'distributed-ml': {
+                title: 'Distributed ML Framework for Fraud Detection',
+                content: `
+                    <h4>ML Systems Engineer | Feb 2025 - Apr 2025</h4>
                     <p><strong>Focus:</strong> Privacy-Preserving Federated Learning</p>
                     <p><strong>Tech Stack:</strong> Python, Azure ML, TensorFlow, LSTM, Federated Learning</p>
-                    
+
                     <h5>Project Overview</h5>
-                    <p>Architected a comprehensive privacy-preserving federated learning system on Microsoft Azure for credit card fraud detection, incorporating differential privacy guarantees and distributed training capabilities.</p>
-                    
+                    <p>Architected a privacy-preserving federated learning system on Microsoft Azure for credit card fraud detection with differential privacy guarantees.</p>
+
                     <h5>Key Achievements</h5>
                     <ul>
-                        <li>Achieved <strong>92% accuracy</strong> in fraud detection while maintaining privacy constraints</li>
-                        <li>Reduced training time by <strong>73%</strong> through optimized distributed learning algorithms</li>
-                        <li>Implemented differential privacy with <strong>ε ≈ 1.5</strong> privacy budget</li>
-                        <li>Designed scalable federated learning architecture supporting multiple clients</li>
-                        <li>Integrated LSTM models for sequential transaction pattern analysis</li>
+                        <li><strong>92% accuracy</strong> while maintaining privacy constraints</li>
+                        <li>Reduced training time by <strong>73%</strong></li>
+                        <li>Differential privacy with <strong>ε ≈ 1.5</strong> budget</li>
                     </ul>
-                    
-                    <h5>Technical Innovations</h5>
-                    <ul>
-                        <li>Privacy-preserving gradient aggregation mechanisms</li>
-                        <li>Adaptive learning rate scheduling for federated environments</li>
-                        <li>Secure multi-party computation protocols</li>
-                        <li>Real-time fraud detection pipeline with low latency</li>
-                    </ul>
-                    
+
                     <h5>Links & Resources</h5>
-                    <p>💻 <a href="https://github.com/adit4443ya/Distributed-Learning-on-Cloud" target="_blank">Source Code Repository</a></p>
+                    <p><a href="https://github.com/adit4443ya/Distributed-Learning-on-Cloud" target="_blank">Source Code</a></p>
                 `
-      },
-      musify: {
-        title: 'Musify Music Recommendation System',
-        content: `
-                    <h4>🎵 ML Engineer | Ongoing Project</h4>
+            },
+            musify: {
+                title: 'Musify Music Recommendation System',
+                content: `
+                    <h4>ML Engineer | Ongoing Project</h4>
                     <p><strong>Focus:</strong> AI-Powered Music Classification & Recommendation</p>
-                    <p><strong>Tech Stack:</strong> Python, Machine Learning, Audio Processing, Feature Extraction</p>
-                    
-                    <h5>Project Overview</h5>
-                    <p>Comprehensive music genre classifier and recommendation system that utilizes machine learning to analyze audio features and provide personalized song recommendations based on user preferences and listening patterns.</p>
-                    
+                    <p><strong>Tech Stack:</strong> Python, Machine Learning, Audio Processing</p>
+
                     <h5>Key Features</h5>
                     <ul>
-                        <li>Developed a genre classification system achieving 92.42% accuracy using LightGBM on GTZAN audio files, leveraging
-Librosa for feature extraction.</li>
-                        <li>Employed cosine similarity, manhattan, and euclidean distances in the Recommender Model, and utilized t-SNE, PCA,
-and LDA for clustering and dimensionality reduction.</li>
+                        <li>Genre classification achieving <strong>92.42% accuracy</strong> using LightGBM</li>
+                        <li>Audio feature extraction with Librosa</li>
+                        <li>Recommendation using cosine similarity, t-SNE, PCA, and LDA</li>
                     </ul>
-                    
-                    
+
                     <h5>Links & Resources</h5>
-                    <p>💻 <a href="https://github.com/adit4443ya/Musify" target="_blank">Source Code Repository</a></p>
+                    <p><a href="https://github.com/adit4443ya/Musify" target="_blank">Source Code</a></p>
                 `
-      },
-      workhub: {
-        title: 'WorkHubPro Enterprise Task Management Platform',
-        content: `
-                    <h4>⚙️ Full-Stack Developer | Feb 2024 - Aug 2024</h4>
+            },
+            workhub: {
+                title: 'WorkHubPro Enterprise Task Management',
+                content: `
+                    <h4>Full-Stack Developer | Feb 2024 - Aug 2024</h4>
                     <p><strong>Focus:</strong> Enterprise-Grade Project Management</p>
                     <p><strong>Tech Stack:</strong> Kotlin, Jetpack Compose, Go, PostgreSQL, WebSockets</p>
-                    
-                    <h5>Project Overview</h5>
-                    <p>Developed a comprehensive enterprise-grade task management platform with real-time collaboration features, advanced PostgreSQL optimizations, and service-oriented architecture designed for large-scale organizational use.</p>
-                    
+
                     <h5>Key Achievements</h5>
                     <ul>
-                        <li>Delivered <strong>140+ commits</strong> across frontend and backend development</li>
-                        <li>Implemented <strong>real-time WebSocket updates</strong> for instant collaboration</li>
-                        <li>Designed <strong>role-based access control (RBAC)</strong> security model</li>
-                        <li>Achieved <strong>sub-second response times</strong> through database optimization</li>
-                        <li>Built scalable microservices architecture supporting concurrent users</li>
+                        <li><strong>140+ commits</strong> across frontend and backend</li>
+                        <li>Real-time WebSocket updates for collaboration</li>
+                        <li>Role-based access control (RBAC) security</li>
+                        <li>Sub-second response times</li>
                     </ul>
-                    
-                    <h5>Technical Architecture</h5>
-                    <ul>
-                        <li><strong>Frontend:</strong> Modern Android app using Kotlin and Jetpack Compose</li>
-                        <li><strong>Backend:</strong> High-performance Go microservices with RESTful APIs</li>
-                        <li><strong>Database:</strong> PostgreSQL with advanced indexing and query optimization</li>
-                        <li><strong>Real-time:</strong> WebSocket implementation for live updates</li>
-                        <li><strong>Security:</strong> JWT authentication with role-based permissions</li>
-                    </ul>
-                    
-                    <h5>Links & Resources</h5>
-                    <p>💻 <a href="https://github.com/adit4443ya/WorkHub-Pro" target="_blank">Source Code Repository</a></p>
-                `
-      },
-      crawler: {
-        title: 'Multi-Threaded Web Crawler',
-        content: `
-                    <h4>🕷️ Systems Programmer | Completed Project</h4>
-                    <p><strong>Focus:</strong> High-Performance Web Scraping</p>
-                    <p><strong>Tech Stack:</strong> C++, Curl, Gumbo Parser, Multi-threading, JSON</p>
 
-                    <h5>Project Overview</h5>
-                    <p>High-performance web crawler built in C++ with multi-threaded architecture for parallel website crawling. Features configurable crawl depth, HTML parsing capabilities, and efficient metadata extraction with JSON output.</p>
+                    <h5>Links & Resources</h5>
+                    <p><a href="https://github.com/adit4443ya/WorkHub-Pro" target="_blank">Source Code</a></p>
+                `
+            },
+            crawler: {
+                title: 'Multi-Threaded Web Crawler',
+                content: `
+                    <h4>Systems Programmer | Completed</h4>
+                    <p><strong>Focus:</strong> High-Performance Web Scraping</p>
+                    <p><strong>Tech Stack:</strong> C++, Curl, Gumbo Parser, Multi-threading</p>
 
                     <h5>Key Features</h5>
                     <ul>
-                        <li><strong>Multi-threaded architecture</strong> for parallel crawling operations</li>
-                        <li><strong>Configurable crawl depth</strong> with intelligent link discovery</li>
-                        <li><strong>HTML parsing</strong> using Google's Gumbo library</li>
-                        <li><strong>JSON metadata extraction</strong> for structured data output</li>
-                        <li><strong>Efficient memory management</strong> for large-scale crawling</li>
-                    </ul>
-
-                    <h5>Technical Implementation</h5>
-                    <ul>
-                        <li>Thread pool management for optimal resource utilization</li>
-                        <li>HTTP request handling with libcurl for robust web communication</li>
-                        <li>DOM parsing and content extraction using Gumbo HTML parser</li>
-                        <li>Concurrent data structures for thread-safe operations</li>
-                        <li>URL normalization and duplicate detection algorithms</li>
+                        <li>Multi-threaded parallel crawling</li>
+                        <li>Configurable crawl depth</li>
+                        <li>HTML parsing with Gumbo</li>
+                        <li>JSON metadata extraction</li>
                     </ul>
 
                     <h5>Links & Resources</h5>
-                    <p>💻 <a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank">Source Code Repository</a></p>
+                    <p><a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank">Source Code</a></p>
                 `
-      },
-      paper4: {
-        title: 'Fast MIS on Dynamic Graphs',
-        content: `
-                    <h4>📄 EuroMicro PDP 2025 | Conference Full Length Paper</h4>
+            },
+            paper4: {
+                title: 'Fast MIS on Dynamic Graphs',
+                content: `
+                    <h4>EuroMicro PDP 2025 | Conference Full Paper</h4>
                     <p><strong>Authors:</strong> P. Nijhara, <strong>Aditya Trivedi</strong>, D.S. Banerjee</p>
-                    <p><strong>Venue:</strong> 33rd Euromicro International Conference on Parallel, Distributed and Network-based Processing</p>
 
                     <h5>Abstract</h5>
-                    <p>Finding the Maximal Independent Set (MIS) in a graph is a well-known problem with applications in resource allocation, load balancing, and routing optimization. This task is particularly challenging for large graphs as it requires multiple iterations over the entire set of vertices. Recently, there has been significant interest in developing techniques to maintain the MIS dynamically in evolving graphs rather than re-computing from scratch. In this paper, we propose new data structures and techniques for computing MIS in parallel on dynamic graphs. We specifically propose techniques to handle insertions and deletions in a batched setting.</p>
+                    <p>Novel parallel data structures for computing MIS on dynamic graphs with batched edge insertions and deletions.</p>
 
                     <h5>Key Contributions</h5>
                     <ul>
-                        <li>Novel parallel data structures for efficient MIS maintenance on dynamic graphs</li>
-                        <li>Specialized algorithms for batched edge insertions and deletions</li>
-                        <li>Innovative conflict resolution strategies for parallel execution</li>
-                        <li>Comprehensive experimental evaluation on large-scale graphs</li>
+                        <li><strong>15.64x speedup</strong> for insertions</li>
+                        <li><strong>10.57x speedup</strong> for deletions</li>
+                        <li>Evaluated on graphs with <strong>50M to 1.2B edges</strong></li>
                     </ul>
 
-                    <h5>Experimental Results</h5>
-                    <ul>
-                        <li><strong>15.64x speedup</strong> for insertion operations over recomputation baselines</li>
-                        <li><strong>10.57x speedup</strong> for deletion operations</li>
-                        <li><strong>~0.18% cardinality variance</strong> compared to state-of-the-art methods</li>
-                        <li>Evaluated on graphs ranging from <strong>50 million to 1.2 billion edges</strong></li>
-                    </ul>
-
-                    <h5>Applications</h5>
-                    <ul>
-                        <li>Network analysis and graph-based machine learning</li>
-                        <li>Distributed systems resource management</li>
-                        <li>Real-time graph analytics on evolving networks</li>
-                    </ul>
-
-                    <h5>Links & Resources</h5>
-                    <p>🔗 <a href="https://ieeexplore.ieee.org/document/10974793/" target="_blank">IEEE Xplore Paper</a></p>
+                    <h5>Links</h5>
+                    <p><a href="https://ieeexplore.ieee.org/document/10974793/" target="_blank">IEEE Xplore Paper</a></p>
                 `
-      },
-      paper5: {
-        title: 'Fast MIS on Incremental Graphs',
-        content: `
-                    <h4>📄 IEEE HiPC 2024 | Conference SRS Paper</h4>
+            },
+            paper5: {
+                title: 'Fast MIS on Incremental Graphs',
+                content: `
+                    <h4>IEEE HiPC 2024 | Conference SRS Paper</h4>
                     <p><strong>Authors:</strong> <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee</p>
-                    <p><strong>Venue:</strong> IEEE International Conference on High Performance Computing, Data, and Analytics</p>
-
-                    <h5>Abstract</h5>
-                    <p>Maintaining the Maximal Independent Set (MIS) in dynamic graphs is crucial for applications like resource allocation, load balancing, and network optimization. Traditional approaches require complete re-computation, making them inefficient for large and evolving graphs. Our proposed methods utilize Tuple Valued Bitmap (TVB) and its extension with levels, TVBL, to enhance parallelism and minimize search space.</p>
 
                     <h5>Key Innovations</h5>
                     <ul>
-                        <li><strong>Tuple Valued Bitmap (TVB)</strong>: Novel data structure encoding tuple-level information in bitmap representations</li>
-                        <li><strong>TVBL (TVB with Levels)</strong>: Extended TVB for hierarchical graph representation</li>
-                        <li>Efficient identification of affected regions during edge insertions</li>
-                        <li>Fine-grained concurrent updates with reduced contention</li>
+                        <li><strong>TVB (Tuple Valued Bitmap)</strong>: Novel data structure</li>
+                        <li><strong>TVBL</strong>: Extended TVB for hierarchical graphs</li>
+                        <li>Processed graphs with <strong>1.2B edges</strong></li>
                     </ul>
 
-                    <h5>Performance Achievements</h5>
-                    <ul>
-                        <li><strong>15.64x speedup</strong> for insertion operations over static recomputation</li>
-                        <li>Successfully processed graphs with over <strong>1.2 billion edges</strong></li>
-                        <li><strong>Minimal cardinality impact</strong> while maintaining correctness</li>
-                        <li>Maximized parallelism through reduced search space</li>
-                    </ul>
-
-                    <h5>Applications & Impact</h5>
-                    <ul>
-                        <li>Real-time applications requiring frequent graph modifications</li>
-                        <li>Social network analysis and community detection</li>
-                        <li>Dynamic routing in communication networks</li>
-                        <li>Paves the way for optimization in fully dynamic and streaming settings</li>
-                    </ul>
-
-                    <h5>Links & Resources</h5>
-                    <p>🔗 <a href="https://ieeexplore.ieee.org/document/10898364/" target="_blank">IEEE Xplore Paper</a></p>
+                    <h5>Links</h5>
+                    <p><a href="https://ieeexplore.ieee.org/document/10898364/" target="_blank">IEEE Xplore Paper</a></p>
                 `
-      },
-      paper1: {
-        title: 'ParMIS: Fast and Unified MIS Maintenance Framework',
-        content: `
-                    <h4>📄 Elsevier FGCS 2025 | Journal Paper (Under Review)</h4>
-                    <p><strong>Authors:</strong> P. Nijhara, <strong>Aditya Trivedi</strong>, A. H. Singh, Neha Sharma, Avaneesh Pandey, D.S. Banerjee</p>
-                    <p><strong>Venue:</strong> Future Generation Computer Systems (Elsevier)</p>
-
-                    <h5>Abstract</h5>
-                    <p>Finding the Maximal Independent Set (MIS) in a graph is a fundamental problem with applications in resource allocation, scheduling, and network optimization. Maintaining MIS on large evolving graphs is challenging, as recomputation from scratch is infeasible and existing dynamic methods are often restricted to incremental updates. In this work, we present ParMIS, a fast and unified framework for MIS maintenance on large-scale dynamic graphs.</p>
+            },
+            paper1: {
+                title: 'ParMIS: Fast and Unified MIS Maintenance Framework',
+                content: `
+                    <h4>Elsevier FGCS 2025 | Journal Paper (Under Review)</h4>
+                    <p><strong>Authors:</strong> P. Nijhara, <strong>Aditya Trivedi</strong>, A.H. Singh, N. Sharma, A. Pandey, D.S. Banerjee</p>
 
                     <h5>Framework Innovations</h5>
                     <ul>
-                        <li><strong>Unified Framework</strong>: First framework supporting incremental, batch, and fully dynamic MIS updates</li>
-                        <li><strong>GPU Streaming Pipeline</strong>: Novel streaming architecture for billion-scale graph processing</li>
-                        <li><strong>Conflict Resolution Strategies</strong>: Sophisticated mechanisms to mitigate race conditions</li>
-                        <li><strong>Work Efficiency Optimization</strong>: Improved computational efficiency in parallel execution</li>
-                    </ul>
-
-                    <h5>Performance Metrics</h5>
-                    <ul>
-                        <li><strong>Incremental MIS Updates (IMU):</strong> Up to 2.70× speedup vs. state-of-the-art</li>
-                        <li><strong>Batch MIS Updates (BMU):</strong> Up to 47.27× speedup over static approaches</li>
-                        <li><strong>Fully Dynamic MIS Updates (FDMU):</strong> 3.70× on CPUs, 4.63× on GPUs</li>
-                        <li><strong>Accuracy:</strong> ~0.18% cardinality variance with guaranteed correctness</li>
-                    </ul>
-
-                    <h5>Technical Contributions</h5>
-                    <ul>
-                        <li>Novel fully dynamic batch parallel algorithm supporting insertions and deletions</li>
-                        <li>GPU-optimized streaming pipeline for billion-scale graphs</li>
-                        <li>Conflict resolution preserving correctness in parallel execution</li>
-                        <li>Seamless handling of mixed insertion/deletion workloads</li>
-                    </ul>
-
-                    <h5>Applications</h5>
-                    <ul>
-                        <li>Large-scale social network analysis</li>
-                        <li>Knowledge graph maintenance and querying</li>
-                        <li>Streaming graph analytics platforms</li>
-                        <li>Dynamic network optimization systems</li>
+                        <li>First unified framework for all dynamic MIS update scenarios</li>
+                        <li>GPU streaming pipeline for billion-scale graphs</li>
+                        <li><strong>47.27x batch speedup</strong></li>
+                        <li><strong>4.63x GPU speedup</strong></li>
                     </ul>
                 `
-      },
-      paper2: {
-        title: 'Fast and Accurate MIS on Dynamic Graphs',
-        content: `
-                    <h4>📄 IEEE HiPC 2025 | Conference Paper (Under Review)</h4>
-                    <p><strong>Authors:</strong> A. H. Singh, <strong>Aditya Trivedi</strong>, Neha Sharma, Avaneesh Pandey, D.S. Banerjee</p>
-                    <p><strong>Venue:</strong> IEEE International Conference on High Performance Computing, Data, and Analytics</p>
-
-                    <h5>Abstract</h5>
-                    <p>A Maximal Independent Set (MIS) is a challenging problem due to its high search space. In dynamic graphs where edge/vertex updates are frequent, maintaining MIS becomes more difficult. Recomputing MIS from scratch is infeasible when graphs undergo frequent structural updates. Parallel dynamic algorithms, although they maintain MIS quickly, are prone to producing inaccurate results because of race conditions. To overcome these challenges, we propose a BFS-based MIS maintenance algorithm that works by grouping possible race-conflicting updates and executing them in order.</p>
+            },
+            paper2: {
+                title: 'Fast and Accurate MIS on Dynamic Graphs',
+                content: `
+                    <h4>IEEE HiPC 2025 | Conference Paper (Under Review)</h4>
+                    <p><strong>Authors:</strong> A.H. Singh, <strong>Aditya Trivedi</strong>, N. Sharma, A. Pandey, D.S. Banerjee</p>
 
                     <h5>Key Innovations</h5>
                     <ul>
-                        <li><strong>BFS-based Conflict Resolution</strong>: Novel approach to identify and resolve race conditions</li>
-                        <li><strong>Topologically-Ordered Execution</strong>: Intelligent grouping of race-conflicting updates</li>
-                        <li><strong>Guaranteed Accuracy</strong>: Maintains exact MIS without approximations</li>
-                        <li><strong>Dependency Analysis</strong>: Identifies dependencies between concurrent updates</li>
-                    </ul>
-
-                    <h5>Performance Results</h5>
-                    <ul>
-                        <li><strong>32.4× speedup</strong> compared to state-of-the-art static graph algorithms</li>
-                        <li><strong>100% accuracy</strong> - produces exact MIS results without errors</li>
-                        <li>Efficient handling of race-conflicting update scenarios</li>
-                        <li>Maintains correctness invariants in parallel execution</li>
-                    </ul>
-
-                    <h5>Algorithmic Contributions</h5>
-                    <ul>
-                        <li>BFS-based mechanism to prevent inconsistencies in parallel methods</li>
-                        <li>Scheduling system for execution order of dependent updates</li>
-                        <li>Correctness-preserving parallel dynamic graph algorithm</li>
-                    </ul>
-
-                    <h5>Applications</h5>
-                    <ul>
-                        <li>Resource allocation systems requiring exact solutions</li>
-                        <li>Vertex coloring in dynamic networks</li>
-                        <li>Wireless network optimization</li>
-                        <li>Scheduling problems in dynamic environments</li>
+                        <li>BFS-based conflict resolution</li>
+                        <li>Topologically-ordered execution</li>
+                        <li><strong>32.4x speedup</strong></li>
+                        <li><strong>100% accuracy</strong></li>
                     </ul>
                 `
-      },
-      'ongoing-research': {
-        title: 'Semi-External Parallel Maximal Cliques Maintenance',
-        content: `
-                    <h4>🔬 Ongoing Research Project</h4>
-                    <p><strong>Authors:</strong> <strong>Aditya Trivedi</strong>, Dishit Sharma, Aditya Mundhara, D.S. Banerjee</p>
-                    <p><strong>Research Advisor:</strong> Dr. Dip Sankar Banerjee, IIT Jodhpur</p>
+            },
+            'ongoing-research': {
+                title: 'Semi-External Parallel Maximal Cliques Maintenance',
+                content: `
+                    <h4>Ongoing Research Project</h4>
+                    <p><strong>Authors:</strong> <strong>Aditya Trivedi</strong>, D. Sharma, A. Mundhara, D.S. Banerjee</p>
+                    <p><strong>Advisor:</strong> Dr. Dip Sankar Banerjee, IIT Jodhpur</p>
 
                     <h5>Abstract</h5>
-                    <p>Maintaining maximal cliques in billion-scale dynamic graphs presents dual challenges: computational complexity from continuous edge updates and memory constraints that prevent full graph loading onto accelerators. State-of-the-art approaches either recompute cliques periodically or assume complete in-memory representation, rendering them impractical for evolving networks exceeding GPU capacity. We propose a semi-external framework that maintains multiple maximal cliques in parallel by transferring only non-clique neighbor lists rather than full subgraphs.</p>
-
-                    <h5>Research Innovations</h5>
-                    <ul>
-                        <li><strong>Semi-External Memory Framework</strong>: Strategic graph partitioning between RAM and external storage</li>
-                        <li><strong>Selective Data Transfer</strong>: Transfer only non-clique neighbor lists (O(K·d̄) memory per clique)</li>
-                        <li><strong>Natural Independence Exploitation</strong>: Parallel maintenance with dedicated threads per clique</li>
-                        <li><strong>I/O Optimization</strong>: Intelligent prefetching and caching to overlap computation with I/O</li>
-                    </ul>
+                    <p>Semi-external framework for maximal clique maintenance in billion-scale dynamic graphs, achieving 150-300x memory reduction with GPU parallelism.</p>
 
                     <h5>Preliminary Results</h5>
                     <ul>
-                        <li><strong>150-300× memory reduction</strong> compared to full-graph in-memory methods</li>
-                        <li><strong>Near-linear speedup</strong> through scalable concurrent maintenance</li>
-                        <li><strong>Correctness guaranteed</strong> across sustained update streams</li>
-                        <li>Successfully processes billion-edge networks exceeding GPU capacity</li>
-                        <li>Smaller cliques expose greater parallelism through higher clique counts</li>
-                    </ul>
-
-                    <h5>Technical Approach</h5>
-                    <ul>
-                        <li>Memory complexity: O(K·d̄) device memory per clique (K = size, d̄ = avg degree)</li>
-                        <li>GPU parallelism for in-memory computations</li>
-                        <li>Specialized data structures minimizing I/O overhead</li>
-                        <li>Exact correctness guarantees for maximal clique enumeration</li>
-                    </ul>
-
-                    <h5>Research Areas</h5>
-                    <ul>
-                        <li>Semi-External Memory Algorithms</li>
-                        <li>GPU Computing & Parallel Processing</li>
-                        <li>Maximal Clique Enumeration</li>
-                        <li>Memory Optimization Techniques</li>
-                        <li>Dynamic Graph Algorithms</li>
-                    </ul>
-
-                    <h5>Real-World Applications</h5>
-                    <ul>
-                        <li><strong>Bioinformatics:</strong> Protein interaction network analysis</li>
-                        <li><strong>Social Networks:</strong> Community detection and analysis</li>
-                        <li><strong>Knowledge Graphs:</strong> Dense subgraph mining</li>
-                        <li><strong>Scientific Computing:</strong> Large-scale network analysis</li>
+                        <li><strong>150-300x memory reduction</strong></li>
+                        <li>Near-linear speedup</li>
+                        <li>Processes billion-edge networks</li>
                     </ul>
                 `
-      }
+            }
+        };
     }
-
-    return projects[projectId] || super.getProjectData(projectId)
-  }
 }
 
-// Initialize everything when DOM is loaded
+// ============================================
+// COUNTER ANIMATION
+// ============================================
+class CounterAnimation {
+    constructor() {
+        this.counters = document.querySelectorAll('.stat-value[data-count]');
+        this.hasAnimated = false;
+
+        this.init();
+    }
+
+    init() {
+        // Animate on load for hero section
+        setTimeout(() => this.animateCounters(), 4500);
+    }
+
+    animateCounters() {
+        if (this.hasAnimated) return;
+        this.hasAnimated = true;
+
+        this.counters.forEach(counter => {
+            const target = parseFloat(counter.getAttribute('data-count'));
+            const isFloat = target % 1 !== 0;
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+
+            const updateCounter = () => {
+                current += step;
+                if (current < target) {
+                    counter.textContent = isFloat ? current.toFixed(1) : Math.floor(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = isFloat ? target.toFixed(1) : target;
+                }
+            };
+
+            updateCounter();
+        });
+    }
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize loading screen
-  new LoadingController()
+    // Initialize boot sequence first
+    new BootSequence();
 
-  // Initialize enhanced space background
-  setTimeout(() => {
-    new EnhancedSpaceBackground()
-  }, 2000)
-
-  // Initialize enhanced navigation
-  setTimeout(() => {
-    new EnhancedNavigation()
-
-    // Additional domain card initialization (backup)
+    // Initialize other components after boot
     setTimeout(() => {
-      const domainCards = document.querySelectorAll('.domain-card')
-      console.log('Backup domain card setup, found:', domainCards.length)
-      domainCards.forEach(card => {
-        card.addEventListener('click', e => {
-          e.preventDefault()
-          const domain = card.getAttribute('data-domain')
-          console.log('Backup domain card clicked:', domain)
-          // Navigate to the page
-          const nav = new Navigation()
-          nav.navigateToPage(domain)
-        })
-      })
-    }, 1000)
-  }, 3000)
+        new MatrixRain();
+        new SpaceBackground();
+        new CustomCursor();
+    }, 500);
 
-  // Direct domain card click handlers (ensure they work)
-  setTimeout(() => {
-    const domainCards = document.querySelectorAll('.domain-card')
-    console.log('Direct setup - Found domain cards:', domainCards.length)
+    // Initialize navigation and modals after boot completes
+    setTimeout(() => {
+        new Navigation();
+        new ProjectModal();
+        new CounterAnimation();
+    }, 3500);
 
-    domainCards.forEach((card, index) => {
-      console.log(`Card ${index}:`, card.getAttribute('data-domain'))
-      card.style.cursor = 'pointer'
+    // Add smooth scroll
+    document.documentElement.style.scrollBehavior = 'smooth';
+});
 
-      card.addEventListener('click', e => {
-        e.preventDefault()
-        e.stopPropagation()
-
-        const domain = card.getAttribute('data-domain')
-        console.log('Direct click - Domain:', domain)
-
-        // Hide all pages
-        document.querySelectorAll('.page').forEach(page => {
-          page.classList.remove('active')
-        })
-
-        // Show target page
-        const targetPage = document.getElementById(domain)
-        if (targetPage) {
-          targetPage.classList.add('active')
-          console.log('Navigated to:', domain)
-
-          // Update navigation
-          document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active')
-            if (link.getAttribute('href') === `#${domain}`) {
-              link.classList.add('active')
-            }
-          })
-
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        } else {
-          console.error('Target page not found:', domain)
-        }
-      })
-    })
-  }, 5000)
-
-  // Add smooth scrolling
-  document.documentElement.style.scrollBehavior = 'smooth'
-
-  // Performance optimization for mobile
-  if (window.innerWidth < 768) {
-    document.body.classList.add('mobile-optimized')
-  }
-
-  // Handle window resize
-  window.addEventListener('resize', () => {
-    if (window.innerWidth < 768) {
-      document.body.classList.add('mobile-optimized')
+// Handle page visibility for performance
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // Pause animations when page is hidden
+        document.body.classList.add('paused');
     } else {
-      document.body.classList.remove('mobile-optimized')
+        document.body.classList.remove('paused');
     }
-  })
-})
-// Publication Card Click Handler - Disabled to allow modal display
-// The Navigation class handles publication card clicks to show modals
-// External links are still accessible via the icon in publication cards
-/*
-document.addEventListener('DOMContentLoaded', function () {
-  // Handle publication card clicks
-  const publicationCards = document.querySelectorAll(
-    '.publication-card[data-url]'
-  )
-
-  publicationCards.forEach(card => {
-    card.addEventListener('click', function (e) {
-      // Don't trigger if clicking on the icon specifically
-      if (!e.target.closest('.publication-link-icon')) {
-        const url = this.getAttribute('data-url')
-        if (url) {
-          window.open(url, '_blank')
-        }
-      }
-    })
-
-    // Handle icon click specifically
-    const icon = card.querySelector('.publication-link-icon')
-    if (icon) {
-      icon.addEventListener('click', function (e) {
-        e.stopPropagation()
-        const url = card.getAttribute('data-url')
-        if (url) {
-          window.open(url, '_blank')
-        }
-      })
-    }
-  })
-})
-*/
+});

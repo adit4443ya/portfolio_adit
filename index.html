@@ -4,86 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aditya Trivedi - Professional Portfolio</title>
+    <title>Aditya Trivedi | Systems Architect & HPC Engineer</title>
     <link rel="stylesheet" href="styles.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="loading-container">
-            <div class="loading-animation">
-                <div class="central-star"></div>
-                <div class="orbit-ring ring-1">
-                    <div class="orbit-dot dot-1"></div>
-                </div>
-                <div class="orbit-ring ring-2">
-                    <div class="orbit-dot dot-2"></div>
-                </div>
-                <div class="orbit-ring ring-3">
-                    <div class="orbit-dot dot-3"></div>
-                </div>
-                <div class="constellation-lines">
-                    <svg width="200" height="200" viewBox="0 0 200 200">
-                        <line x1="50" y1="50" x2="150" y2="50" stroke="rgba(74, 144, 226, 0.5)" stroke-width="1" />
-                        <line x1="150" y1="50" x2="150" y2="150" stroke="rgba(74, 144, 226, 0.5)" stroke-width="1" />
-                        <line x1="150" y1="150" x2="50" y2="150" stroke="rgba(74, 144, 226, 0.5)" stroke-width="1" />
-                        <line x1="50" y1="150" x2="50" y2="50" stroke="rgba(74, 144, 226, 0.5)" stroke-width="1" />
-                        <line x1="50" y1="50" x2="150" y2="150" stroke="rgba(74, 144, 226, 0.5)" stroke-width="1" />
-                        <line x1="150" y1="50" x2="50" y2="150" stroke="rgba(74, 144, 226, 0.5)" stroke-width="1" />
-                    </svg>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- Preloader / Boot Sequence -->
+    <div id="boot-sequence">
+        <div class="boot-container">
+            <div class="boot-logo">
+                <div class="quantum-core">
+                    <div class="core-ring ring-1"></div>
+                    <div class="core-ring ring-2"></div>
+                    <div class="core-ring ring-3"></div>
+                    <div class="core-nucleus"></div>
                 </div>
             </div>
-            <div class="loading-text">
-                <h2 class="loading-title">Initializing Portfolio Systems</h2>
-                <div class="loading-steps">
-                    <div class="step active" data-step="1">Loading quantum processors...</div>
-                    <div class="step" data-step="2">Calibrating space coordinates...</div>
-                    <div class="step" data-step="3">Establishing data connections...</div>
-                    <div class="step" data-step="4">Synchronizing project databases...</div>
-                    <div class="step" data-step="5">Portfolio systems online!</div>
+            <div class="boot-terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">system://init</span>
                 </div>
-                <div class="loading-progress">
-                    <div class="progress-bar"></div>
-                    <div class="progress-percentage">0%</div>
+                <div class="terminal-body">
+                    <div class="boot-line" data-delay="0">$ initializing quantum processors...</div>
+                    <div class="boot-line" data-delay="1">$ loading neural pathways... [OK]</div>
+                    <div class="boot-line" data-delay="2">$ establishing HPC clusters... [OK]</div>
+                    <div class="boot-line" data-delay="3">$ compiling parallel threads... [OK]</div>
+                    <div class="boot-line" data-delay="4">$ synchronizing GPU arrays... [OK]</div>
+                    <div class="boot-line success" data-delay="5">> SYSTEM ONLINE_</div>
                 </div>
+            </div>
+            <div class="boot-progress">
+                <div class="progress-track">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">0%</div>
             </div>
         </div>
     </div>
 
-    <!-- Page Transition -->
-    <div id="page-transition">
-        <div class="transition-overlay">
-            <div class="transition-stars">
-                <div class="star star-1"></div>
-                <div class="star star-2"></div>
-                <div class="star star-3"></div>
-                <div class="star star-4"></div>
-                <div class="star star-5"></div>
-            </div>
-            <div class="transition-text">Navigating to new sector...</div>
-        </div>
+    <!-- Binary Rain Background -->
+    <canvas id="matrix-rain"></canvas>
+
+    <!-- 3D Space Canvas -->
+    <canvas id="space-canvas"></canvas>
+
+    <!-- Floating Geometry -->
+    <div class="floating-geometry">
+        <div class="geo-shape shape-1"></div>
+        <div class="geo-shape shape-2"></div>
+        <div class="geo-shape shape-3"></div>
+        <div class="geo-shape shape-4"></div>
+        <div class="geo-shape shape-5"></div>
     </div>
 
     <!-- Navigation -->
-    <nav class="main-nav">
+    <nav class="cyber-nav">
+        <div class="nav-glitch-line"></div>
         <div class="nav-container">
             <div class="nav-brand">
-                <span class="brand-name">Aditya Trivedi</span>
-                <span class="brand-title">HPC Research Engineer</span>
+                <div class="brand-icon">
+                    <span class="icon-bracket">&lt;</span>
+                    <span class="icon-text">AT</span>
+                    <span class="icon-bracket">/&gt;</span>
+                </div>
+                <div class="brand-info">
+                    <span class="brand-name" data-text="ADITYA TRIVEDI">ADITYA TRIVEDI</span>
+                    <span class="brand-role">HPC Research Engineer</span>
+                </div>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#hpc" class="nav-link">HPC & Parallel</a></li>
-                <li><a href="#ml" class="nav-link">Machine Learning</a></li>
-                <li><a href="#systems" class="nav-link">Systems</a></li>
-                <li><a href="#research" class="nav-link">Research</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active" data-section="home"><span class="link-index">01</span>Home</a></li>
+                <li><a href="#hpc" class="nav-link" data-section="hpc"><span class="link-index">02</span>HPC</a></li>
+                <li><a href="#ml" class="nav-link" data-section="ml"><span class="link-index">03</span>ML/AI</a></li>
+                <li><a href="#systems" class="nav-link" data-section="systems"><span class="link-index">04</span>Systems</a></li>
+                <li><a href="#research" class="nav-link" data-section="research"><span class="link-index">05</span>Research</a></li>
+                <li><a href="#about" class="nav-link" data-section="about"><span class="link-index">06</span>About</a></li>
             </ul>
+            <div class="nav-actions">
+                <a href="https://github.com/adit4443ya" target="_blank" class="nav-social github">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:adit4443ya@gmail.com" class="nav-cta">
+                    <span class="cta-text">Connect</span>
+                    <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
+                </a>
+            </div>
             <div class="nav-toggle">
                 <span></span>
                 <span></span>
@@ -92,80 +106,202 @@
         </div>
     </nav>
 
-    <!-- Background Canvas -->
-    <canvas id="space-canvas"></canvas>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-content">
+            <ul class="mobile-links">
+                <li><a href="#home" class="mobile-link active">Home</a></li>
+                <li><a href="#hpc" class="mobile-link">HPC & Parallel</a></li>
+                <li><a href="#ml" class="mobile-link">ML/AI</a></li>
+                <li><a href="#systems" class="mobile-link">Systems</a></li>
+                <li><a href="#research" class="mobile-link">Research</a></li>
+                <li><a href="#about" class="mobile-link">About</a></li>
+            </ul>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content">
-        <!-- Home Page -->
-        <section id="home" class="page active">
-            <div class="hero-section">
-                <div class="hero-content">
-                    <h1 class="hero-title">
-                        <span class="title-main">Aditya Trivedi</span>
-                        <span class="title-sub">High-Performance Computing Research Engineer</span>
-                    </h1>
-                    <p class="hero-description">
-                        Specializing in compiler development, parallel algorithms, and distributed computing systems.
-                        Currently advancing OpenMP implementations and GPU-accelerated computing at scale.
-                    </p>
-                    <div class="domain-navigation">
-                        <h3 class="domain-title">Explore My Work</h3>
-                        <div class="domain-grid">
-                            <div class="domain-card" data-domain="hpc">
-                                <div class="domain-icon">
+        <!-- Home / Hero Section -->
+        <section id="home" class="section active">
+            <div class="hero-container">
+                <div class="hero-grid">
+                    <div class="hero-text">
+                        <div class="hero-badge">
+                            <span class="badge-dot"></span>
+                            <span class="badge-text">Available for Research Collaborations</span>
+                        </div>
+                        <h1 class="hero-title">
+                            <span class="title-line line-1">
+                                <span class="word">Building</span>
+                            </span>
+                            <span class="title-line line-2">
+                                <span class="word gradient-text">High-Performance</span>
+                            </span>
+                            <span class="title-line line-3">
+                                <span class="word">Computing</span>
+                                <span class="word accent-text">Systems</span>
+                            </span>
+                        </h1>
+                        <p class="hero-description">
+                            I architect <span class="highlight">compilers</span>, optimize <span class="highlight">parallel algorithms</span>,
+                            and push the boundaries of <span class="highlight">GPU computing</span>.
+                            Currently advancing OpenMP 6.0 at Google Summer of Code and developing
+                            next-gen Fortran compilers.
+                        </p>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" data-count="4">0</span>
+                                <span class="stat-label">Research Papers</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" data-count="47">0</span>
+                                <span class="stat-suffix">x</span>
+                                <span class="stat-label">Max Speedup</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" data-count="1.2">0</span>
+                                <span class="stat-suffix">B+</span>
+                                <span class="stat-label">Edges Processed</span>
+                            </div>
+                        </div>
+                        <div class="hero-cta">
+                            <a href="#hpc" class="cta-primary">
+                                <span class="cta-bg"></span>
+                                <span class="cta-content">
+                                    <span>Explore My Work</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </span>
+                            </a>
+                            <a href="#research" class="cta-secondary">
+                                <span>View Publications</span>
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="visual-container">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots">
+                                        <span class="dot red"></span>
+                                        <span class="dot yellow"></span>
+                                        <span class="dot green"></span>
+                                    </div>
+                                    <span class="window-title">parallel_compute.cpp</span>
+                                </div>
+                                <pre class="code-content"><code><span class="code-keyword">#pragma</span> omp parallel for
+<span class="code-keyword">for</span> (<span class="code-type">int</span> i = <span class="code-number">0</span>; i < N; i++) {
+    <span class="code-comment">// GPU offloading enabled</span>
+    <span class="code-keyword">#pragma</span> omp target teams distribute
+    compute_kernel(data[i]);
+}
+
+<span class="code-comment">// Performance: 47x speedup achieved</span>
+<span class="code-type">double</span> speedup = measure_performance();
+<span class="code-function">printf</span>(<span class="code-string">"Efficiency: %.2f%%\n"</span>, speedup);</code></pre>
+                            </div>
+                            <div class="floating-cards">
+                                <div class="float-card card-1">
+                                    <i class="fas fa-microchip"></i>
+                                    <span>OpenMP 6.0</span>
+                                </div>
+                                <div class="float-card card-2">
+                                    <i class="fas fa-bolt"></i>
+                                    <span>CUDA</span>
+                                </div>
+                                <div class="float-card card-3">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <span>MPI</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Domain Navigation -->
+                <div class="domain-nav">
+                    <h3 class="domain-title">
+                        <span class="title-decorator"></span>
+                        Explore Domains
+                        <span class="title-decorator"></span>
+                    </h3>
+                    <div class="domain-grid">
+                        <div class="domain-card" data-domain="hpc">
+                            <div class="card-glow"></div>
+                            <div class="card-content">
+                                <div class="card-icon">
                                     <i class="fas fa-microchip"></i>
                                 </div>
-                                <div class="domain-content">
+                                <div class="card-info">
                                     <h4>HPC & Parallel Computing</h4>
-                                    <p>Compiler development, OpenMP implementations, and high-performance algorithms</p>
-                                    <div class="domain-highlight">LFortran • RISC-V • GSoC</div>
+                                    <p>Compiler development, OpenMP, and high-performance algorithms</p>
+                                    <div class="card-tags">
+                                        <span>LFortran</span>
+                                        <span>GSoC</span>
+                                        <span>RISC-V</span>
+                                    </div>
                                 </div>
-                                <div class="domain-arrow">
+                                <div class="card-arrow">
                                     <i class="fas fa-arrow-right"></i>
                                 </div>
                             </div>
-
-                            <div class="domain-card" data-domain="ml">
-                                <div class="domain-icon">
+                        </div>
+                        <div class="domain-card" data-domain="ml">
+                            <div class="card-glow"></div>
+                            <div class="card-content">
+                                <div class="card-icon">
                                     <i class="fas fa-brain"></i>
                                 </div>
-                                <div class="domain-content">
+                                <div class="card-info">
                                     <h4>Machine Learning & AI</h4>
-                                    <p>Distributed learning systems, privacy-preserving AI, and intelligent applications
-                                    </p>
-                                    <div class="domain-highlight">Federated Learning • Musify</div>
+                                    <p>Distributed learning, privacy-preserving AI, and intelligent systems</p>
+                                    <div class="card-tags">
+                                        <span>Federated</span>
+                                        <span>Azure ML</span>
+                                    </div>
                                 </div>
-                                <div class="domain-arrow">
+                                <div class="card-arrow">
                                     <i class="fas fa-arrow-right"></i>
                                 </div>
                             </div>
-
-                            <div class="domain-card" data-domain="systems">
-                                <div class="domain-icon">
-                                    <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="domain-card" data-domain="systems">
+                            <div class="card-glow"></div>
+                            <div class="card-content">
+                                <div class="card-icon">
+                                    <i class="fas fa-server"></i>
                                 </div>
-                                <div class="domain-content">
+                                <div class="card-info">
                                     <h4>Systems & Infrastructure</h4>
-                                    <p>Enterprise platforms, web crawlers, and system-level programming</p>
-                                    <div class="domain-highlight">WorkHubPro • Multi-threading</div>
+                                    <p>Enterprise platforms and system-level programming</p>
+                                    <div class="card-tags">
+                                        <span>Go</span>
+                                        <span>C++</span>
+                                        <span>WebSocket</span>
+                                    </div>
                                 </div>
-                                <div class="domain-arrow">
+                                <div class="card-arrow">
                                     <i class="fas fa-arrow-right"></i>
                                 </div>
                             </div>
-
-                            <div class="domain-card" data-domain="research">
-                                <div class="domain-icon">
+                        </div>
+                        <div class="domain-card" data-domain="research">
+                            <div class="card-glow"></div>
+                            <div class="card-content">
+                                <div class="card-icon">
                                     <i class="fas fa-flask"></i>
                                 </div>
-                                <div class="domain-content">
+                                <div class="card-info">
                                     <h4>Research & Publications</h4>
-                                    <p>Dynamic graph algorithms, MIS maintenance, and parallel computing frameworks</p>
-                                    <div class="domain-highlight">ParMIS Framework • 47x Speedup • GPU Acceleration
+                                    <p>Dynamic graph algorithms and parallel computing frameworks</p>
+                                    <div class="card-tags">
+                                        <span>IEEE</span>
+                                        <span>ParMIS</span>
+                                        <span>GPU</span>
                                     </div>
                                 </div>
-                                <div class="domain-arrow">
+                                <div class="card-arrow">
                                     <i class="fas fa-arrow-right"></i>
                                 </div>
                             </div>
@@ -174,602 +310,590 @@
                 </div>
             </div>
         </section>
-        <!-- HPC & Parallel Computing Page -->
-        <section id="hpc" class="page">
-            <div class="page-header">
-                <h1 class="page-title">High-Performance Computing & Parallel Systems</h1>
-                <p class="page-subtitle">Compiler development, parallel algorithms, and performance optimization</p>
-            </div>
 
-            <div class="projects-grid">
-                <div class="project-card featured" data-project="gsoc">
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <i class="fab fa-google"></i>
-                        </div>
-                        <div class="project-meta">
-                            <h3>Google Summer of Code 2025</h3>
-                            <span class="project-role">OpenMP Developer</span>
-                            <span class="project-period">May 2025 - Present</span>
-                        </div>
+        <!-- HPC Section -->
+        <section id="hpc" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <div class="header-meta">
+                        <span class="section-number">02</span>
+                        <span class="section-line"></span>
                     </div>
-                    <div class="project-content">
-                        <p class="project-description">
-                            Implementing OpenMP 6.0 features with GPU target offloading capabilities
-                            for next-generation parallel computing.
-                        </p>
-                        <div class="project-achievements">
-                            <div class="achievement">
-                                <span class="achievement-metric">13+</span>
-                                <span class="achievement-desc">OMP Constructs</span>
-                            </div>
-                            <div class="achievement">
-                                <span class="achievement-metric">8+</span>
-                                <span class="achievement-desc">Clauses Implemented</span>
-                            </div>
-                        </div>
-                        <div class="tech-stack">
-                            <span class="tech-tag">C++</span>
-                            <span class="tech-tag">CUDA</span>
-                            <span class="tech-tag">OpenMP 6.0</span>
-                            <span class="tech-tag">GPU Computing</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card" data-project="lfortran">
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <i class="fas fa-microchip"></i>
-                        </div>
-                        <div class="project-meta">
-                            <h3>LFortran Compiler Development</h3>
-                            <span class="project-role">Compiler Developer</span>
-                            <span class="project-period">Sept 2024 - Present</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <p class="project-description">
-                            Leading compiler optimization efforts achieving significant performance improvements
-                            in MPI-based scientific computing applications.
-                        </p>
-                        <div class="project-achievements">
-                            <div class="achievement">
-                                <span class="achievement-metric">0.95x</span>
-                                <span class="achievement-desc">Compilation Speedup</span>
-                            </div>
-                            <div class="achievement">
-                                <span class="achievement-metric">0.75x</span>
-                                <span class="achievement-desc">Runtime Performance</span>
-                            </div>
-                            <div class="achievement">
-                                <span class="achievement-metric">30+</span>
-                                <span class="achievement-desc">MPI Subroutines</span>
-                            </div>
-                        </div>
-                        <div class="tech-stack">
-                            <span class="tech-tag">C++</span>
-                            <span class="tech-tag">Fortran</span>
-                            <span class="tech-tag">OpenMP</span>
-                            <span class="tech-tag">MPI</span>
-                            <span class="tech-tag">Python</span>
-                        </div>
-                    </div>
+                    <h2 class="section-title">High-Performance Computing</h2>
+                    <p class="section-subtitle">Compiler development, parallel algorithms, and GPU optimization</p>
                 </div>
 
-                <div class="project-card" data-project="riscv">
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <i class="fas fa-brain"></i>
+                <div class="projects-showcase">
+                    <!-- Featured Project -->
+                    <div class="project-featured" data-project="gsoc">
+                        <div class="featured-glow"></div>
+                        <div class="featured-content">
+                            <div class="featured-badge">
+                                <i class="fab fa-google"></i>
+                                <span>Google Summer of Code 2025</span>
+                            </div>
+                            <h3 class="featured-title">OpenMP 6.0 Implementation</h3>
+                            <p class="featured-description">
+                                Implementing next-generation OpenMP 6.0 features with GPU target offloading
+                                capabilities for the LFortran compiler, enabling advanced parallel computing
+                                on heterogeneous systems.
+                            </p>
+                            <div class="featured-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">13+</span>
+                                    <span class="metric-label">OMP Constructs</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">8+</span>
+                                    <span class="metric-label">Clauses</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">CUDA</span>
+                                    <span class="metric-label">Backend</span>
+                                </div>
+                            </div>
+                            <div class="featured-tech">
+                                <span class="tech-tag">C++</span>
+                                <span class="tech-tag">CUDA</span>
+                                <span class="tech-tag">OpenMP 6.0</span>
+                                <span class="tech-tag">GPU Computing</span>
+                            </div>
                         </div>
-                        <div class="project-meta">
-                            <h3>RISC-V Llama Inference</h3>
-                            <span class="project-role">Parallel Computing Researcher</span>
-                            <span class="project-period">May 2025 - Aug 2025</span>
+                        <div class="featured-visual">
+                            <div class="gpu-animation">
+                                <div class="gpu-core"></div>
+                                <div class="gpu-rays"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="project-content">
-                        <p class="project-description">
-                            Optimized transformer model inference on resource-constrained RISC-V architecture
-                            using advanced parallelization strategies.
-                        </p>
-                        <div class="project-achievements">
-                            <div class="achievement">
-                                <span class="achievement-metric">3.42x</span>
-                                <span class="achievement-desc">Speedup Achieved</span>
-                            </div>
-                            <div class="achievement">
-                                <span class="achievement-metric">19.6%</span>
-                                <span class="achievement-desc">Better than OpenMP</span>
-                            </div>
-                        </div>
-                        <div class="tech-stack">
-                            <span class="tech-tag">C++</span>
-                            <span class="tech-tag">RISC-V</span>
-                            <span class="tech-tag">MPI</span>
-                            <span class="tech-tag">Edge Computing</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Machine Learning Page -->
-        <section id="ml" class="page">
-            <div class="page-header">
-                <h1 class="page-title">Machine Learning & AI Systems</h1>
-                <p class="page-subtitle">Distributed learning, privacy-preserving AI, and intelligent systems</p>
-            </div>
 
-            <div class="projects-grid">
-                <div class="project-card featured" data-project="distributed-ml">
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <i class="fas fa-network-wired"></i>
-                        </div>
-                        <div class="project-meta">
-                            <h3>Distributed ML Framework</h3>
-                            <span class="project-role">ML Systems Engineer</span>
-                            <span class="project-period">Feb 2025 - Apr 2025</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <p class="project-description">
-                            Architected privacy-preserving federated learning system on Azure for
-                            credit card fraud detection with differential privacy guarantees.
-                        </p>
-                        <div class="project-achievements">
-                            <div class="achievement">
-                                <span class="achievement-metric">92%</span>
-                                <span class="achievement-desc">Accuracy Achieved</span>
+                    <!-- Project Grid -->
+                    <div class="projects-grid">
+                        <div class="project-card" data-project="lfortran">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-microchip"></i>
+                                </div>
+                                <div class="card-period">Sept 2024 - Present</div>
                             </div>
-                            <div class="achievement">
-                                <span class="achievement-metric">73%</span>
-                                <span class="achievement-desc">Training Time Reduction</span>
+                            <h4 class="card-title">LFortran Compiler</h4>
+                            <p class="card-role">Compiler Development Engineer</p>
+                            <p class="card-description">
+                                Leading compiler optimization for MPI-based scientific computing with
+                                near-parity GFortran performance.
+                            </p>
+                            <div class="card-metrics">
+                                <div class="mini-metric">
+                                    <span class="value">0.95x</span>
+                                    <span class="label">Compile Speed</span>
+                                </div>
+                                <div class="mini-metric">
+                                    <span class="value">30+</span>
+                                    <span class="label">MPI Routines</span>
+                                </div>
                             </div>
-                            <div class="achievement">
-                                <span class="achievement-metric">ε ≈ 1.5</span>
-                                <span class="achievement-desc">Privacy Budget</span>
+                            <div class="card-tech">
+                                <span>C++</span>
+                                <span>Fortran</span>
+                                <span>MPI</span>
                             </div>
                         </div>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Azure ML</span>
-                            <span class="tech-tag">TensorFlow</span>
-                            <span class="tech-tag">Federated Learning</span>
-                            <span class="tech-tag">LSTM</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="project-card" data-project="musify">
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <i class="fas fa-music"></i>
-                        </div>
-                        <div class="project-meta">
-                            <h3>Musify Recommendation System</h3>
-                            <span class="project-role">ML Engineer</span>
-                            <span class="project-period">Ongoing Project</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <p class="project-description">
-                            Designed music genre classification and recommendation system using
-                            advanced audio feature extraction and machine learning algorithms.
-                        </p>
-                        <div class="project-achievements">
-                            <div class="achievement">
-                                <span class="achievement-metric">92.42% </span>
-                                <span class="achievement-desc">Accuracy</span>
+                        <div class="project-card" data-project="riscv">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="card-period">May 2025 - Aug 2025</div>
                             </div>
-                            <!-- <div class="achievement">
-                                <span class="achievement-metric">Multi-genre</span>
-                                <span class="achievement-desc">Classification</span>
-                            </div> -->
-                        </div>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Machine Learning</span>
-                            <span class="tech-tag">Audio Processing - Librosa</span>
-                            <span class="tech-tag">Feature Extraction</span>
-                            <span class="tech-tag">Clustering</span>
-                            <span class="tech-tag">Dimensionality Reduction</span>
+                            <h4 class="card-title">RISC-V Llama Inference</h4>
+                            <p class="card-role">Parallel Computing Researcher</p>
+                            <p class="card-description">
+                                Optimized transformer inference on RISC-V using advanced
+                                parallelization strategies for edge computing.
+                            </p>
+                            <div class="card-metrics">
+                                <div class="mini-metric">
+                                    <span class="value">3.42x</span>
+                                    <span class="label">Speedup</span>
+                                </div>
+                                <div class="mini-metric">
+                                    <span class="value">19.6%</span>
+                                    <span class="label">&gt; OpenMP</span>
+                                </div>
+                            </div>
+                            <div class="card-tech">
+                                <span>C++</span>
+                                <span>RISC-V</span>
+                                <span>MPI</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Systems & Infrastructure Page -->
-        <section id="systems" class="page">
-            <div class="page-header">
-                <h1 class="page-title">Systems & Infrastructure</h1>
-                <p class="page-subtitle">System-level programming, web infrastructure, and enterprise solutions</p>
-            </div>
-
-            <div class="projects-grid">
-                <div class="project-card featured" data-project="workhub">
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <i class="fas fa-tasks"></i>
-                        </div>
-                        <div class="project-meta">
-                            <h3>WorkHubPro Enterprise Platform</h3>
-                            <span class="project-role">Full-Stack Developer</span>
-                            <span class="project-period">Feb 2024 - Aug 2024</span>
-                        </div>
+        <!-- ML Section -->
+        <section id="ml" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <div class="header-meta">
+                        <span class="section-number">03</span>
+                        <span class="section-line"></span>
                     </div>
-                    <div class="project-content">
-                        <p class="project-description">
-                            Enterprise-grade task management platform with real-time collaboration,
-                            advanced PostgreSQL optimizations, and service-oriented architecture.
-                        </p>
-                        <div class="project-achievements">
-                            <div class="achievement">
-                                <span class="achievement-metric">140+</span>
-                                <span class="achievement-desc">Commits</span>
-                            </div>
-                            <div class="achievement">
-                                <span class="achievement-metric">Real-time</span>
-                                <span class="achievement-desc">WebSocket Updates</span>
-                            </div>
-                            <div class="achievement">
-                                <span class="achievement-metric">RBAC</span>
-                                <span class="achievement-desc">Security Model</span>
-                            </div>
-                        </div>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Kotlin</span>
-                            <span class="tech-tag">Jetpack Compose</span>
-                            <span class="tech-tag">Go</span>
-                            <span class="tech-tag">PostgreSQL</span>
-                            <span class="tech-tag">WebSockets</span>
-                        </div>
-                    </div>
+                    <h2 class="section-title">Machine Learning & AI</h2>
+                    <p class="section-subtitle">Distributed learning, privacy-preserving AI, and intelligent systems</p>
                 </div>
 
-                <div class="project-card" data-project="crawler">
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <i class="fas fa-spider"></i>
-                        </div>
-                        <div class="project-meta">
-                            <h3>Multi-Threaded Web Crawler</h3>
-                            <span class="project-role">Systems Programmer</span>
-                            <span class="project-period">Completed Project</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <p class="project-description">
-                            High-performance web crawler with multi-threaded architecture,
-                            HTML parsing capabilities, and efficient metadata extraction.
-                        </p>
-                        <div class="project-achievements">
-                            <div class="achievement">
-                                <span class="achievement-metric">Multi-threaded</span>
-                                <span class="achievement-desc">Architecture</span>
+                <div class="projects-showcase">
+                    <div class="project-featured ml-featured" data-project="distributed-ml">
+                        <div class="featured-glow"></div>
+                        <div class="featured-content">
+                            <div class="featured-badge">
+                                <i class="fab fa-microsoft"></i>
+                                <span>Azure ML Platform</span>
                             </div>
-                            <div class="achievement">
-                                <span class="achievement-metric">JSON</span>
-                                <span class="achievement-desc">Metadata Export</span>
-                            </div>
-                        </div>
-                        <div class="tech-stack">
-                            <span class="tech-tag">C++</span>
-                            <span class="tech-tag">Curl</span>
-                            <span class="tech-tag">Gumbo Parser</span>
-                            <span class="tech-tag">Multi-threading</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Research Page -->
-        <section id="research" class="page">
-            <div class="page-header">
-                <h1 class="page-title">Research & Publications</h1>
-                <p class="page-subtitle">Academic research in high-performance graph algorithms and parallel computing
-                </p>
-            </div>
-
-            <div class="research-content">
-                <div class="publications-section">
-                    <h2 class="section-title">Published Research</h2>
-                    <div class="publications-grid">
-                        <div class="publication-card" data-project="paper4"
-                            data-url="https://ieeexplore.ieee.org/document/10974793/">
-                            <div class="publication-header">
-                                <div class="publication-venue">EuroMicro PDP 2025</div>
-                                <div class="publication-type">Conference Full Length Paper</div>
-                                <div class="publication-link-icon">
-                                    <a href="https://ieeexplore.ieee.org/document/10974793/" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-external-link-alt"></i>
-    </a>
-                                </div>
-                            </div>
-                            <h3 class="publication-title">Fast MIS on Dynamic Graphs</h3>
-                            <div class="publication-authors">
-                                P. Nijhara, <strong>Aditya Trivedi</strong>, D.S. Banerjee
-                            </div>
-                            <p class="publication-abstract">
-                                Proposed novel parallel data structures and algorithmic techniques for efficiently computing Maximal
-                                Independent Sets (MIS) on dynamic graphs. Developed specialized approaches to handle batched edge
-                                insertions and deletions while maintaining correctness and maximizing parallelism. Achieved 15.64x
-                                speedup for insertion operations and 10.57x for deletion operations compared to recomputing from
-                                scratch, while maintaining approximately 0.18% cardinality variance. The work introduces innovative
-                                conflict resolution strategies that enable efficient parallel MIS maintenance on evolving graph structures,
-                                with applications in network analysis, distributed systems, and graph-based machine learning.
+                            <h3 class="featured-title">Distributed ML Framework</h3>
+                            <p class="featured-description">
+                                Privacy-preserving federated learning system for credit card fraud detection
+                                with differential privacy guarantees and distributed training on Azure.
                             </p>
-                            <div class="publication-metrics">
+                            <div class="featured-metrics">
                                 <div class="metric">
-                                    <span class="metric-value">15.64x</span>
-                                    <span class="metric-label">Insertion Speedup</span>
+                                    <span class="metric-value">92%</span>
+                                    <span class="metric-label">Accuracy</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-value">10.57x</span>
-                                    <span class="metric-label">Deletion Speedup</span>
+                                    <span class="metric-value">73%</span>
+                                    <span class="metric-label">Faster Training</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-value">~0.18%</span>
-                                    <span class="metric-label">Cardinality Variance</span>
+                                    <span class="metric-value">E~1.5</span>
+                                    <span class="metric-label">Privacy Budget</span>
                                 </div>
+                            </div>
+                            <div class="featured-tech">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Azure ML</span>
+                                <span class="tech-tag">TensorFlow</span>
+                                <span class="tech-tag">LSTM</span>
                             </div>
                         </div>
-
-                        <div class="publication-card" data-project="paper5"
-                            data-url="https://ieeexplore.ieee.org/document/10898364/">
-                            <div class="publication-header">
-                                <div class="publication-venue">IEEE HiPC 2024</div>
-                                <div class="publication-type">Conference SRS Paper</div>
-                                <div class="publication-link-icon">
-                                    <a href="https://ieeexplore.ieee.org/document/10898364/" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-external-link-alt"></i>
-    </a>
-                                </div>
-                            </div>
-                            <h3 class="publication-title">Fast MIS on Incremental Graphs</h3>
-                            <div class="publication-authors">
-                                <strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee
-                            </div>
-                            <p class="publication-abstract">
-                                Introduced novel Tuple Valued Bitmap (TVB) and TVBL data structures that fundamentally improve parallel
-                                MIS maintenance for incremental dynamic graphs. These data structures minimize the search space by
-                                encoding tuple-level information directly in bitmap representations, enabling efficient identification
-                                of affected regions during edge insertions. Achieved 15.64x speedup over static recomputation while
-                                successfully processing graphs with over 1.2 billion edges. The TVB/TVBL approach maximizes parallelism
-                                by reducing contention and enabling fine-grained concurrent updates, making it suitable for real-time
-                                applications requiring frequent graph modifications such as social network analysis and dynamic routing.
-                            </p>
-                            <div class="publication-metrics">
-                                <div class="metric">
-                                    <span class="metric-value">15.64x</span>
-                                    <span class="metric-label">Insertion Speedup</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">TVB/TVBL</span>
-                                    <span class="metric-label">Novel Data Structures</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">1.2B</span>
-                                    <span class="metric-label">Edges Processed</span>
-                                </div>
+                        <div class="featured-visual">
+                            <div class="neural-network">
+                                <div class="nn-layer layer-1"></div>
+                                <div class="nn-layer layer-2"></div>
+                                <div class="nn-layer layer-3"></div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="publications-section">
-                    <h2 class="section-title">Under Review & In Progress</h2>
-                    <div class="publications-grid">
-                        <div class="publication-card featured" data-project="paper1">
-                            <div class="publication-header">
-                                <div class="publication-venue">Elsevier FGCS 2025</div>
-                                <div class="publication-type">Journal Paper</div>
+                    <div class="projects-grid">
+                        <div class="project-card" data-project="musify">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-music"></i>
+                                </div>
+                                <div class="card-period">Ongoing</div>
                             </div>
-                            <h3 class="publication-title">ParMIS: Fast and Unified MIS Maintenance Framework for Large
-                                Scale Dynamic Graphs</h3>
-                            <div class="publication-authors">
-                                P. Nijhara, <strong>Aditya Trivedi</strong>, A. H. Singh , Neha Sharma , Avaneesh
-                                Pandey, D.S. Banerjee
-                            </div>
-                            <p class="publication-abstract">
-                                Presents ParMIS, a comprehensive unified framework for efficient MIS maintenance across all dynamic
-                                graph update scenarios including incremental, batch, and fully dynamic modifications. Designed a novel
-                                GPU streaming pipeline optimized for billion-scale graphs, achieving 4.63x GPU acceleration and 47.27x
-                                batch update speedup over static approaches. Introduces sophisticated conflict resolution strategies
-                                that harmonize race-conflicting updates in parallel execution while preserving correctness guarantees.
-                                The framework seamlessly handles mixed workloads of insertions and deletions, making it the first unified
-                                solution capable of maintaining MIS across diverse dynamic graph scenarios with consistently high
-                                performance, applicable to large-scale social networks, knowledge graphs, and streaming graph analytics.
+                            <h4 class="card-title">Musify Recommendation</h4>
+                            <p class="card-role">ML Engineer</p>
+                            <p class="card-description">
+                                Music genre classification and recommendation using audio feature
+                                extraction and ML algorithms.
                             </p>
-                            <div class="publication-metrics">
-                                <div class="metric">
-                                    <span class="metric-value">47.27x</span>
-                                    <span class="metric-label">Batch Update Speedup</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">4.63x</span>
-                                    <span class="metric-label">GPU Speedup</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">Unified</span>
-                                    <span class="metric-label">Framework</span>
+                            <div class="card-metrics">
+                                <div class="mini-metric">
+                                    <span class="value">92.42%</span>
+                                    <span class="label">Accuracy</span>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="publication-card" data-project="paper2">
-                            <div class="publication-header">
-                                <div class="publication-venue">IEEE HiPC 2025</div>
-                                <div class="publication-type">Conference Paper</div>
+                            <div class="card-tech">
+                                <span>Python</span>
+                                <span>Librosa</span>
+                                <span>LightGBM</span>
                             </div>
-                            <h3 class="publication-title">Fast and Accurate MIS on Dynamic Graphs</h3>
-                            <div class="publication-authors">
-                                A. H. Singh, <strong>Aditya Trivedi</strong>, Neha Sharma, Avaneesh Pandey, D.S.
-                                Banerjee
-                            </div>
-                            <p class="publication-abstract">
-                                Developed an innovative BFS-based MIS maintenance algorithm that addresses fundamental accuracy
-                                challenges in parallel dynamic graph algorithms. The approach intelligently groups race-conflicting
-                                updates and executes them in topologically-ordered batches to prevent inconsistencies that plague
-                                conventional parallel methods. Achieved 32.4x speedup compared to static recomputation while guaranteeing
-                                accurate MIS results without approximation. The BFS-based conflict resolution mechanism identifies
-                                dependencies between concurrent updates and schedules their execution to maintain correctness invariants,
-                                making it particularly valuable for applications requiring exact solutions such as resource allocation,
-                                vertex coloring, and wireless network optimization in dynamic environments.
-                            </p>
-                            <div class="publication-metrics">
-                                <div class="metric">
-                                    <span class="metric-value">32.4x</span>
-                                    <span class="metric-label">Speedup vs Static</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">BFS-based</span>
-                                    <span class="metric-label">Conflict Resolution</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">Accurate</span>
-                                    <span class="metric-label">Results</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ongoing-research-section">
-                    <h2 class="section-title">Ongoing Research</h2>
-                    <div class="research-card">
-                        <h3>Semi-External Parallel Maximal Cliques Maintenance</h3>
-                        <div class="publication-authors">
-                                <strong>Aditya Trivedi</strong>, Dishit Sharma, Aditya Mundhara, D.S. Banerjee
-                            </div>
-                        <p class="research-description">
-                            Developing an innovative semi-external memory framework for efficient maximal clique maintenance in
-                            billion-scale dynamic graphs that exceed available RAM capacity. The approach strategically partitions
-                            the graph between fast in-memory storage and external memory (disk/SSD), achieving 150-300× memory
-                            reduction compared to traditional full-graph in-memory methods. Designed specialized data structures
-                            and algorithms that minimize I/O overhead while maintaining exact correctness guarantees for maximal
-                            clique enumeration. Leveraging GPU parallelism for in-memory computations combined with intelligent
-                            prefetching and caching strategies to overlap computation with I/O operations. This work enables
-                            processing of graphs previously intractable on single machines, with applications in bioinformatics
-                            (protein interaction networks), social network analysis (community detection), and knowledge graph mining.
-                        </p>
-                        <div class="research-areas">
-                            <span class="research-tag">Semi-External Memory</span>
-                            <span class="research-tag">Maximal Cliques</span>
-                            <span class="research-tag">GPU Computing</span>
-                            <span class="research-tag">Memory Optimization</span>
-                            <span class="research-tag">Parallel Algorithms</span>
-                        </div>
-                        <div class="advisor-info">
-                            <strong>Research Advisor:</strong> Dr. Dip Sankar Banerjee, IIT Jodhpur
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- About Page -->
-        <section id="about" class="page">
-            <div class="page-header">
-                <h1 class="page-title">About Me</h1>
-                <p class="page-subtitle">Background, education, and professional journey</p>
-            </div>
+        <!-- Systems Section -->
+        <section id="systems" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <div class="header-meta">
+                        <span class="section-number">04</span>
+                        <span class="section-line"></span>
+                    </div>
+                    <h2 class="section-title">Systems & Infrastructure</h2>
+                    <p class="section-subtitle">System-level programming, web infrastructure, and enterprise solutions</p>
+                </div>
 
-            <div class="about-content">
-                <div class="about-grid">
-                    <div class="about-text">
-                        <div class="intro-section">
-                            <h2>Professional Summary</h2>
-                            <p>
-                                I'm a passionate High-Performance Computing Research Engineer currently pursuing
-                                my Bachelor's in Computer Science at IIT Jodhpur. My expertise lies in compiler
-                                development, parallel algorithms, and distributed computing systems.
-                            </p>
-                            <p>
-                                Currently working as a Compiler Development Engineer at LFortran and contributing
-                                to Google Summer of Code 2025, I specialize in Fortran compiler optimization,
-                                OpenMP implementations, and GPU-targeted code generation.
-                            </p>
-                        </div>
-
-                        <div class="education-section">
-                            <h2>Education</h2>
-                            <div class="education-item">
-                                <div class="education-header">
-                                    <h3>Indian Institute of Technology, Jodhpur</h3>
-                                    <span class="education-period">Nov 2022 - May 2026</span>
+                <div class="projects-showcase">
+                    <div class="projects-grid systems-grid">
+                        <div class="project-card large-card" data-project="workhub">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-tasks"></i>
                                 </div>
-                                <div class="education-details">
-                                    <p class="degree">Bachelor of Technology - Computer Science & Engineering</p>
-                                    <p class="gpa">Current CGPA: 8.14/10</p>
+                                <div class="card-period">Feb 2024 - Aug 2024</div>
+                            </div>
+                            <h4 class="card-title">WorkHubPro Enterprise</h4>
+                            <p class="card-role">Full-Stack Developer</p>
+                            <p class="card-description">
+                                Enterprise-grade task management platform with real-time collaboration,
+                                WebSocket updates, and RBAC security model.
+                            </p>
+                            <div class="card-metrics">
+                                <div class="mini-metric">
+                                    <span class="value">140+</span>
+                                    <span class="label">Commits</span>
                                 </div>
+                                <div class="mini-metric">
+                                    <span class="value">Real-time</span>
+                                    <span class="label">WebSocket</span>
+                                </div>
+                                <div class="mini-metric">
+                                    <span class="value">RBAC</span>
+                                    <span class="label">Security</span>
+                                </div>
+                            </div>
+                            <div class="card-tech">
+                                <span>Kotlin</span>
+                                <span>Go</span>
+                                <span>PostgreSQL</span>
+                                <span>WebSocket</span>
                             </div>
                         </div>
 
-                        <div class="skills-section">
-                            <h2>Technical Expertise</h2>
-                            <div class="skills-grid">
-                                <div class="skill-category">
-                                    <h3>Programming Languages</h3>
-                                    <div class="skill-list">
-                                        <span class="skill-item">C/C++</span>
-                                        <span class="skill-item">Python</span>
-                                        <span class="skill-item">Fortran</span>
-                                        <span class="skill-item">Rust</span>
-                                        <span class="skill-item">JavaScript</span>
-                                        <span class="skill-item">Kotlin</span>
-                                        <span class="skill-item">Go</span>
+                        <div class="project-card" data-project="crawler">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-spider"></i>
+                                </div>
+                                <div class="card-period">Completed</div>
+                            </div>
+                            <h4 class="card-title">Multi-Threaded Crawler</h4>
+                            <p class="card-role">Systems Programmer</p>
+                            <p class="card-description">
+                                High-performance web crawler with multi-threaded architecture and
+                                efficient metadata extraction.
+                            </p>
+                            <div class="card-metrics">
+                                <div class="mini-metric">
+                                    <span class="value">Parallel</span>
+                                    <span class="label">Threads</span>
+                                </div>
+                            </div>
+                            <div class="card-tech">
+                                <span>C++</span>
+                                <span>Curl</span>
+                                <span>Gumbo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Section -->
+        <section id="research" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <div class="header-meta">
+                        <span class="section-number">05</span>
+                        <span class="section-line"></span>
+                    </div>
+                    <h2 class="section-title">Research & Publications</h2>
+                    <p class="section-subtitle">Academic research in high-performance graph algorithms and parallel computing</p>
+                </div>
+
+                <div class="research-content">
+                    <!-- Published Papers -->
+                    <div class="research-category">
+                        <h3 class="category-title">
+                            <span class="status-dot published"></span>
+                            Published Research
+                        </h3>
+                        <div class="publications-grid">
+                            <div class="publication-card" data-project="paper4">
+                                <div class="pub-header">
+                                    <div class="pub-venue">EuroMicro PDP 2025</div>
+                                    <div class="pub-type">Full Paper</div>
+                                    <a href="https://ieeexplore.ieee.org/document/10974793/" target="_blank" class="pub-link">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                                <h4 class="pub-title">Fast MIS on Dynamic Graphs</h4>
+                                <p class="pub-authors">P. Nijhara, <strong>Aditya Trivedi</strong>, D.S. Banerjee</p>
+                                <p class="pub-abstract">
+                                    Novel parallel data structures for efficiently computing MIS on dynamic graphs
+                                    with batched edge insertions and deletions.
+                                </p>
+                                <div class="pub-metrics">
+                                    <div class="pub-metric">
+                                        <span class="value">15.64x</span>
+                                        <span class="label">Insert Speedup</span>
+                                    </div>
+                                    <div class="pub-metric">
+                                        <span class="value">10.57x</span>
+                                        <span class="label">Delete Speedup</span>
                                     </div>
                                 </div>
-                                <div class="skill-category">
-                                    <h3>Parallel Computing</h3>
-                                    <div class="skill-list">
-                                        <span class="skill-item">OpenMP</span>
-                                        <span class="skill-item">CUDA</span>
-                                        <span class="skill-item">MPI</span>
-                                        <span class="skill-item">LLVM</span>
-                                        <span class="skill-item">ARMv9</span>
-                                    </div>
+                            </div>
+
+                            <div class="publication-card" data-project="paper5">
+                                <div class="pub-header">
+                                    <div class="pub-venue">IEEE HiPC 2024</div>
+                                    <div class="pub-type">SRS Paper</div>
+                                    <a href="https://ieeexplore.ieee.org/document/10898364/" target="_blank" class="pub-link">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
                                 </div>
-                                <div class="skill-category">
-                                    <h3>Frameworks & Tools</h3>
-                                    <div class="skill-list">
-                                        <span class="skill-item">TensorFlow</span>
-                                        <span class="skill-item">PyTorch</span>
-                                        <span class="skill-item">Azure ML</span>
-                                        <span class="skill-item">Docker</span>
-                                        <span class="skill-item">PostgreSQL</span>
+                                <h4 class="pub-title">Fast MIS on Incremental Graphs</h4>
+                                <p class="pub-authors"><strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee</p>
+                                <p class="pub-abstract">
+                                    Introduced TVB and TVBL data structures for parallel MIS maintenance
+                                    on incremental dynamic graphs.
+                                </p>
+                                <div class="pub-metrics">
+                                    <div class="pub-metric">
+                                        <span class="value">1.2B</span>
+                                        <span class="label">Edges</span>
+                                    </div>
+                                    <div class="pub-metric">
+                                        <span class="value">TVB/TVBL</span>
+                                        <span class="label">Novel DS</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="about-sidebar">
-                        <div class="achievements-section">
-                            <h2>Key Achievements</h2>
-                            <ul class="achievements-list">
-                                <li>Google Summer of Code 2025 Contributor</li>
-                                <li>JEE Advanced Rank: 2989</li>
-                                <li>GUJCET State Rank: 481</li>
-                                <li>IEEE HiPC'24 ₹15k Grant Receiver</li>
-                            </ul>
+                    <!-- Under Review -->
+                    <div class="research-category">
+                        <h3 class="category-title">
+                            <span class="status-dot review"></span>
+                            Under Review
+                        </h3>
+                        <div class="publications-grid">
+                            <div class="publication-card featured-pub" data-project="paper1">
+                                <div class="pub-header">
+                                    <div class="pub-venue">Elsevier FGCS 2025</div>
+                                    <div class="pub-type">Journal</div>
+                                </div>
+                                <h4 class="pub-title">ParMIS: Fast and Unified MIS Maintenance Framework</h4>
+                                <p class="pub-authors">P. Nijhara, <strong>Aditya Trivedi</strong>, A.H. Singh, N. Sharma, A. Pandey, D.S. Banerjee</p>
+                                <p class="pub-abstract">
+                                    Comprehensive unified framework for MIS maintenance across all dynamic graph
+                                    update scenarios with GPU streaming pipeline.
+                                </p>
+                                <div class="pub-metrics">
+                                    <div class="pub-metric">
+                                        <span class="value">47.27x</span>
+                                        <span class="label">Batch Speedup</span>
+                                    </div>
+                                    <div class="pub-metric">
+                                        <span class="value">4.63x</span>
+                                        <span class="label">GPU Speedup</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="publication-card" data-project="paper2">
+                                <div class="pub-header">
+                                    <div class="pub-venue">IEEE HiPC 2025</div>
+                                    <div class="pub-type">Conference</div>
+                                </div>
+                                <h4 class="pub-title">Fast and Accurate MIS on Dynamic Graphs</h4>
+                                <p class="pub-authors">A.H. Singh, <strong>Aditya Trivedi</strong>, N. Sharma, A. Pandey, D.S. Banerjee</p>
+                                <p class="pub-abstract">
+                                    BFS-based MIS maintenance with topologically-ordered execution
+                                    for guaranteed accuracy.
+                                </p>
+                                <div class="pub-metrics">
+                                    <div class="pub-metric">
+                                        <span class="value">32.4x</span>
+                                        <span class="label">Speedup</span>
+                                    </div>
+                                    <div class="pub-metric">
+                                        <span class="value">100%</span>
+                                        <span class="label">Accurate</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ongoing Research -->
+                    <div class="research-category">
+                        <h3 class="category-title">
+                            <span class="status-dot ongoing"></span>
+                            Ongoing Research
+                        </h3>
+                        <div class="ongoing-card" data-project="ongoing-research">
+                            <div class="ongoing-content">
+                                <h4>Semi-External Parallel Maximal Cliques Maintenance</h4>
+                                <p class="ongoing-authors"><strong>Aditya Trivedi</strong>, D. Sharma, A. Mundhara, D.S. Banerjee</p>
+                                <p class="ongoing-description">
+                                    Developing semi-external memory framework for maximal clique maintenance
+                                    in billion-scale dynamic graphs, achieving 150-300x memory reduction
+                                    with GPU parallelism.
+                                </p>
+                                <div class="ongoing-tags">
+                                    <span>Semi-External Memory</span>
+                                    <span>Maximal Cliques</span>
+                                    <span>GPU Computing</span>
+                                    <span>Memory Optimization</span>
+                                </div>
+                                <div class="advisor-info">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Research Advisor: Dr. Dip Sankar Banerjee, IIT Jodhpur</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="section-container">
+                <div class="section-header">
+                    <div class="header-meta">
+                        <span class="section-number">06</span>
+                        <span class="section-line"></span>
+                    </div>
+                    <h2 class="section-title">About Me</h2>
+                    <p class="section-subtitle">Background, expertise, and journey</p>
+                </div>
+
+                <div class="about-content">
+                    <div class="about-grid">
+                        <div class="about-main">
+                            <div class="about-intro">
+                                <h3>HPC Research Engineer</h3>
+                                <p>
+                                    I'm a passionate High-Performance Computing Research Engineer pursuing
+                                    my B.Tech in Computer Science at <strong>IIT Jodhpur</strong>. My expertise
+                                    lies in compiler development, parallel algorithms, and distributed computing systems.
+                                </p>
+                                <p>
+                                    Currently working as a <strong>Compiler Development Engineer at LFortran</strong>
+                                    and contributing to <strong>Google Summer of Code 2025</strong>, I specialize
+                                    in Fortran compiler optimization, OpenMP implementations, and GPU-targeted code generation.
+                                </p>
+                            </div>
+
+                            <div class="education-card">
+                                <div class="edu-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="edu-content">
+                                    <h4>Indian Institute of Technology, Jodhpur</h4>
+                                    <p class="edu-degree">B.Tech - Computer Science & Engineering</p>
+                                    <div class="edu-meta">
+                                        <span><i class="far fa-calendar"></i> Nov 2022 - May 2026</span>
+                                        <span><i class="fas fa-chart-line"></i> CGPA: 8.14/10</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="skills-section">
+                                <h3>Technical Expertise</h3>
+                                <div class="skills-grid">
+                                    <div class="skill-category">
+                                        <h4>Languages</h4>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">C/C++</span>
+                                            <span class="skill-tag">Python</span>
+                                            <span class="skill-tag">Fortran</span>
+                                            <span class="skill-tag">Rust</span>
+                                            <span class="skill-tag">Go</span>
+                                            <span class="skill-tag">Kotlin</span>
+                                        </div>
+                                    </div>
+                                    <div class="skill-category">
+                                        <h4>Parallel Computing</h4>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag featured">OpenMP</span>
+                                            <span class="skill-tag featured">CUDA</span>
+                                            <span class="skill-tag featured">MPI</span>
+                                            <span class="skill-tag">LLVM</span>
+                                            <span class="skill-tag">RISC-V</span>
+                                        </div>
+                                    </div>
+                                    <div class="skill-category">
+                                        <h4>Tools & Frameworks</h4>
+                                        <div class="skill-tags">
+                                            <span class="skill-tag">TensorFlow</span>
+                                            <span class="skill-tag">PyTorch</span>
+                                            <span class="skill-tag">Azure ML</span>
+                                            <span class="skill-tag">Docker</span>
+                                            <span class="skill-tag">PostgreSQL</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="contact-section">
-                            <h2>Contact Information</h2>
-                            <div class="contact-info">
-                                <div class="contact-item">
-                                    <i class="fas fa-envelope"></i>
-                                    <a href="mailto:adit4443ya@gmail.com">adit4443ya@gmail.com</a>
+                        <div class="about-sidebar">
+                            <div class="achievements-card">
+                                <h4><i class="fas fa-trophy"></i> Key Achievements</h4>
+                                <ul class="achievements-list">
+                                    <li>
+                                        <span class="achievement-icon"><i class="fab fa-google"></i></span>
+                                        <span>Google Summer of Code 2025</span>
+                                    </li>
+                                    <li>
+                                        <span class="achievement-icon"><i class="fas fa-award"></i></span>
+                                        <span>JEE Advanced Rank: 2989</span>
+                                    </li>
+                                    <li>
+                                        <span class="achievement-icon"><i class="fas fa-medal"></i></span>
+                                        <span>GUJCET State Rank: 481</span>
+                                    </li>
+                                    <li>
+                                        <span class="achievement-icon"><i class="fas fa-gift"></i></span>
+                                        <span>IEEE HiPC'24 Grant Receiver</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="contact-card">
+                                <h4><i class="fas fa-satellite-dish"></i> Connect</h4>
+                                <div class="contact-links">
+                                    <a href="mailto:adit4443ya@gmail.com" class="contact-link">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>adit4443ya@gmail.com</span>
+                                    </a>
+                                    <a href="tel:+919510676850" class="contact-link">
+                                        <i class="fas fa-phone"></i>
+                                        <span>+91 9510676850</span>
+                                    </a>
+                                    <a href="https://github.com/adit4443ya" target="_blank" class="contact-link">
+                                        <i class="fab fa-github"></i>
+                                        <span>github.com/adit4443ya</span>
+                                    </a>
                                 </div>
-                                <div class="contact-item">
-                                    <i class="fas fa-phone"></i>
-                                    <a href="tel:+919510676850">+91 9510676850</a>
+                            </div>
+
+                            <div class="terminal-card">
+                                <div class="terminal-header">
+                                    <span class="terminal-dot"></span>
+                                    <span class="terminal-dot"></span>
+                                    <span class="terminal-dot"></span>
                                 </div>
-                                <div class="contact-item">
-                                    <i class="fab fa-github"></i>
-                                    <a href="https://github.com/adit4443ya" target="_blank">GitHub Profile</a>
+                                <div class="terminal-content">
+                                    <p><span class="prompt">$</span> whoami</p>
+                                    <p class="output">aditya_trivedi</p>
+                                    <p><span class="prompt">$</span> cat interests.txt</p>
+                                    <p class="output">compilers, hpc, gpu_computing</p>
+                                    <p><span class="prompt">$</span> ./run_ambition</p>
+                                    <p class="output blink">pushing_boundaries_</p>
                                 </div>
                             </div>
                         </div>
@@ -781,14 +905,35 @@
 
     <!-- Project Modal -->
     <div id="project-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-backdrop"></div>
+        <div class="modal-container">
             <div class="modal-header">
                 <h2 class="modal-title"></h2>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body"></div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="footer-logo">&lt;AT/&gt;</span>
+                <span class="footer-tagline">Building the future, one algorithm at a time.</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/adit4443ya" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="mailto:adit4443ya@gmail.com"><i class="fas fa-envelope"></i></a>
+            </div>
+            <div class="footer-copyright">
+                <span>&copy; 2025 Aditya Trivedi. Engineered with precision.</span>
+            </div>
+        </div>
+        <div class="footer-glow"></div>
+    </footer>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
