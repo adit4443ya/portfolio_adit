@@ -44,7 +44,7 @@ class CustomCursor {
     }
 
     setupHoverEffects() {
-        const hoverElements = document.querySelectorAll('a, button, .domain-card, .project-card, .publication-card, .ongoing-card');
+        const hoverElements = document.querySelectorAll('a, button, .domain-card, .project-card, .publication-card, .ongoing-card, .card-link, .project-link, .resume-download-btn');
 
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
@@ -520,8 +520,8 @@ class ProjectModal {
     init() {
         this.projectCards.forEach(card => {
             card.addEventListener('click', (e) => {
-                // Don't trigger if clicking on external link
-                if (e.target.closest('.pub-link')) return;
+                // Don't trigger if clicking on external link or card-link
+                if (e.target.closest('.pub-link') || e.target.closest('.card-link') || e.target.closest('.project-link')) return;
 
                 const projectId = card.getAttribute('data-project');
                 if (projectId && this.projectData[projectId]) {
