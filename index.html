@@ -142,10 +142,10 @@
                             </span>
                         </h1>
                         <p class="hero-description">
-                            I architect <span class="highlight">compilers</span>, optimize <span class="highlight">parallel algorithms</span>,
-                            and push the boundaries of <span class="highlight">GPU computing</span>.
-                            Currently advancing OpenMP 6.0 at Google Summer of Code and developing
-                            next-gen Fortran compilers.
+                            CS undergrad at IIT Jodhpur working on <span class="highlight">compiler development</span>
+                            and <span class="highlight">parallel computing</span>. Currently contributing to
+                            LFortran's OpenMP 6.0 implementation through <span class="highlight">Google Summer of Code 2025</span>,
+                            with research focus on dynamic graph algorithms.
                         </p>
                         <div class="hero-stats">
                             <div class="stat-item">
@@ -153,14 +153,13 @@
                                 <span class="stat-label">Research Papers</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-value" data-count="47">0</span>
-                                <span class="stat-suffix">x</span>
-                                <span class="stat-label">Max Speedup</span>
+                                <span class="stat-value special-text">GSoC</span>
+                                <span class="stat-suffix">'25</span>
+                                <span class="stat-label">Contributor</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-value" data-count="1.2">0</span>
-                                <span class="stat-suffix">B+</span>
-                                <span class="stat-label">Edges Processed</span>
+                                <span class="stat-value" data-count="2">0</span>
+                                <span class="stat-label">IEEE Publications</span>
                             </div>
                         </div>
                         <div class="hero-cta">
@@ -190,14 +189,14 @@
                                 </div>
                                 <pre class="code-content"><code><span class="code-keyword">#pragma</span> omp parallel for
 <span class="code-keyword">for</span> (<span class="code-type">int</span> i = <span class="code-number">0</span>; i < N; i++) {
-    <span class="code-comment">// GPU offloading enabled</span>
+    <span class="code-comment">// GPU offloading with OpenMP 6.0</span>
     <span class="code-keyword">#pragma</span> omp target teams distribute
     compute_kernel(data[i]);
 }
 
-<span class="code-comment">// Performance: 47x speedup achieved</span>
-<span class="code-type">double</span> speedup = measure_performance();
-<span class="code-function">printf</span>(<span class="code-string">"Efficiency: %.2f%%\n"</span>, speedup);</code></pre>
+<span class="code-comment">// LFortran compiler optimization</span>
+<span class="code-type">void</span> optimize_mpi_wrapper();
+<span class="code-function">printf</span>(<span class="code-string">"Compiled with LFortran\n"</span>);</code></pre>
                             </div>
                             <div class="floating-cards">
                                 <div class="float-card card-1">
