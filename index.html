@@ -24,7 +24,7 @@
   --violet-d:rgba(176,108,255,0.12);
   --rose:#ff4f7b;
   /* Text */
-  --text:#f0f4ff;--muted:#8899b8;--dim:#4a5568;
+  --text:#f0f4ff;--muted:#b8cfe8;--dim:#7a9ab8;
   --mono:'Space Mono',monospace;
   --serif:'Playfair Display',Georgia,serif;
   --sans:'Space Grotesk',sans-serif;
@@ -177,13 +177,22 @@ section{padding:110px 8vw}
 /* ── STACK ── */
 .sk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:1px;background:rgba(255,255,255,0.04)}
 .sk-box{background:rgba(4,5,18,0.65);backdrop-filter:blur(12px);padding:26px 22px}
-.sk-head{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.04)}
-.sk-head.c{color:rgba(0,229,255,0.45)}
-.sk-head.g{color:rgba(240,165,0,0.45)}
-.sk-head.v{color:rgba(176,108,255,0.45)}
+.sk-head{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sk-head.c{color:rgba(0,229,255,0.7)}
+.sk-head.g{color:rgba(240,165,0,0.7)}
+.sk-head.v{color:rgba(176,108,255,0.7)}
 .sk-tags{display:flex;flex-wrap:wrap;gap:6px}
-.sk-t{font-family:var(--mono);font-size:10px;color:var(--dim);padding:4px 10px;border:1px solid rgba(255,255,255,0.05);background:rgba(0,0,0,.2);transition:all .25s;cursor:default}
-.sk-t:hover{color:rgba(240,245,255,0.6);border-color:rgba(255,255,255,0.1)}
+.sk-t{font-family:var(--mono);font-size:10px;color:var(--dim);padding:4px 10px;border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,.25);transition:all .25s;cursor:default}
+.sk-t:hover{color:rgba(240,245,255,0.75);border-color:rgba(255,255,255,0.18)}
+/* Cyan category tool tags */
+.sk-box.c .sk-t{color:rgba(0,229,255,0.6);border-color:rgba(0,229,255,0.22);background:rgba(0,229,255,0.03)}
+.sk-box.c .sk-t:hover{color:var(--cyan);border-color:rgba(0,229,255,0.55);background:rgba(0,229,255,0.08);box-shadow:0 0 10px rgba(0,229,255,0.18),inset 0 0 6px rgba(0,229,255,0.06)}
+/* Gold category tool tags */
+.sk-box.g .sk-t{color:rgba(240,165,0,0.6);border-color:rgba(240,165,0,0.22);background:rgba(240,165,0,0.03)}
+.sk-box.g .sk-t:hover{color:var(--gold);border-color:rgba(240,165,0,0.55);background:rgba(240,165,0,0.08);box-shadow:0 0 10px rgba(240,165,0,0.18),inset 0 0 6px rgba(240,165,0,0.06)}
+/* Violet category tool tags */
+.sk-box.v .sk-t{color:rgba(176,108,255,0.6);border-color:rgba(176,108,255,0.22);background:rgba(176,108,255,0.03)}
+.sk-box.v .sk-t:hover{color:var(--violet);border-color:rgba(176,108,255,0.55);background:rgba(176,108,255,0.08);box-shadow:0 0 10px rgba(176,108,255,0.18),inset 0 0 6px rgba(176,108,255,0.06)}
 
 /* ── CONTACT ── */
 #contact{text-align:center}
@@ -480,10 +489,10 @@ footer{border-top:1px solid var(--border);padding:20px 8vw;display:flex;justify-
       <p class="s-num">05 // Stack</p>
       <h2 class="s-title">Tools of <strong>the Trade</strong></h2>
       <div class="sk-grid">
-        <div class="sk-box"><div class="sk-head c">Languages</div><div class="sk-tags"><span class="sk-t">C / C++</span><span class="sk-t">Fortran</span><span class="sk-t">Python</span><span class="sk-t">Rust</span><span class="sk-t">Go</span><span class="sk-t">Kotlin</span><span class="sk-t">JS</span><span class="sk-t">Bash</span></div></div>
-        <div class="sk-box"><div class="sk-head g">HPC & Parallel</div><div class="sk-tags"><span class="sk-t">OpenMP</span><span class="sk-t">CUDA</span><span class="sk-t">MPI</span><span class="sk-t">LLVM</span><span class="sk-t">ARMv9</span><span class="sk-t">RISC-V</span><span class="sk-t">NUMA</span></div></div>
-        <div class="sk-box"><div class="sk-head v">Compiler / IR</div><div class="sk-tags"><span class="sk-t">ASR Design</span><span class="sk-t">AST→ASR</span><span class="sk-t">C-backend</span><span class="sk-t">GDB</span><span class="sk-t">ISO_C_BINDING</span><span class="sk-t">Linux</span></div></div>
-        <div class="sk-box"><div class="sk-head c">ML / Infra</div><div class="sk-tags"><span class="sk-t">TensorFlow</span><span class="sk-t">PyTorch</span><span class="sk-t">Azure ML</span><span class="sk-t">Docker</span><span class="sk-t">PostgreSQL</span><span class="sk-t">Git</span></div></div>
+        <div class="sk-box c"><div class="sk-head c">Languages</div><div class="sk-tags"><span class="sk-t">C / C++</span><span class="sk-t">Fortran</span><span class="sk-t">Python</span><span class="sk-t">Rust</span><span class="sk-t">Go</span><span class="sk-t">Kotlin</span><span class="sk-t">JS</span><span class="sk-t">Bash</span></div></div>
+        <div class="sk-box g"><div class="sk-head g">HPC & Parallel</div><div class="sk-tags"><span class="sk-t">OpenMP</span><span class="sk-t">CUDA</span><span class="sk-t">MPI</span><span class="sk-t">LLVM</span><span class="sk-t">ARMv9</span><span class="sk-t">RISC-V</span><span class="sk-t">NUMA</span></div></div>
+        <div class="sk-box v"><div class="sk-head v">Compiler / IR</div><div class="sk-tags"><span class="sk-t">ASR Design</span><span class="sk-t">AST→ASR</span><span class="sk-t">C-backend</span><span class="sk-t">GDB</span><span class="sk-t">ISO_C_BINDING</span><span class="sk-t">Linux</span></div></div>
+        <div class="sk-box c"><div class="sk-head c">ML / Infra</div><div class="sk-tags"><span class="sk-t">TensorFlow</span><span class="sk-t">PyTorch</span><span class="sk-t">Azure ML</span><span class="sk-t">Docker</span><span class="sk-t">PostgreSQL</span><span class="sk-t">Git</span></div></div>
       </div>
     </div>
   </div>
