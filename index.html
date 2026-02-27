@@ -1,956 +1,674 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aditya Trivedi | Systems Architect & HPC Engineer</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Aditya Trivedi — Compiler Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600;1,700&family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#020208;
+  --bg2:rgba(4,5,18,0.55);
+  --glass:rgba(5,6,20,0.48);
+  --border:rgba(255,255,255,0.07);
+  --border-h:rgba(255,255,255,0.16);
+  /* Vibrant accent trio */
+  --cyan:#00e5ff;
+  --cyan-d:rgba(0,229,255,0.12);
+  --cyan-b:rgba(0,229,255,0.06);
+  --gold:#f0a500;
+  --gold-d:rgba(240,165,0,0.13);
+  --violet:#b06cff;
+  --violet-d:rgba(176,108,255,0.12);
+  --rose:#ff4f7b;
+  /* Text */
+  --text:#f0f4ff;--muted:#8899b8;--dim:#4a5568;
+  --mono:'Space Mono',monospace;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Space Grotesk',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;font-weight:300}
+#cv{position:fixed;inset:0;z-index:0}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.28}
+.content{position:relative;z-index:10}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 5vw;display:flex;justify-content:space-between;align-items:center;background:rgba(2,2,8,0.7);backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:4px;text-decoration:none;opacity:.7;transition:opacity .3s}
+.logo:hover{opacity:1}
+.nav-links{display:flex;gap:30px;list-style:none}
+.nav-links a{color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;transition:color .3s}
+.nav-links a:hover{color:rgba(240,245,255,0.6)}
+.w3btn{font-family:var(--mono);font-size:10px;padding:7px 16px;border:1px solid rgba(0,229,255,0.2);background:transparent;color:rgba(0,229,255,0.45);cursor:pointer;transition:all .3s;letter-spacing:1px}
+.w3btn:hover,.w3btn.connected{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.05)}
+
+/* ── HERO ── */
+#hero{height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 8vw;position:relative}
+.h-pre{font-family:var(--mono);font-size:10px;color:rgba(0,229,255,0.4);letter-spacing:5px;text-transform:uppercase;margin-bottom:26px;display:flex;align-items:center;gap:14px}
+.h-pre::before{content:'';width:30px;height:1px;background:var(--cyan);opacity:.4}
+.h-name{font-family:var(--serif);font-size:clamp(58px,11vw,138px);font-weight:700;font-style:italic;line-height:.88;letter-spacing:-1px;margin-bottom:24px}
+.h-name-1{color:rgba(255,255,255,0.95);display:block}
+.h-name-2{color:var(--cyan);display:block;font-weight:400}
+.h-divider{display:flex;align-items:center;gap:18px;margin-bottom:26px}
+.h-divider-line{flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent);opacity:.5}
+.h-divider-dot{width:4px;height:4px;background:var(--gold);opacity:.8}
+.h-sub{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;line-height:2.4;margin-bottom:32px}
+.h-sub .acc{color:var(--muted)}
+.h-desc{max-width:440px;font-size:clamp(15px,1.5vw,18px);line-height:1.9;color:var(--muted);font-weight:300;margin-bottom:50px}
+.kw{color:var(--text);font-style:italic}
+.kw-c{color:var(--cyan);font-style:italic}
+.kw-g{color:var(--gold);font-style:italic}
+.kw-v{color:var(--violet);font-style:italic}
+.h-links{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.hl{font-family:var(--mono);font-size:10px;color:var(--dim);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .3s;display:flex;align-items:center;gap:8px}
+.hl::after{content:'↗';opacity:.35;transition:opacity .3s}
+.hl:hover{color:var(--muted)}.hl:hover::after{opacity:.8}
+.hl.prim{color:var(--cyan);opacity:.8;border-bottom:1px solid rgba(0,229,255,0.25);padding-bottom:2px}
+.hl.prim::after{display:none}.hl.prim:hover{opacity:1}
+.scroll-ind{position:absolute;bottom:36px;right:8vw;display:flex;flex-direction:column;align-items:center;gap:8px;writing-mode:vertical-rl;font-family:var(--mono);font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.15);text-transform:uppercase}
+.scroll-ind::before{content:'';width:1px;height:44px;background:linear-gradient(to bottom,transparent,rgba(0,229,255,0.3))}
+
+/* ── SECTIONS ── */
+section{padding:110px 8vw}
+
+/* GLASS PANEL */
+.panel{background:var(--glass);backdrop-filter:blur(44px) saturate(140%);-webkit-backdrop-filter:blur(44px) saturate(140%);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .4s}
+.panel:hover{border-color:var(--border-h)}
+.panel-glow{position:absolute;inset:0;pointer-events:none}
+.panel-glow-tl{position:absolute;top:0;left:0;width:300px;height:200px;background:radial-gradient(ellipse at top left,rgba(0,229,255,0.04),transparent 70%)}
+.panel-glow-br{position:absolute;bottom:0;right:0;width:200px;height:150px;background:radial-gradient(ellipse at bottom right,rgba(176,108,255,0.03),transparent 70%)}
+.panel-border-top{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .5s}
+.panel:hover .panel-border-top{opacity:.6}
+.panel-inner{padding:52px 52px}
+
+.s-num{font-family:var(--mono);font-size:9px;color:rgba(0,229,255,0.35);letter-spacing:5px;text-transform:uppercase;margin-bottom:8px}
+.s-title{font-family:var(--serif);font-size:clamp(32px,4.8vw,62px);font-weight:600;font-style:italic;line-height:1.05;margin-bottom:52px;letter-spacing:-.5px}
+.s-title strong{font-style:normal;font-weight:900;color:var(--cyan)}
+.s-title .gold{font-style:normal;font-weight:900;color:var(--gold)}
+.s-title .vio{font-style:normal;font-weight:900;color:var(--violet)}
+
+/* ── FEATURED WORK ── */
+.feat-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(240,165,0,0.2);background:rgba(240,165,0,0.04);margin-bottom:18px}
+.feat-badge::before{content:'▶';font-size:7px}
+.feat-name{font-family:var(--serif);font-size:clamp(22px,3vw,38px);font-weight:600;font-style:italic;line-height:1.15;margin-bottom:6px}
+.feat-name a{color:var(--text);text-decoration:none;transition:color .3s}
+.feat-name a:hover{color:var(--cyan)}
+.feat-org{font-family:var(--mono);font-size:10px;color:rgba(0,229,255,0.45);margin-bottom:30px;letter-spacing:.5px}
+.feat-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}
+.feat-body p{font-size:clamp(13px,1.2vw,16px);color:var(--muted);line-height:1.95;margin-bottom:14px}
+
+/* Inline keyword highlights */
+.hi-c{color:var(--cyan);font-style:italic;font-weight:500}
+.hi-g{color:var(--gold);font-style:italic;font-weight:500}
+.hi-v{color:var(--violet);font-style:italic;font-weight:500}
+.hi-w{color:rgba(240,245,255,0.9);font-weight:500}
+.tag-c{display:inline-block;color:var(--cyan);background:var(--cyan-d);border:1px solid rgba(0,229,255,0.18);font-family:var(--mono);font-size:10px;padding:1px 7px;letter-spacing:.3px;border-radius:0;vertical-align:middle}
+.tag-g{display:inline-block;color:var(--gold);background:var(--gold-d);border:1px solid rgba(240,165,0,0.18);font-family:var(--mono);font-size:10px;padding:1px 7px;letter-spacing:.3px;vertical-align:middle}
+.tag-v{display:inline-block;color:var(--violet);background:var(--violet-d);border:1px solid rgba(176,108,255,0.18);font-family:var(--mono);font-size:10px;padding:1px 7px;letter-spacing:.3px;vertical-align:middle}
+
+.feat-chips{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:9px;color:rgba(0,229,255,0.5);text-decoration:none;padding:7px 14px;border:1px solid rgba(0,229,255,0.15);letter-spacing:1px;transition:all .3s;text-transform:uppercase}
+.chip:hover{color:var(--cyan);border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.04)}
+.chip.gd{color:rgba(240,165,0,0.5);border-color:rgba(240,165,0,0.15)}
+.chip.gd:hover{color:var(--gold);border-color:rgba(240,165,0,0.4)}
+
+/* Metrics */
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.05)}
+.metric{background:rgba(3,4,18,0.72);padding:24px 22px;backdrop-filter:blur(16px);transition:background .3s}
+.metric:hover{background:rgba(6,8,28,0.85)}
+.m-n{font-family:var(--mono);font-size:26px;font-weight:700;line-height:1;margin-bottom:6px}
+.m-n.c{color:var(--cyan)}
+.m-n.g{color:var(--gold)}
+.m-n.v{color:var(--violet)}
+.m-l{font-size:11px;color:var(--dim);letter-spacing:.3px;line-height:1.6}
+.panel+.panel{margin-top:20px}
+
+/* ── TIMELINE ── */
+.tl-item{display:grid;grid-template-columns:150px 1fr;gap:0;position:relative;padding-bottom:44px}
+.tl-item::after{content:'';position:absolute;left:158px;top:22px;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(0,229,255,0.25),rgba(0,229,255,0.04))}
+.tl-item:last-child{padding-bottom:0}.tl-item:last-child::after{display:none}
+.tl-node{position:absolute;left:154px;top:19px;width:9px;height:9px;border:1px solid var(--cyan);background:var(--bg);opacity:.7}
+.tl-date{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.5px;line-height:2;padding-top:18px;padding-right:22px;text-align:right;text-transform:uppercase}
+.tl-body{padding:14px 0 0 32px}
+.tl-name{font-family:var(--serif);font-size:clamp(17px,2vw,24px);font-style:italic;font-weight:600;margin-bottom:4px;line-height:1.2}
+.tl-name a{color:var(--text);text-decoration:none;transition:color .3s}
+.tl-name a:hover{color:var(--cyan)}
+.tl-role{font-family:var(--mono);font-size:10px;color:rgba(0,229,255,0.5);margin-bottom:3px;letter-spacing:.5px}
+.tl-stack{font-family:var(--mono);font-size:9px;color:rgba(240,165,0,0.55);margin-bottom:16px;letter-spacing:.3px}
+.pts{list-style:none;display:flex;flex-direction:column;gap:9px}
+.pts li{font-size:clamp(12px,1.1vw,14px);color:var(--muted);line-height:1.8;padding-left:16px;position:relative}
+.pts li::before{content:'–';position:absolute;left:0;color:rgba(0,229,255,0.35);font-family:var(--mono)}
+.pts a{color:rgba(0,229,255,0.65);text-decoration:none;border-bottom:1px solid rgba(0,229,255,0.15);transition:color .3s}
+.pts a:hover{color:var(--cyan)}
+
+/* ── RESEARCH ── */
+.research-intro{font-family:var(--serif);font-style:italic;font-size:clamp(14px,1.4vw,18px);color:var(--muted);max-width:560px;line-height:1.9;margin-bottom:40px}
+.research-intro strong{font-style:normal;color:rgba(240,245,255,0.8);font-weight:600}
+.pub-stack{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.04)}
+.pub{background:rgba(4,5,18,0.7);backdrop-filter:blur(12px);padding:22px 26px;display:grid;grid-template-columns:68px 1fr;gap:22px;transition:all .3s;position:relative;overflow:hidden}
+.pub::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transition:transform .4s;transform-origin:bottom}
+.pub:hover{background:rgba(8,10,30,0.82)}.pub:hover::before{transform:scaleY(1)}
+.pub-yr{font-family:var(--mono);font-size:9px;color:rgba(240,165,0,0.5);line-height:1.8;letter-spacing:.5px;text-transform:uppercase;padding-top:2px}
+.pub-title{font-family:var(--serif);font-size:clamp(13px,1.3vw,16px);font-style:italic;font-weight:600;margin-bottom:4px;line-height:1.4;color:rgba(240,245,255,0.85)}
+.pub-title a{color:inherit;text-decoration:none;transition:color .3s}
+.pub-title a:hover{color:var(--gold)}
+.pub-venue{font-family:var(--mono);font-size:9px;color:rgba(240,165,0,0.45);margin-bottom:3px;letter-spacing:.3px}
+.pub-authors{font-size:11px;color:var(--dim);font-family:var(--mono)}
+.me{color:rgba(240,245,255,0.6)}
+.badge{font-family:var(--mono);font-size:9px;border:1px solid rgba(176,108,255,0.3);color:rgba(176,108,255,0.65);padding:2px 8px;margin-top:6px;display:inline-block;letter-spacing:1px}
+
+/* ── PROJECTS ── */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:1px;background:rgba(255,255,255,0.04)}
+.proj{background:rgba(4,5,18,0.68);backdrop-filter:blur(20px);padding:30px 28px;transition:background .35s;position:relative;overflow:hidden}
+.proj::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);transform:scaleX(0);transition:transform .45s;transform-origin:center}
+.proj:hover{background:rgba(8,12,34,0.82)}.proj:hover::after{transform:scaleX(1)}
+.proj-idx{font-family:var(--mono);font-size:9px;color:rgba(0,229,255,0.25);margin-bottom:14px;letter-spacing:2px}
+.proj-name{font-family:var(--serif);font-size:clamp(15px,1.6vw,20px);font-style:italic;font-weight:600;margin-bottom:7px;line-height:1.25;color:rgba(240,245,255,0.9)}
+.proj-name a{color:inherit;text-decoration:none;transition:color .3s}
+.proj-name a:hover{color:var(--cyan)}
+.proj-tech{font-family:var(--mono);font-size:9px;color:rgba(240,165,0,0.5);margin-bottom:12px;letter-spacing:.3px;line-height:1.8}
+.proj-desc{font-size:clamp(12px,1.1vw,13px);color:var(--dim);line-height:1.85;margin-bottom:20px}
+.plink{font-family:var(--mono);font-size:9px;color:rgba(0,229,255,0.45);text-decoration:none;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid rgba(0,229,255,0.15);padding-bottom:2px;transition:all .3s}
+.plink:hover{color:var(--cyan);border-color:rgba(0,229,255,0.5)}
+
+/* ── STACK ── */
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:1px;background:rgba(255,255,255,0.04)}
+.sk-box{background:rgba(4,5,18,0.65);backdrop-filter:blur(12px);padding:26px 22px}
+.sk-head{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.sk-head.c{color:rgba(0,229,255,0.45)}
+.sk-head.g{color:rgba(240,165,0,0.45)}
+.sk-head.v{color:rgba(176,108,255,0.45)}
+.sk-tags{display:flex;flex-wrap:wrap;gap:6px}
+.sk-t{font-family:var(--mono);font-size:10px;color:var(--dim);padding:4px 10px;border:1px solid rgba(255,255,255,0.05);background:rgba(0,0,0,.2);transition:all .25s;cursor:default}
+.sk-t:hover{color:rgba(240,245,255,0.6);border-color:rgba(255,255,255,0.1)}
+
+/* ── CONTACT ── */
+#contact{text-align:center}
+.ct{font-family:var(--serif);font-style:italic;font-size:clamp(16px,2vw,22px);color:var(--muted);max-width:480px;margin:0 auto 48px;line-height:1.85}
+.ct strong{font-style:normal;color:rgba(240,245,255,0.75)}
+.clinks{display:flex;justify-content:center;gap:1px;flex-wrap:wrap;background:rgba(255,255,255,0.04);max-width:700px;margin:0 auto}
+.clink{flex:1;min-width:140px;display:flex;justify-content:center;align-items:center;gap:9px;padding:20px;background:rgba(4,5,18,0.65);backdrop-filter:blur(20px);color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;transition:all .3s}
+.clink:hover{color:var(--cyan);background:rgba(0,229,255,0.04)}
+
+footer{border-top:1px solid var(--border);padding:20px 8vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;background:rgba(2,2,8,0.85);backdrop-filter:blur(24px)}
+.ft{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:1px}
+.ft span{color:rgba(0,229,255,0.4)}
+
+/* REVEAL */
+.fu{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s ease}
+.fu.in{opacity:1;transform:none}
+.fd{transition-delay:.1s}.fd2{transition-delay:.2s}.fd3{transition-delay:.3s}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  section{padding:80px 5vw}
+  #hero{padding:0 6vw}
+  .feat-grid{grid-template-columns:1fr}
+  .tl-item{grid-template-columns:1fr}
+  .tl-item::after,.tl-node,.tl-date{display:none}
+  .tl-body{padding:0 0 28px 0}
+  .panel-inner{padding:32px 24px}
+  footer{flex-direction:column;text-align:center}
+}
+</style>
 </head>
-
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
+<canvas id="cv"></canvas>
+<canvas id="noise" style="position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.22"></canvas>
 
-    <!-- Preloader / Boot Sequence -->
-    <div id="boot-sequence">
-        <div class="boot-container">
-            <div class="boot-logo">
-                <div class="quantum-core">
-                    <div class="core-ring ring-1"></div>
-                    <div class="core-ring ring-2"></div>
-                    <div class="core-ring ring-3"></div>
-                    <div class="core-nucleus"></div>
-                </div>
-            </div>
-            <div class="boot-terminal">
-                <div class="terminal-header">
-                    <span class="terminal-dot red"></span>
-                    <span class="terminal-dot yellow"></span>
-                    <span class="terminal-dot green"></span>
-                    <span class="terminal-title">system://init</span>
-                </div>
-                <div class="terminal-body">
-                    <div class="boot-line" data-delay="0">$ initializing quantum processors...</div>
-                    <div class="boot-line" data-delay="1">$ loading neural pathways... [OK]</div>
-                    <div class="boot-line" data-delay="2">$ establishing HPC clusters... [OK]</div>
-                    <div class="boot-line" data-delay="3">$ compiling parallel threads... [OK]</div>
-                    <div class="boot-line" data-delay="4">$ synchronizing GPU arrays... [OK]</div>
-                    <div class="boot-line success" data-delay="5">> SYSTEM ONLINE_</div>
-                </div>
-            </div>
-            <div class="boot-progress">
-                <div class="progress-track">
-                    <div class="progress-fill"></div>
-                </div>
-                <div class="progress-text">0%</div>
-            </div>
+<nav>
+  <a href="#hero" class="logo">Aditya.T</a>
+  <ul class="nav-links">
+    <li><a href="#gsoc">Work</a></li>
+    <li><a href="#experience">Exp</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="w3btn" id="wbtn">⬡ Connect Wallet</button>
+</nav>
+
+<div class="content">
+
+<!-- HERO -->
+<section id="hero">
+  <p class="h-pre">Compiler Engineering · HPC · IIT Jodhpur · 2026</p>
+  <h1 class="h-name">
+    <span class="h-name-1">Aditya</span>
+    <span class="h-name-2">Trivedi</span>
+  </h1>
+  <div class="h-divider">
+    <div class="h-divider-line"></div>
+    <div class="h-divider-dot"></div>
+    <div class="h-divider-line" style="background:linear-gradient(90deg,transparent,rgba(176,108,255,0.4))"></div>
+  </div>
+  <p class="h-sub">
+    <span class="acc">GSoC 2025 · Fortran-Lang</span> &nbsp;/&nbsp;
+    LFortran Compiler &nbsp;/&nbsp;
+    <span class="acc">HPC Research · Published Author</span>
+  </p>
+  <p class="h-desc">
+    Working at the lowest layers — <span class="kw-c">compiler IR design</span>,
+    <span class="kw-g">parallel runtime engineering</span>, and
+    <span class="kw-v">GPU offloading</span>.
+    Four published papers on parallel graph algorithms.
+    Final year at <span class="kw">IIT Jodhpur</span>.
+  </p>
+  <div class="h-links">
+    <a href="#gsoc" class="hl prim">Featured Work</a>
+    <a href="https://github.com/adit4443ya" target="_blank" class="hl">GitHub</a>
+    <a href="https://www.linkedin.com/in/adit4443ya/" target="_blank" class="hl">LinkedIn</a>
+    <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="hl">GSoC Blog</a>
+  </div>
+  <div class="scroll-ind">Scroll</div>
+</section>
+
+<!-- GSOC FEATURED -->
+<section id="gsoc">
+  <div class="panel fu">
+    <div class="panel-glow"><div class="panel-glow-tl"></div><div class="panel-glow-br"></div></div>
+    <div class="panel-border-top"></div>
+    <div class="panel-inner">
+      <p class="s-num">01 // Featured</p>
+      <h2 class="s-title">The Work That <strong>Defined</strong> the Year</h2>
+
+      <div class="feat-badge">Google Summer of Code 2025 · Fortran-Lang · May–Sept</div>
+      <h3 class="feat-name"><a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">OpenMP 6.0 Infrastructure & GPU Offloading in LFortran</a></h3>
+      <p class="feat-org">C++ · Fortran · OpenMP · CUDA · LLVM / ASR</p>
+
+      <div class="feat-grid">
+        <div class="feat-body">
+          <p>LFortran is a from-scratch Fortran compiler targeting LLVM and C backends. My GSoC project built <span class="hi-c">OpenMP</span> deep enough to eventually enable <span class="hi-g">GPU execution of Fortran</span> — something no open-source Fortran compiler handles cleanly today.</p>
+          <p>The significant architectural decision: OpenMP handling was entangled with the <tag-c class="tag-c">DoConcurrentLoop</tag-c> path. I proposed and implemented a dedicated <span class="tag-c">OMPRegion ASR node</span> — giving OpenMP <span class="hi-w">first-class representation in the IR tree</span>. This unlocked structurally clean handling of nested and hierarchical parallelism that was architecturally impossible before.</p>
+          <p>With the IR foundation in place: <span class="hi-g">13+ constructs</span>, <span class="hi-g">8+ clauses</span> spanning thread, team, and task models — then extended the C-backend to emit compilable host-device code for <span class="tag-g">OpenMP Target Offloading</span> on NVIDIA GPUs. A <span class="hi-v">custom GPU emulator</span> (&lt;250 lines) handles CI without physical hardware.</p>
+          <div class="feat-chips">
+            <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="chip">↗ Blog · 12 weeks</a>
+            <a href="https://github.com/lfortran/lfortran/issues/4497#issuecomment-3089155987" target="_blank" class="chip">↗ GPU Thread</a>
+            <a href="https://github.com/lfortran/lfortran/commits?author=adit4443ya" target="_blank" class="chip gd">↗ Commits</a>
+          </div>
         </div>
+        <div class="metrics">
+          <div class="metric"><div class="m-n c">13+</div><div class="m-l">OpenMP constructs implemented</div></div>
+          <div class="metric"><div class="m-n g">8+</div><div class="m-l">Clauses — thread, team, task</div></div>
+          <div class="metric"><div class="m-n v">&lt;250</div><div class="m-l">Lines · custom GPU emulator</div></div>
+          <div class="metric"><div class="m-n c">12wk</div><div class="m-l">Documented engineering</div></div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Binary Rain Background -->
-    <canvas id="matrix-rain"></canvas>
+  <div class="panel fu fd">
+    <div class="panel-glow"><div class="panel-glow-tl" style="background:radial-gradient(ellipse at top left,rgba(240,165,0,0.035),transparent 70%)"></div><div class="panel-glow-br"></div></div>
+    <div class="panel-border-top" style="background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+    <div class="panel-inner">
+      <div class="feat-badge" style="color:var(--cyan);border-color:rgba(0,229,255,0.2);background:rgba(0,229,255,0.03)">Open Source · Sept 2024 – Sept 2025</div>
+      <h3 class="feat-name"><a href="https://github.com/lfortran/lfortran/commits?author=adit4443ya" target="_blank">LFortran Compiler — Core Contributor</a></h3>
+      <p class="feat-org">C++ · Fortran · MPI · ISO_C_BINDING</p>
 
-    <!-- 3D Space Canvas -->
-    <canvas id="space-canvas"></canvas>
-
-    <!-- Floating Geometry -->
-    <div class="floating-geometry">
-        <div class="geo-shape shape-1"></div>
-        <div class="geo-shape shape-2"></div>
-        <div class="geo-shape shape-3"></div>
-        <div class="geo-shape shape-4"></div>
-        <div class="geo-shape shape-5"></div>
+      <div class="feat-grid">
+        <div class="feat-body">
+          <p>Contributed to compiling <span class="tag-g">POT3D</span> — Predictive Science's <span class="hi-c">MPI + OpenMP solar magnetic field solver</span> used in real space weather research — with LFortran. The <span class="hi-w">9th production-grade third-party code</span> LFortran had ever compiled, a public milestone for the project.</p>
+          <p>Built a <span class="tag-c">pure Fortran MPI wrapper library</span> using <span class="hi-v">ISO_C_BINDING</span> with 30+ subroutine implementations — eliminating C-wrapper overhead entirely. Now lives in the <span class="hi-c">fortran_mpi</span> repo under the lfortran org. Separately: <span class="hi-g">50+ compiler issues</span> resolved across OpenMP, OOP, structs, and strings.</p>
+          <div class="feat-chips">
+            <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank" class="chip gd">↗ POT3D Blog</a>
+            <a href="https://github.com/lfortran/fortran_mpi/" target="_blank" class="chip">↗ fortran_mpi</a>
+          </div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="m-n g">50+</div><div class="m-l">Compiler issues resolved</div></div>
+          <div class="metric"><div class="m-n c">30+</div><div class="m-l">MPI subroutines, pure Fortran</div></div>
+          <div class="metric"><div class="m-n v">0.95×</div><div class="m-l">Compile time vs GFortran</div></div>
+          <div class="metric"><div class="m-n g">0.75×</div><div class="m-l">Runtime vs GFortran (POT3D)</div></div>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <!-- Navigation -->
-    <nav class="cyber-nav">
-        <div class="nav-glitch-line"></div>
-        <div class="nav-container">
-            <div class="nav-brand">
-                <div class="brand-icon">
-                    <span class="icon-bracket">&lt;</span>
-                    <span class="icon-text">AT</span>
-                    <span class="icon-bracket">/&gt;</span>
-                </div>
-                <div class="brand-info">
-                    <span class="brand-name" data-text="ADITYA TRIVEDI">ADITYA TRIVEDI</span>
-                    <span class="brand-role">HPC Research Engineer</span>
-                </div>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#home" class="nav-link active" data-section="home"><span class="link-index">01</span>Home</a></li>
-                <li><a href="#hpc" class="nav-link" data-section="hpc"><span class="link-index">02</span>HPC</a></li>
-                <li><a href="#projects" class="nav-link" data-section="projects"><span class="link-index">03</span>Projects</a></li>
-                <li><a href="#research" class="nav-link" data-section="research"><span class="link-index">04</span>Research</a></li>
-                <li><a href="#about" class="nav-link" data-section="about"><span class="link-index">05</span>About</a></li>
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="panel fu">
+    <div class="panel-glow"><div class="panel-glow-tl"></div><div class="panel-glow-br"></div></div>
+    <div class="panel-border-top"></div>
+    <div class="panel-inner">
+      <p class="s-num">02 // Experience</p>
+      <h2 class="s-title">Where I've <span class="gold">Shipped</span></h2>
+      <div>
+        <div class="tl-item">
+          <div class="tl-date">May 2025<br>Sept 2025</div>
+          <div class="tl-node"></div>
+          <div class="tl-body">
+            <h3 class="tl-name"><a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">Google Summer of Code 2025 · Fortran-Lang</a></h3>
+            <div class="tl-role">Compiler Developer</div>
+            <div class="tl-stack">C++ · Fortran · OpenMP · CUDA · ASR/IR</div>
+            <ul class="pts">
+              <li>Designed the <span class="tag-c">OMPRegion ASR node</span> — a new IR abstraction giving OpenMP first-class representation, enabling scalable <span class="hi-c">OpenMP 6.0</span> feature development and GPU-targeted codegen.</li>
+              <li><span class="hi-g">13+ constructs</span>, <span class="hi-g">8+ clauses</span> — thread, team, and task parallelism models fully covered.</li>
+              <li>Extended C-backend for <span class="tag-g">OpenMP Target Offloading</span> on NVIDIA GPUs — host-device dual-mode emission and OpenMP/CUDA codegen. <a href="https://github.com/lfortran/lfortran/issues/4497#issuecomment-3089155987" target="_blank">[Discussion]</a></li>
+              <li><span class="hi-v">CUDA-centric GPU emulator</span> (&lt;250 lines) as a runtime library for hardware-free CI testing.</li>
             </ul>
-            <div class="nav-actions">
-                <a href="https://github.com/adit4443ya" target="_blank" class="nav-social github">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="mailto:adit4443ya@gmail.com" class="nav-cta">
-                    <span class="cta-text">Connect</span>
-                    <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
-                </a>
-            </div>
-            <div class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+          </div>
         </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu">
-        <div class="mobile-menu-content">
-            <ul class="mobile-links">
-                <li><a href="#home" class="mobile-link active">Home</a></li>
-                <li><a href="#hpc" class="mobile-link">HPC & Compilers</a></li>
-                <li><a href="#projects" class="mobile-link">Projects</a></li>
-                <li><a href="#research" class="mobile-link">Research</a></li>
-                <li><a href="#about" class="mobile-link">About</a></li>
+        <div class="tl-item">
+          <div class="tl-date">Sept 2024<br>Sept 2025</div>
+          <div class="tl-node" style="border-color:var(--gold)"></div>
+          <div class="tl-body">
+            <h3 class="tl-name"><a href="https://github.com/lfortran/lfortran/commits?author=adit4443ya" target="_blank">LFortran — Compiler Development Engineer</a></h3>
+            <div class="tl-role" style="color:rgba(240,165,0,0.5)">Core Contributor</div>
+            <div class="tl-stack">C++ · Fortran · MPI · Python</div>
+            <ul class="pts">
+              <li>Helped compile <span class="tag-g">POT3D</span> solar physics codebase — <span class="hi-g">0.95× compile</span>, <span class="hi-g">0.75× runtime</span> vs GFortran. <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank">[Official Blog]</a></li>
+              <li>Built <span class="tag-c">pure Fortran MPI wrappers</span> via <span class="hi-v">ISO_C_BINDING</span>, 30+ subroutines. <a href="https://github.com/lfortran/fortran_mpi/" target="_blank">[fortran_mpi]</a></li>
+              <li><span class="hi-g">50+ issues resolved</span>: OpenMP, OOP, structs, string handling.</li>
             </ul>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Home / Hero Section -->
-        <section id="home" class="section active">
-            <div class="hero-container">
-                <div class="hero-grid">
-                    <div class="hero-text">
-                        <div class="hero-badge">
-                            <span class="badge-dot"></span>
-                            <span class="badge-text">Available for Research Collaborations</span>
-                        </div>
-                        <h1 class="hero-title">
-                            <span class="title-line line-1">
-                                <span class="word">Building</span>
-                            </span>
-                            <span class="title-line line-2">
-                                <span class="word gradient-text">High-Performance</span>
-                            </span>
-                            <span class="title-line line-3">
-                                <span class="word">Computing</span>
-                                <span class="word accent-text">Systems</span>
-                            </span>
-                        </h1>
-                        <p class="hero-description">
-                            CS undergrad at IIT Jodhpur working on <span class="highlight">compiler development</span>
-                            and <span class="highlight">parallel computing</span>. Currently contributing to
-                            LFortran's OpenMP 6.0 implementation through <span class="highlight">Google Summer of Code 2025</span>,
-                            with research focus on dynamic graph algorithms.
-                        </p>
-                        <div class="hero-stats">
-                            <div class="stat-item">
-                                <span class="stat-value" data-count="4">0</span>
-                                <span class="stat-label">Research Papers</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-value special-text">GSoC</span>
-                                <span class="stat-suffix">'25</span>
-                                <span class="stat-label">Contributor</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-value" data-count="3">0</span>
-                                <span class="stat-label">IEEE Publications</span>
-                            </div>
-                        </div>
-                        <div class="hero-cta">
-                            <a href="#hpc" class="cta-primary">
-                                <span class="cta-bg"></span>
-                                <span class="cta-content">
-                                    <span>Explore My Work</span>
-                                    <i class="fas fa-arrow-right"></i>
-                                </span>
-                            </a>
-                            <a href="#research" class="cta-secondary">
-                                <span>View Publications</span>
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="hero-visual">
-                        <div class="visual-container">
-                            <div class="code-window">
-                                <div class="window-header">
-                                    <div class="window-dots">
-                                        <span class="dot red"></span>
-                                        <span class="dot yellow"></span>
-                                        <span class="dot green"></span>
-                                    </div>
-                                    <span class="window-title">parallel_compute.cpp</span>
-                                </div>
-                                <pre class="code-content"><code><span class="code-keyword">#pragma</span> omp parallel for
-<span class="code-keyword">for</span> (<span class="code-type">int</span> i = <span class="code-number">0</span>; i < N; i++) {
-    <span class="code-comment">// GPU offloading with OpenMP 6.0</span>
-    <span class="code-keyword">#pragma</span> omp target teams distribute
-    compute_kernel(data[i]);
+<!-- RESEARCH -->
+<section id="research">
+  <div class="panel fu">
+    <div class="panel-glow"><div class="panel-glow-tl" style="background:radial-gradient(ellipse at top left,rgba(240,165,0,0.03),transparent 70%)"></div><div class="panel-glow-br" style="background:radial-gradient(ellipse at bottom right,rgba(0,229,255,0.025),transparent 70%)"></div></div>
+    <div class="panel-border-top" style="background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+    <div class="panel-inner">
+      <p class="s-num">03 // Research</p>
+      <h2 class="s-title">Four Papers, <span class="gold">One Problem</span></h2>
+      <p class="research-intro">
+        Maintaining a <strong>Maximal Independent Set</strong> on dynamic graphs as edges are inserted and deleted — at <strong>billion-edge scale</strong> — using parallel GPU and multi-core compute. Work with Prof. Dip Sankar Banerjee, IIT Jodhpur. One problem, four publications, three years.
+      </p>
+      <div class="pub-stack">
+        <div class="pub fu">
+          <div class="pub-yr">IEEE<br>HiPC<br>2024</div>
+          <div>
+            <p class="pub-title"><a href="https://ieeexplore.ieee.org/document/10898364" target="_blank">Fast MIS on Incremental Graphs</a></p>
+            <div class="pub-venue">IEEE HiPC 2024 · Student Research Symposium</div>
+            <div class="pub-authors"><span class="me">Aditya Trivedi</span>, P. Nijhara, D.S. Banerjee</div>
+          </div>
+        </div>
+        <div class="pub fu fd">
+          <div class="pub-yr">Euro<br>PDP<br>2025</div>
+          <div>
+            <p class="pub-title"><a href="https://www.researchgate.net/publication/391309268_Fast_Maximal_Independent_Sets_on_Dynamic_Graphs" target="_blank">Fast Maximal Independent Sets on Dynamic Graphs</a></p>
+            <div class="pub-venue">EuroMicro PDP 2025</div>
+            <div class="pub-authors">P. Nijhara, <span class="me">Aditya Trivedi</span>, D.S. Banerjee</div>
+          </div>
+        </div>
+        <div class="pub fu fd2">
+          <div class="pub-yr">IEEE<br>HiPC<br>2025</div>
+          <div>
+            <p class="pub-title"><a href="https://ieeexplore.ieee.org/document/10898364" target="_blank">Fast and Accurate MIS on Dynamic Graphs</a></p>
+            <div class="pub-venue">IEEE HiPC 2025 · Student Research Symposium</div>
+            <div class="pub-authors">A.H. Singh, <span class="me">Aditya Trivedi</span>, N. Sharma, A. Pandey, D.S. Banerjee</div>
+          </div>
+        </div>
+        <div class="pub fu fd3">
+          <div class="pub-yr">Elsevier<br>FGCS<br>2025</div>
+          <div>
+            <p class="pub-title">ParMIS: Fast and Unified MIS Maintenance Framework for Large-Scale Dynamic Graphs</p>
+            <div class="pub-venue">Elsevier Future Generation Computer Systems</div>
+            <div class="pub-authors">P. Nijhara, <span class="me">Aditya Trivedi</span>, A.H. Singh, N. Sharma, A. Pandey, D.S. Banerjee</div>
+            <span class="badge">Under Review</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="panel fu">
+    <div class="panel-glow"><div class="panel-glow-tl" style="background:radial-gradient(ellipse at top left,rgba(176,108,255,0.03),transparent 70%)"></div><div class="panel-glow-br"></div></div>
+    <div class="panel-border-top" style="background:linear-gradient(90deg,transparent,var(--violet),transparent)"></div>
+    <div class="panel-inner">
+      <p class="s-num">04 // Projects</p>
+      <h2 class="s-title">Systems Work, <span class="vio">Bottom to Top</span></h2>
+      <div class="proj-grid">
+        <div class="proj">
+          <div class="proj-idx">// 001 — SYSTEMS</div>
+          <h3 class="proj-name"><a href="https://github.com/adit4443ya/MIPS-Simulator" target="_blank">MIPS CPU Pipeline Simulator</a></h3>
+          <div class="proj-tech">C++ · Computer Architecture · 5-Stage Pipeline</div>
+          <p class="proj-desc">Functional MIPS pipeline simulator — full IF/ID/EX/MEM/WB cycle in C++. Direct context for compiler backend work: understanding what generated code actually runs on.</p>
+          <a href="https://github.com/adit4443ya/MIPS-Simulator" target="_blank" class="plink">GitHub ↗</a>
+        </div>
+        <div class="proj">
+          <div class="proj-idx">// 002 — CONCURRENCY</div>
+          <h3 class="proj-name"><a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank">Multi-Threaded Web Crawler</a></h3>
+          <div class="proj-tech">C++ · POSIX Threads · Concurrent Queue</div>
+          <p class="proj-desc">Concurrent web crawler using OS-level threading primitives — thread pool, concurrent queue, synchronization. No library abstraction. Built to understand OS concurrency from first principles.</p>
+          <a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank" class="plink">GitHub ↗</a>
+        </div>
+        <div class="proj">
+          <div class="proj-idx">// 003 — HPC · EDGE</div>
+          <h3 class="proj-name"><a href="https://llama-parallel-inference-presentati.vercel.app/" target="_blank">Parallel LLM Inference on RISC-V</a></h3>
+          <div class="proj-tech">C++ · OpenMP · MPI · RISC-V · Edge Computing</div>
+          <p class="proj-desc">Transformer models (15M–1B params) on RISC-V hardware. MPI intra-layer parallelization: 3.42× speedup, +19.6% over OpenMP on 110M parameter models.</p>
+          <a href="https://llama-parallel-inference-presentati.vercel.app/" target="_blank" class="plink">Slides ↗</a>
+        </div>
+        <div class="proj">
+          <div class="proj-idx">// 004 — ML SYSTEMS</div>
+          <h3 class="proj-name"><a href="https://github.com/adit4443ya/Distributed-Learning-on-Cloud" target="_blank">Federated Learning · Fraud Detection</a></h3>
+          <div class="proj-tech">Python · Azure ML · LSTM · Differential Privacy</div>
+          <p class="proj-desc">Privacy-preserving federated system on Azure. ε ≈ 1.5 differential privacy. 92% accuracy. 73% training time reduction vs centralized baseline.</p>
+          <a href="https://github.com/adit4443ya/Distributed-Learning-on-Cloud" target="_blank" class="plink">GitHub ↗</a>
+        </div>
+        <div class="proj">
+          <div class="proj-idx">// 005 — FULL STACK</div>
+          <h3 class="proj-name"><a href="https://github.com/adit4443ya/WorkHub-Pro" target="_blank">WorkHubPro — Task Platform</a></h3>
+          <div class="proj-tech">Kotlin · Jetpack Compose · Go · PostgreSQL</div>
+          <p class="proj-desc">Full-stack task management — Go backend, Kotlin/Compose frontend, 140+ commits, SOA, real-time WebSockets, RBAC, PostgreSQL query optimization.</p>
+          <a href="https://github.com/adit4443ya/WorkHub-Pro" target="_blank" class="plink">GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="panel fu">
+    <div class="panel-glow"><div class="panel-glow-tl"></div><div class="panel-glow-br"></div></div>
+    <div class="panel-border-top"></div>
+    <div class="panel-inner">
+      <p class="s-num">05 // Stack</p>
+      <h2 class="s-title">Tools of <strong>the Trade</strong></h2>
+      <div class="sk-grid">
+        <div class="sk-box"><div class="sk-head c">Languages</div><div class="sk-tags"><span class="sk-t">C / C++</span><span class="sk-t">Fortran</span><span class="sk-t">Python</span><span class="sk-t">Rust</span><span class="sk-t">Go</span><span class="sk-t">Kotlin</span><span class="sk-t">JS</span><span class="sk-t">Bash</span></div></div>
+        <div class="sk-box"><div class="sk-head g">HPC & Parallel</div><div class="sk-tags"><span class="sk-t">OpenMP</span><span class="sk-t">CUDA</span><span class="sk-t">MPI</span><span class="sk-t">LLVM</span><span class="sk-t">ARMv9</span><span class="sk-t">RISC-V</span><span class="sk-t">NUMA</span></div></div>
+        <div class="sk-box"><div class="sk-head v">Compiler / IR</div><div class="sk-tags"><span class="sk-t">ASR Design</span><span class="sk-t">AST→ASR</span><span class="sk-t">C-backend</span><span class="sk-t">GDB</span><span class="sk-t">ISO_C_BINDING</span><span class="sk-t">Linux</span></div></div>
+        <div class="sk-box"><div class="sk-head c">ML / Infra</div><div class="sk-tags"><span class="sk-t">TensorFlow</span><span class="sk-t">PyTorch</span><span class="sk-t">Azure ML</span><span class="sk-t">Docker</span><span class="sk-t">PostgreSQL</span><span class="sk-t">Git</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="panel fu" style="max-width:760px;margin:0 auto">
+    <div class="panel-glow"><div class="panel-glow-tl"></div><div class="panel-glow-br"></div></div>
+    <div class="panel-border-top"></div>
+    <div class="panel-inner" style="text-align:center">
+      <p class="s-num" style="text-align:center">06 // Contact</p>
+      <h2 class="s-title" style="margin-bottom:20px">Get in <strong>Touch</strong></h2>
+      <p class="ct">Open to <strong>compiler engineering</strong> roles, <strong>HPC research</strong> positions, and interesting systems problems. Happy to talk parallel computing, graph algorithms, or anything compiler-adjacent.</p>
+      <div class="clinks">
+        <a href="mailto:adit4443ya@gmail.com" class="clink">✉ Email</a>
+        <a href="https://github.com/adit4443ya" target="_blank" class="clink">⌥ GitHub</a>
+        <a href="https://www.linkedin.com/in/adit4443ya/" target="_blank" class="clink">◈ LinkedIn</a>
+        <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="clink">◎ Blog</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="ft">ADITYA TRIVEDI · IIT JODHPUR · B.TECH CSE · 2026</span>
+  <span class="ft">block/<span id="blk" style="color:rgba(0,229,255,0.4)">8521044</span> · eth:mainnet</span>
+</footer>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  DEEP SPACE — vibrant, high-contrast nebula
+// ══════════════════════════════════════════════
+const cv=document.getElementById('cv');
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:false});
+R.setPixelRatio(Math.min(devicePixelRatio,1.8));
+R.setSize(innerWidth,innerHeight);
+R.setClearColor(0x020208,1);
+const S=new THREE.Scene();
+S.fog=new THREE.FogExp2(0x020208,0.0018);
+const cam=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,0.1,2000);
+cam.position.z=0;
+
+// ─ Stars ─
+function starLayer(n,spread,sz,op,col){
+  const g=new THREE.BufferGeometry(),p=new Float32Array(n*3);
+  for(let i=0;i<n*3;i++)p[i]=(Math.random()-.5)*spread;
+  g.setAttribute('position',new THREE.BufferAttribute(p,3));
+  S.add(new THREE.Points(g,new THREE.PointsMaterial({color:col,size:sz,transparent:true,opacity:op,sizeAttenuation:true})));
+}
+starLayer(3200,900,.06,.55,0xffffff);
+starLayer(600,900,.2,.22,0x9ecfff);
+starLayer(180,700,.4,.18,0xffd080);
+starLayer(40,600,.7,.14,0x00ffcc); // bright cyan giants
+
+// ─ Nebula cloud builder ─
+function cloud(n,cx,cy,cz,rx,ry,rz,c1,c2,sz,op){
+  const g=new THREE.BufferGeometry(),p=new Float32Array(n*3),c=new Float32Array(n*3);
+  const ca=new THREE.Color(c1),cb=new THREE.Color(c2),cc=new THREE.Color();
+  for(let i=0;i<n;i++){
+    const r=Math.pow(Math.random(),.5);
+    const a=Math.random()*Math.PI*2,b=Math.acos(2*Math.random()-1);
+    p[i*3]=cx+r*Math.sin(b)*Math.cos(a)*rx+(Math.random()-.5)*rx*.6;
+    p[i*3+1]=cy+r*Math.sin(b)*Math.sin(a)*ry+(Math.random()-.5)*ry*.4;
+    p[i*3+2]=cz+r*Math.cos(b)*rz+(Math.random()-.5)*rz*.5;
+    cc.copy(ca).lerp(cb,Math.random());
+    const br=.35+Math.random()*.65;
+    c[i*3]=cc.r*br;c[i*3+1]=cc.g*br;c[i*3+2]=cc.b*br;
+  }
+  g.setAttribute('position',new THREE.BufferAttribute(p,3));
+  g.setAttribute('color',new THREE.BufferAttribute(c,3));
+  S.add(new THREE.Points(g,new THREE.PointsMaterial({size:sz,vertexColors:true,transparent:true,opacity:op,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true})));
 }
 
-<span class="code-comment">// LFortran compiler optimization</span>
-<span class="code-type">void</span> optimize_mpi_wrapper();
-<span class="code-function">printf</span>(<span class="code-string">"Compiled with LFortran\n"</span>);</code></pre>
-                            </div>
-                            <div class="floating-cards">
-                                <div class="float-card card-1">
-                                    <i class="fas fa-microchip"></i>
-                                    <span>OpenMP 6.0</span>
-                                </div>
-                                <div class="float-card card-2">
-                                    <i class="fas fa-bolt"></i>
-                                    <span>CUDA</span>
-                                </div>
-                                <div class="float-card card-3">
-                                    <i class="fas fa-project-diagram"></i>
-                                    <span>MPI</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+// DEEP BACKGROUND — inky void with faint blue wash
+cloud(6000,  0, 0,-240,180,70,50,'#010b18','#03213a',3.5,.06);
+// OUTER NEBULA — rich teal/cyan
+cloud(4000, 12, 6,-180,110,45,30,'#083a42','#0e9aa8',2.5,.10);
+// BRIGHT CORE — electric cyan
+cloud(1500,  6, 3,-140, 50,20,15,'#00bcd4','#00e5ff',1.8,.14);
+// AMBER/GOLD star-forming pillars
+cloud(1800,-18,-7,-130, 42,16,12,'#7c3a00','#c87200',2.0,.11);
+// HOT PINK/MAGENTA gas (Carina's real colour)
+cloud(1200, 22,10,-150, 35,14,10,'#6b0038','#d4006c',1.8,.09);
+// VIOLET outer halo
+cloud(3500, -6, 8,-200,140,58,40,'#12063a','#2a0f6b',3.8,.05);
+// BRIGHT PILLAR TENDRILS
+cloud(700,  18,-10,-110,  8,30, 5,'#004d40','#00e5ff',1.4,.18);
+cloud(500, -10, 12,-100,  6,22, 4,'#4a0020','#ff4080',1.2,.15);
+// FOREGROUND WISPS (close, large, very faint)
+cloud(1200,  0,  0, -45, 70,25,12,'#030d18','#061c2e',5,.035);
 
-                <!-- Domain Navigation -->
-                <div class="domain-nav">
-                    <h3 class="domain-title">
-                        <span class="title-decorator"></span>
-                        Explore Domains
-                        <span class="title-decorator"></span>
-                    </h3>
-                    <div class="domain-grid">
-                        <div class="domain-card" data-domain="hpc">
-                            <div class="card-glow"></div>
-                            <div class="card-content">
-                                <div class="card-icon">
-                                    <i class="fas fa-microchip"></i>
-                                </div>
-                                <div class="card-info">
-                                    <h4>HPC & Compilers</h4>
-                                    <p>Compiler development, OpenMP 6.0, GPU computing & parallel algorithms</p>
-                                    <div class="card-tags">
-                                        <span>LFortran</span>
-                                        <span>GSoC</span>
-                                        <span>CUDA</span>
-                                    </div>
-                                </div>
-                                <div class="card-arrow">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="domain-card" data-domain="projects">
-                            <div class="card-glow"></div>
-                            <div class="card-content">
-                                <div class="card-icon">
-                                    <i class="fas fa-code"></i>
-                                </div>
-                                <div class="card-info">
-                                    <h4>Software Projects</h4>
-                                    <p>Full-stack applications, ML systems, and systems programming</p>
-                                    <div class="card-tags">
-                                        <span>Go</span>
-                                        <span>Python</span>
-                                        <span>C++</span>
-                                    </div>
-                                </div>
-                                <div class="card-arrow">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="domain-card" data-domain="research">
-                            <div class="card-glow"></div>
-                            <div class="card-content">
-                                <div class="card-icon">
-                                    <i class="fas fa-flask"></i>
-                                </div>
-                                <div class="card-info">
-                                    <h4>Research & Publications</h4>
-                                    <p>Dynamic graph algorithms and parallel computing frameworks</p>
-                                    <div class="card-tags">
-                                        <span>IEEE</span>
-                                        <span>ParMIS</span>
-                                        <span>GPU</span>
-                                    </div>
-                                </div>
-                                <div class="card-arrow">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+// ─ BLACK HOLE ─
+const BHP=new THREE.Vector3(58,14,-210);
+const bh=new THREE.Mesh(new THREE.SphereGeometry(8,32,32),new THREE.MeshBasicMaterial({color:0x000000}));
+bh.position.copy(BHP);S.add(bh);
+// Photon ring — sharp amber
+const pr=new THREE.Mesh(new THREE.TorusGeometry(9.4,.28,16,128),new THREE.MeshBasicMaterial({color:0xf0a500,transparent:true,opacity:.95}));
+pr.position.copy(BHP);pr.rotation.x=1.12;S.add(pr);
+// Inner glow arc
+const arc=new THREE.Mesh(new THREE.TorusGeometry(9.4,1.1,16,128),new THREE.MeshBasicMaterial({color:0xf0a500,transparent:true,opacity:.08,blending:THREE.AdditiveBlending,depthWrite:false}));
+arc.position.copy(BHP);arc.rotation.x=1.12;S.add(arc);
+// Accretion disks
+[[10.5,1.6,0xff6a00,.48],[14,1.2,0xe03a00,.28],[18,.8,0x881800,.13]].forEach(([r,w,c,o])=>{
+  const d=new THREE.Mesh(new THREE.TorusGeometry(r,w,12,128),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,blending:THREE.AdditiveBlending,depthWrite:false}));
+  d.position.copy(BHP);d.rotation.x=1.12;S.add(d);
+});
 
-        <!-- HPC Section -->
-        <section id="hpc" class="section">
-            <div class="section-container">
-                <div class="section-header">
-                    <div class="header-meta">
-                        <span class="section-number">02</span>
-                        <span class="section-line"></span>
-                    </div>
-                    <h2 class="section-title">High-Performance Computing</h2>
-                    <p class="section-subtitle">Compiler development, parallel algorithms, and GPU optimization</p>
-                </div>
+// ─ NEUTRON STAR ─ icy & tight
+const NSP=new THREE.Vector3(-38,-12,-90);
+const ns=new THREE.Mesh(new THREE.SphereGeometry(.9,16,16),new THREE.MeshBasicMaterial({color:0xddfffe}));
+ns.position.copy(NSP);S.add(ns);
+[2,3.8,5.8].forEach((r,i)=>{
+  const h=new THREE.Mesh(new THREE.SphereGeometry(r,16,16),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:.055-i*.012,blending:THREE.AdditiveBlending,depthWrite:false}));
+  h.position.copy(NSP);S.add(h);
+});
+const jmat=new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:.28,blending:THREE.AdditiveBlending,depthWrite:false});
+const j1=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,50,8),jmat);j1.position.copy(NSP);S.add(j1);
+const j2=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,50,8),jmat.clone());j2.position.copy(NSP);S.add(j2);
 
-                <div class="projects-showcase">
-                    <!-- Featured Project -->
-                    <div class="project-featured" data-project="gsoc">
-                        <div class="featured-glow"></div>
-                        <div class="featured-content">
-                            <div class="featured-badge">
-                                <i class="fab fa-google"></i>
-                                <span>Google Summer of Code 2025</span>
-                            </div>
-                            <h3 class="featured-title">OpenMP 6.0 Implementation</h3>
-                            <p class="featured-description">
-                                Implementing next-generation OpenMP 6.0 features with GPU target offloading
-                                capabilities for the LFortran compiler, enabling advanced parallel computing
-                                on heterogeneous systems.
-                            </p>
-                            <div class="featured-metrics">
-                                <div class="metric">
-                                    <span class="metric-value">13+</span>
-                                    <span class="metric-label">OMP Constructs</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">8+</span>
-                                    <span class="metric-label">Clauses</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">CUDA</span>
-                                    <span class="metric-label">Backend</span>
-                                </div>
-                            </div>
-                            <div class="featured-tech">
-                                <span class="tech-tag">C++</span>
-                                <span class="tech-tag">CUDA</span>
-                                <span class="tech-tag">OpenMP 6.0</span>
-                                <span class="tech-tag">GPU Computing</span>
-                            </div>
-                            <div class="featured-links">
-                                <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="project-link">
-                                    <i class="fas fa-blog"></i>
-                                    <span>Dev Blog</span>
-                                </a>
-                                <a href="https://gist.github.com/adit4443ya/9364dfff705d880cd64a77ea98f8cb9c" target="_blank" class="project-link">
-                                    <i class="fas fa-file-alt"></i>
-                                    <span>Evaluation</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="featured-visual">
-                            <div class="gpu-animation">
-                                <div class="gpu-core"></div>
-                                <div class="gpu-rays"></div>
-                            </div>
-                        </div>
-                    </div>
+// ─ WORMHOLE RINGS (deep background) ─
+const wm1=new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:.1,wireframe:true});
+const wr1=new THREE.Mesh(new THREE.TorusGeometry(32,1.2,8,120),wm1);wr1.position.set(0,0,-160);S.add(wr1);
+const wr2=new THREE.Mesh(new THREE.TorusGeometry(25,.6,8,120),new THREE.MeshBasicMaterial({color:0xb06cff,transparent:true,opacity:.06,wireframe:true}));
+wr2.position.set(0,0,-160);S.add(wr2);
 
-                    <!-- Project Grid -->
-                    <div class="projects-grid">
-                        <div class="project-card" data-project="lfortran">
-                            <div class="card-header">
-                                <div class="card-icon">
-                                    <i class="fas fa-microchip"></i>
-                                </div>
-                                <div class="card-period">Sept 2024 - Present</div>
-                            </div>
-                            <h4 class="card-title">LFortran Compiler</h4>
-                            <p class="card-role">Compiler Development Engineer</p>
-                            <p class="card-description">
-                                Leading compiler optimization for MPI-based scientific computing with
-                                near-parity GFortran performance.
-                            </p>
-                            <div class="card-metrics">
-                                <div class="mini-metric">
-                                    <span class="value">0.95x</span>
-                                    <span class="label">Compile Speed</span>
-                                </div>
-                                <div class="mini-metric">
-                                    <span class="value">30+</span>
-                                    <span class="label">MPI Routines</span>
-                                </div>
-                            </div>
-                            <div class="card-tech">
-                                <span>C++</span>
-                                <span>Fortran</span>
-                                <span>MPI</span>
-                            </div>
-                            <div class="card-links">
-                                <a href="https://github.com/lfortran/lfortran" target="_blank" class="card-link">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank" class="card-link">
-                                    <i class="fas fa-blog"></i>
-                                </a>
-                            </div>
-                        </div>
+// ─ MOUSE + SCROLL ─
+let mx=0,my=0,sy=0;
+document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=-(e.clientY/innerHeight-.5)*2;});
+window.addEventListener('scroll',()=>sy=window.scrollY);
 
-                        <div class="project-card" data-project="riscv">
-                            <div class="card-header">
-                                <div class="card-icon">
-                                    <i class="fas fa-brain"></i>
-                                </div>
-                                <div class="card-period">May 2025 - Aug 2025</div>
-                            </div>
-                            <h4 class="card-title">RISC-V Llama Inference</h4>
-                            <p class="card-role">Parallel Computing Researcher</p>
-                            <p class="card-description">
-                                Optimized transformer inference on RISC-V using advanced
-                                parallelization strategies for edge computing.
-                            </p>
-                            <div class="card-metrics">
-                                <div class="mini-metric">
-                                    <span class="value">3.42x</span>
-                                    <span class="label">Speedup</span>
-                                </div>
-                                <div class="mini-metric">
-                                    <span class="value">19.6%</span>
-                                    <span class="label">&gt; OpenMP</span>
-                                </div>
-                            </div>
-                            <div class="card-tech">
-                                <span>C++</span>
-                                <span>RISC-V</span>
-                                <span>MPI</span>
-                            </div>
-                            <div class="card-links">
-                                <a href="https://github.com/adit4443ya/llama2.c" target="_blank" class="card-link">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="https://llama-parallel-inference-presentati.vercel.app/" target="_blank" class="card-link">
-                                    <i class="fas fa-presentation"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+const clk=new THREE.Clock();
+const diskMeshes=S.children.filter(c=>c.geometry&&c.geometry.type==='TorusGeometry'&&c!==pr&&c!==arc&&c!==wr1&&c!==wr2);
 
-        <!-- Projects Section -->
-        <section id="projects" class="section">
-            <div class="section-container">
-                <div class="section-header">
-                    <div class="header-meta">
-                        <span class="section-number">03</span>
-                        <span class="section-line"></span>
-                    </div>
-                    <h2 class="section-title">Software Projects</h2>
-                    <p class="section-subtitle">Full-stack applications, ML systems, and systems programming</p>
-                </div>
+function loop(){
+  requestAnimationFrame(loop);
+  const t=clk.getElapsedTime();
+  cam.position.x+=(mx*5-cam.position.x)*.03;
+  cam.position.y+=(my*3-cam.position.y)*.03;
+  cam.position.z+=((-sy*.028)-cam.position.z)*.04;
+  cam.lookAt(mx*.6,my*.4,-100);
+  pr.rotation.z=t*2;arc.rotation.z=t*2;
+  wr1.rotation.z=t*.04;wr2.rotation.z=-t*.055;
+  const p=1+Math.sin(t*5.5)*.25;
+  ns.scale.setScalar(p);j1.rotation.z=t*5;j2.rotation.z=t*5+.15;
+  R.render(S,cam);
+}
+loop();
 
-                <div class="projects-showcase">
-                    <!-- Featured Project: Distributed ML -->
-                    <div class="project-featured ml-featured" data-project="distributed-ml">
-                        <div class="featured-glow"></div>
-                        <div class="featured-content">
-                            <div class="featured-badge">
-                                <i class="fab fa-microsoft"></i>
-                                <span>Azure ML Platform</span>
-                            </div>
-                            <h3 class="featured-title">Distributed ML Framework</h3>
-                            <p class="featured-description">
-                                Privacy-preserving federated learning system for credit card fraud detection
-                                with differential privacy guarantees and distributed training on Azure.
-                            </p>
-                            <div class="featured-metrics">
-                                <div class="metric">
-                                    <span class="metric-value">92%</span>
-                                    <span class="metric-label">Accuracy</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">73%</span>
-                                    <span class="metric-label">Faster Training</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-value">ε~1.5</span>
-                                    <span class="metric-label">Privacy Budget</span>
-                                </div>
-                            </div>
-                            <div class="featured-tech">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Azure ML</span>
-                                <span class="tech-tag">TensorFlow</span>
-                                <span class="tech-tag">LSTM</span>
-                            </div>
-                            <div class="featured-links">
-                                <a href="https://github.com/adit4443ya/Distributed-Learning-on-Cloud" target="_blank" class="project-link">
-                                    <i class="fab fa-github"></i>
-                                    <span>View Code</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="featured-visual">
-                            <div class="neural-network">
-                                <div class="nn-layer layer-1"></div>
-                                <div class="nn-layer layer-2"></div>
-                                <div class="nn-layer layer-3"></div>
-                            </div>
-                        </div>
-                    </div>
+window.addEventListener('resize',()=>{
+  cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();R.setSize(innerWidth,innerHeight);
+});
 
-                    <!-- Projects Grid -->
-                    <div class="projects-grid projects-full-grid">
-                        <div class="project-card" data-project="workhub">
-                            <div class="card-header">
-                                <div class="card-icon">
-                                    <i class="fas fa-tasks"></i>
-                                </div>
-                                <div class="card-period">Feb 2024 - Aug 2024</div>
-                            </div>
-                            <h4 class="card-title">WorkHubPro Enterprise</h4>
-                            <p class="card-role">Full-Stack Developer</p>
-                            <p class="card-description">
-                                Enterprise-grade task management platform with real-time collaboration,
-                                WebSocket updates, and RBAC security model.
-                            </p>
-                            <div class="card-metrics">
-                                <div class="mini-metric">
-                                    <span class="value">140+</span>
-                                    <span class="label">Commits</span>
-                                </div>
-                                <div class="mini-metric">
-                                    <span class="value">Real-time</span>
-                                    <span class="label">WebSocket</span>
-                                </div>
-                            </div>
-                            <div class="card-tech">
-                                <span>Kotlin</span>
-                                <span>Go</span>
-                                <span>PostgreSQL</span>
-                            </div>
-                            <div class="card-links">
-                                <a href="https://github.com/adit4443ya/WorkHub-Pro" target="_blank" class="card-link">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                            </div>
-                        </div>
+// ── FILM GRAIN ──
+const nc=document.getElementById('noise');
+const ctx=nc.getContext('2d');
+nc.width=innerWidth;nc.height=innerHeight;
+let gt=0;
+function grain(){
+  requestAnimationFrame(grain);
+  if(++gt%3)return;
+  const id=ctx.createImageData(nc.width,nc.height),d=id.data;
+  for(let i=0;i<d.length;i+=4){
+    const v=Math.random()*255|0;
+    d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*16|0;
+  }
+  ctx.putImageData(id,0,0);
+}
+grain();
+window.addEventListener('resize',()=>{nc.width=innerWidth;nc.height=innerHeight;});
 
-                        <div class="project-card" data-project="musify">
-                            <div class="card-header">
-                                <div class="card-icon">
-                                    <i class="fas fa-music"></i>
-                                </div>
-                                <div class="card-period">Ongoing</div>
-                            </div>
-                            <h4 class="card-title">Musify Recommendation</h4>
-                            <p class="card-role">ML Engineer</p>
-                            <p class="card-description">
-                                Music genre classification and recommendation using audio feature
-                                extraction and ML algorithms.
-                            </p>
-                            <div class="card-metrics">
-                                <div class="mini-metric">
-                                    <span class="value">92.42%</span>
-                                    <span class="label">Accuracy</span>
-                                </div>
-                            </div>
-                            <div class="card-tech">
-                                <span>Python</span>
-                                <span>Librosa</span>
-                                <span>LightGBM</span>
-                            </div>
-                            <div class="card-links">
-                                <a href="https://github.com/adit4443ya/Musify" target="_blank" class="card-link">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                            </div>
-                        </div>
+// ── SCROLL REVEAL ──
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.06,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fu').forEach(el=>io.observe(el));
 
-                        <div class="project-card" data-project="crawler">
-                            <div class="card-header">
-                                <div class="card-icon">
-                                    <i class="fas fa-spider"></i>
-                                </div>
-                                <div class="card-period">Completed</div>
-                            </div>
-                            <h4 class="card-title">Multi-Threaded Crawler</h4>
-                            <p class="card-role">Systems Programmer</p>
-                            <p class="card-description">
-                                High-performance web crawler with multi-threaded architecture and
-                                efficient metadata extraction.
-                            </p>
-                            <div class="card-metrics">
-                                <div class="mini-metric">
-                                    <span class="value">Parallel</span>
-                                    <span class="label">C++ Threads</span>
-                                </div>
-                            </div>
-                            <div class="card-tech">
-                                <span>C++</span>
-                                <span>Curl</span>
-                                <span>Gumbo</span>
-                            </div>
-                            <div class="card-links">
-                                <a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank" class="card-link">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+// ── WALLET ──
+document.getElementById('wbtn').addEventListener('click',async()=>{
+  const b=document.getElementById('wbtn');
+  if(window.ethereum){try{const[a]=await window.ethereum.request({method:'eth_requestAccounts'});b.textContent=a.slice(0,6)+'…'+a.slice(-4);b.classList.add('connected');}catch{b.textContent='Declined';}}
+  else{b.textContent='No wallet';setTimeout(()=>b.textContent='⬡ Connect Wallet',2000);}
+});
 
-        <!-- Research Section -->
-        <section id="research" class="section">
-            <div class="section-container">
-                <div class="section-header">
-                    <div class="header-meta">
-                        <span class="section-number">04</span>
-                        <span class="section-line"></span>
-                    </div>
-                    <h2 class="section-title">Research & Publications</h2>
-                    <p class="section-subtitle">Academic research in high-performance graph algorithms and parallel computing</p>
-                </div>
-
-                <div class="research-content">
-                    <!-- Published Papers -->
-                    <div class="research-category">
-                        <h3 class="category-title">
-                            <span class="status-dot published"></span>
-                            Published Research
-                        </h3>
-                        <div class="publications-grid">
-                            <div class="publication-card" data-project="paper4">
-                                <div class="pub-header">
-                                    <div class="pub-venue">EuroMicro PDP 2025</div>
-                                    <div class="pub-type">Full Paper</div>
-                                    <a href="https://ieeexplore.ieee.org/document/10974793/" target="_blank" class="pub-link">
-                                        <i class="fas fa-external-link-alt"></i>
-                                    </a>
-                                </div>
-                                <h4 class="pub-title">Fast MIS on Dynamic Graphs</h4>
-                                <p class="pub-authors">P. Nijhara, <strong>Aditya Trivedi</strong>, D.S. Banerjee</p>
-                                <p class="pub-abstract">
-                                    Novel parallel data structures for efficiently computing MIS on dynamic graphs
-                                    with batched edge insertions and deletions.
-                                </p>
-                                <div class="pub-metrics">
-                                    <div class="pub-metric">
-                                        <span class="value">15.64x</span>
-                                        <span class="label">Insert Speedup</span>
-                                    </div>
-                                    <div class="pub-metric">
-                                        <span class="value">10.57x</span>
-                                        <span class="label">Delete Speedup</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="publication-card" data-project="paper5">
-                                <div class="pub-header">
-                                    <div class="pub-venue">IEEE HiPC 2024</div>
-                                    <div class="pub-type">SRS Paper</div>
-                                    <a href="https://ieeexplore.ieee.org/document/10898364/" target="_blank" class="pub-link">
-                                        <i class="fas fa-external-link-alt"></i>
-                                    </a>
-                                </div>
-                                <h4 class="pub-title">Fast MIS on Incremental Graphs</h4>
-                                <p class="pub-authors"><strong>Aditya Trivedi</strong>, P. Nijhara, D.S. Banerjee</p>
-                                <p class="pub-abstract">
-                                    Introduced TVB and TVBL data structures for parallel MIS maintenance
-                                    on incremental dynamic graphs.
-                                </p>
-                                <div class="pub-metrics">
-                                    <div class="pub-metric">
-                                        <span class="value">1.2B</span>
-                                        <span class="label">Edges</span>
-                                    </div>
-                                    <div class="pub-metric">
-                                        <span class="value">TVB/TVBL</span>
-                                        <span class="label">Novel DS</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Under Review -->
-                    <div class="research-category">
-                        <h3 class="category-title">
-                            <span class="status-dot review"></span>
-                            Under Review
-                        </h3>
-                        <div class="publications-grid">
-                            <div class="publication-card featured-pub" data-project="paper1">
-                                <div class="pub-header">
-                                    <div class="pub-venue">Elsevier FGCS 2025</div>
-                                    <div class="pub-type">Journal</div>
-                                </div>
-                                <h4 class="pub-title">ParMIS: Fast and Unified MIS Maintenance Framework</h4>
-                                <p class="pub-authors">P. Nijhara, <strong>Aditya Trivedi</strong>, A.H. Singh, N. Sharma, A. Pandey, D.S. Banerjee</p>
-                                <p class="pub-abstract">
-                                    Comprehensive unified framework for MIS maintenance across all dynamic graph
-                                    update scenarios with GPU streaming pipeline.
-                                </p>
-                                <div class="pub-metrics">
-                                    <div class="pub-metric">
-                                        <span class="value">47.27x</span>
-                                        <span class="label">Batch Speedup</span>
-                                    </div>
-                                    <div class="pub-metric">
-                                        <span class="value">4.63x</span>
-                                        <span class="label">GPU Speedup</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="publication-card" data-project="paper2">
-                                <div class="pub-header">
-                                    <div class="pub-venue">IEEE HiPC 2025</div>
-                                    <div class="pub-type">Conference</div>
-                                </div>
-                                <h4 class="pub-title">Fast and Accurate MIS on Dynamic Graphs</h4>
-                                <p class="pub-authors">A.H. Singh, <strong>Aditya Trivedi</strong>, N. Sharma, A. Pandey, D.S. Banerjee</p>
-                                <p class="pub-abstract">
-                                    BFS-based MIS maintenance with topologically-ordered execution
-                                    for guaranteed accuracy.
-                                </p>
-                                <div class="pub-metrics">
-                                    <div class="pub-metric">
-                                        <span class="value">32.4x</span>
-                                        <span class="label">Speedup</span>
-                                    </div>
-                                    <div class="pub-metric">
-                                        <span class="value">100%</span>
-                                        <span class="label">Accurate</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Ongoing Research -->
-                    <div class="research-category">
-                        <h3 class="category-title">
-                            <span class="status-dot ongoing"></span>
-                            Ongoing Research
-                        </h3>
-                        <div class="ongoing-card" data-project="ongoing-research">
-                            <div class="ongoing-content">
-                                <h4>Semi-External Parallel Maximal Cliques Maintenance</h4>
-                                <p class="ongoing-authors"><strong>Aditya Trivedi</strong>, D. Sharma, A. Mundhara, D.S. Banerjee</p>
-                                <p class="ongoing-description">
-                                    Developing semi-external memory framework for maximal clique maintenance
-                                    in billion-scale dynamic graphs, achieving 150-300x memory reduction
-                                    with GPU parallelism.
-                                </p>
-                                <div class="ongoing-tags">
-                                    <span>Semi-External Memory</span>
-                                    <span>Maximal Cliques</span>
-                                    <span>GPU Computing</span>
-                                    <span>Memory Optimization</span>
-                                </div>
-                                <div class="advisor-info">
-                                    <i class="fas fa-user-graduate"></i>
-                                    <span>Research Advisor: Dr. Dip Sankar Banerjee, IIT Jodhpur</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="section">
-            <div class="section-container">
-                <div class="section-header">
-                    <div class="header-meta">
-                        <span class="section-number">05</span>
-                        <span class="section-line"></span>
-                    </div>
-                    <h2 class="section-title">About Me</h2>
-                    <p class="section-subtitle">Background, expertise, and journey</p>
-                </div>
-
-                <div class="about-content">
-                    <div class="about-grid">
-                        <div class="about-main">
-                            <div class="about-intro">
-                                <h3>HPC Research Engineer</h3>
-                                <p>
-                                    I'm a passionate High-Performance Computing Research Engineer pursuing
-                                    my B.Tech in Computer Science at <strong>IIT Jodhpur</strong>. My expertise
-                                    lies in compiler development, parallel algorithms, and distributed computing systems.
-                                </p>
-                                <p>
-                                    Currently working as a <strong>Compiler Development Engineer at LFortran</strong>
-                                    and contributing to <strong>Google Summer of Code 2025</strong>, I specialize
-                                    in Fortran compiler optimization, OpenMP implementations, and GPU-targeted code generation.
-                                </p>
-                            </div>
-
-                            <div class="education-card">
-                                <div class="edu-icon">
-                                    <i class="fas fa-graduation-cap"></i>
-                                </div>
-                                <div class="edu-content">
-                                    <h4>Indian Institute of Technology, Jodhpur</h4>
-                                    <p class="edu-degree">B.Tech - Computer Science & Engineering</p>
-                                    <div class="edu-meta">
-                                        <span><i class="far fa-calendar"></i> Nov 2022 - May 2026</span>
-                                        <span><i class="fas fa-chart-line"></i> CGPA: 8.17/10</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="skills-section">
-                                <h3>Technical Expertise</h3>
-                                <div class="skills-grid">
-                                    <div class="skill-category">
-                                        <h4>Languages</h4>
-                                        <div class="skill-tags">
-                                            <span class="skill-tag">C/C++</span>
-                                            <span class="skill-tag">Python</span>
-                                            <span class="skill-tag">Fortran</span>
-                                            <span class="skill-tag">Rust</span>
-                                            <span class="skill-tag">Go</span>
-                                            <span class="skill-tag">Kotlin</span>
-                                        </div>
-                                    </div>
-                                    <div class="skill-category">
-                                        <h4>Parallel Computing</h4>
-                                        <div class="skill-tags">
-                                            <span class="skill-tag featured">OpenMP</span>
-                                            <span class="skill-tag featured">CUDA</span>
-                                            <span class="skill-tag featured">MPI</span>
-                                            <span class="skill-tag">LLVM</span>
-                                            <span class="skill-tag">RISC-V</span>
-                                        </div>
-                                    </div>
-                                    <div class="skill-category">
-                                        <h4>Tools & Frameworks</h4>
-                                        <div class="skill-tags">
-                                            <span class="skill-tag">TensorFlow</span>
-                                            <span class="skill-tag">PyTorch</span>
-                                            <span class="skill-tag">Azure ML</span>
-                                            <span class="skill-tag">Docker</span>
-                                            <span class="skill-tag">PostgreSQL</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="about-sidebar">
-                            <div class="achievements-card">
-                                <h4><i class="fas fa-trophy"></i> Key Achievements</h4>
-                                <ul class="achievements-list">
-                                    <li>
-                                        <span class="achievement-icon"><i class="fab fa-google"></i></span>
-                                        <span>Google Summer of Code 2025</span>
-                                    </li>
-                                    <li>
-                                        <span class="achievement-icon"><i class="fas fa-award"></i></span>
-                                        <span>JEE Advanced Rank: 2989</span>
-                                    </li>
-                                    <li>
-                                        <span class="achievement-icon"><i class="fas fa-medal"></i></span>
-                                        <span>GUJCET State Rank: 481</span>
-                                    </li>
-                                    <li>
-                                        <span class="achievement-icon"><i class="fas fa-gift"></i></span>
-                                        <span>IEEE HiPC'24 Grant Receiver</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="resume-card">
-                                <h4><i class="fas fa-file-alt"></i> Resume</h4>
-                                <p class="resume-text">Download my full resume to learn more about my experience and skills.</p>
-                                <a href="CV.pdf" download class="resume-download-btn">
-                                    <i class="fas fa-download"></i>
-                                    <span>Download CV</span>
-                                </a>
-                            </div>
-
-                            <div class="contact-card">
-                                <h4><i class="fas fa-satellite-dish"></i> Connect</h4>
-                                <div class="contact-links">
-                                    <a href="mailto:adit4443ya@gmail.com" class="contact-link">
-                                        <i class="fas fa-envelope"></i>
-                                        <span>adit4443ya@gmail.com</span>
-                                    </a>
-                                    <a href="tel:+919510676850" class="contact-link">
-                                        <i class="fas fa-phone"></i>
-                                        <span>+91 9510676850</span>
-                                    </a>
-                                    <a href="https://github.com/adit4443ya" target="_blank" class="contact-link">
-                                        <i class="fab fa-github"></i>
-                                        <span>github.com/adit4443ya</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="terminal-card">
-                                <div class="terminal-header">
-                                    <span class="terminal-dot"></span>
-                                    <span class="terminal-dot"></span>
-                                    <span class="terminal-dot"></span>
-                                </div>
-                                <div class="terminal-content">
-                                    <p><span class="prompt">$</span> whoami</p>
-                                    <p class="output">aditya_trivedi</p>
-                                    <p><span class="prompt">$</span> cat interests.txt</p>
-                                    <p class="output">compilers, hpc, gpu_computing</p>
-                                    <p><span class="prompt">$</span> ./run_ambition</p>
-                                    <p class="output blink">pushing_boundaries_</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Project Modal -->
-    <div id="project-modal" class="modal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-container">
-            <div class="modal-header">
-                <h2 class="modal-title"></h2>
-                <button class="modal-close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body"></div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="cyber-footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <span class="footer-logo">&lt;AT/&gt;</span>
-                <span class="footer-tagline">Building the future, one algorithm at a time.</span>
-            </div>
-            <div class="footer-links">
-                <a href="https://github.com/adit4443ya" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="mailto:adit4443ya@gmail.com"><i class="fas fa-envelope"></i></a>
-            </div>
-            <div class="footer-copyright">
-                <span>&copy; 2025 Aditya Trivedi. Engineered with precision.</span>
-            </div>
-        </div>
-        <div class="footer-glow"></div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="script.js"></script>
+let blk=8521044;
+setInterval(()=>{blk+=Math.floor(Math.random()*3)+1;const e=document.getElementById('blk');if(e)e.textContent=blk.toLocaleString();},4200);
+</script>
 </body>
-
 </html>
