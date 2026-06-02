@@ -4,680 +4,2114 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Aditya Trivedi — Compiler Engineer</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600;1,700&family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#020208;
-  --bg2:rgba(4,5,18,0.55);
-  --glass:rgba(5,6,20,0.48);
-  --border:rgba(255,255,255,0.07);
-  --border-h:rgba(255,255,255,0.16);
-  /* Vibrant accent trio */
-  --cyan:#00e5ff;
-  --cyan-d:rgba(0,229,255,0.12);
-  --cyan-b:rgba(0,229,255,0.06);
-  --gold:#f0a500;
-  --gold-d:rgba(240,165,0,0.13);
-  --violet:#b06cff;
-  --violet-d:rgba(176,108,255,0.12);
-  --rose:#ff4f7b;
-  /* Text */
-  --text:#f0f4ff;--muted:#b8cfe8;--dim:#7a9ab8;
-  --mono:'Space Mono',monospace;
-  --serif:'Playfair Display',Georgia,serif;
-  --sans:'Space Grotesk',sans-serif;
+  --bg:#05050a;--ink:#f4ecd8;--dim:#8a8175;--muted:#c2b8a0;
+  --amber:#e8a26b;--rose:#e0795a;--cyan:#7dd3e8;--violet:#7dd3e8;
+  --line:rgba(232,162,107,0.10);
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'Space Grotesk',system-ui,sans-serif;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;font-weight:300}
-#cv{position:fixed;inset:0;z-index:0}
-.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.28}
-.content{position:relative;z-index:10}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;overflow-x:hidden}
+#bg{position:fixed;inset:0;z-index:0}
+#vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 90% 70% at 50% 50%,transparent 40%,rgba(5,5,10,0.55) 100%)}
+#particles{position:fixed;inset:0;z-index:3;pointer-events:none}
+.app{position:relative;z-index:10}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 6vw;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,rgba(5,5,10,0.85),rgba(5,5,10,0));backdrop-filter:blur(20px);transition:background .4s}
+nav.scrolled{background:rgba(5,5,10,0.9);border-bottom:1px solid var(--line)}
+.logo{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:4px;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo .lo-glyph{width:14px;height:14px;border:1px solid var(--amber);border-radius:50%;position:relative}
+.logo .lo-glyph::after{content:'';position:absolute;inset:3px;background:var(--amber);border-radius:50%;opacity:.7}
+.nav-mid{display:flex;gap:30px;list-style:none}
+.nav-mid a{color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;transition:color .3s}
+.nav-mid a:hover{color:var(--ink)}
+.cta{font-family:var(--mono);font-size:10px;padding:9px 18px;border:1px solid var(--amber);background:transparent;color:var(--amber);cursor:pointer;text-decoration:none;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s}
+.cta:hover{background:var(--amber);color:#1a0e05}
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 8vw;position:relative}
+#hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(100deg,rgba(5,5,10,0.88) 0%,rgba(5,5,10,0.6) 32%,rgba(5,5,10,0.15) 58%,transparent 78%)}
+.h-stamp{font-family:var(--mono);font-size:10px;color:rgba(232,162,107,.55);letter-spacing:5px;text-transform:uppercase;margin-bottom:36px;display:flex;align-items:center;gap:14px}
+.h-stamp::before{content:'';width:30px;height:1px;background:var(--amber);opacity:.5}
+.h-stamp .blink{display:inline-block;width:7px;height:7px;background:var(--amber);border-radius:50%;animation:blink 1.6s ease-in-out infinite;box-shadow:0 0 12px var(--amber)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.h-name{font-family:var(--serif);font-size:clamp(64px,11.5vw,160px);line-height:.88;letter-spacing:-3px;margin-bottom:28px;font-weight:400}
+.h-name span{display:block}
+.h-name .last{font-style:italic;color:var(--amber)}
+.h-tag{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.3vw,30px);color:var(--muted);max-width:780px;line-height:1.45;margin-bottom:42px}
+.h-tag b{font-style:normal;font-weight:500;color:var(--ink)}
+.h-tag .accent{color:var(--amber);font-weight:500}
+.h-meta{display:flex;gap:36px;font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;flex-wrap:wrap;margin-bottom:52px}
+.h-meta span b{color:var(--amber);font-weight:500;display:block;font-size:11px;margin-bottom:4px;letter-spacing:2px}
+.h-meta span i{font-style:normal;color:var(--muted)}
+.h-links{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.hl{font-family:var(--mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .3s;display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border:1px solid var(--line)}
+.hl::after{content:'↗';opacity:.5}
+.hl:hover{color:var(--amber);border-color:rgba(232,162,107,0.4)}
+.hl.prim{background:var(--amber);color:#1a0e05;border-color:var(--amber)}
+.hl.prim::after{content:'→'}
+.hl.prim:hover{background:transparent;color:var(--amber)}
+.scroll-tag{position:absolute;bottom:36px;right:8vw;writing-mode:vertical-rl;font-family:var(--mono);font-size:9px;letter-spacing:4px;color:rgba(232,162,107,0.4);text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.scroll-tag::before{content:'';width:1px;height:42px;background:linear-gradient(to bottom,transparent,var(--amber))}
+section{padding:120px 8vw;position:relative}
+.s-eyebrow{font-family:var(--mono);font-size:10px;color:rgba(232,162,107,0.55);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.s-eyebrow::before{content:'';width:18px;height:1px;background:var(--amber);opacity:.5}
+.s-title{font-family:var(--serif);font-size:clamp(38px,6vw,80px);line-height:1;letter-spacing:-1px;margin-bottom:56px;font-weight:400}
+.s-title em{font-style:italic;color:var(--amber)}
+.s-title .rose{font-style:italic;color:var(--rose)}
+.s-title .cyan{font-style:italic;color:var(--cyan)}
+.panel{background:rgba(12,10,18,0.55);backdrop-filter:blur(30px) saturate(150%);border:1px solid var(--line);position:relative;overflow:hidden;transition:border-color .4s}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent);opacity:0;transition:opacity .5s}
+.panel:hover::before{opacity:.6}
+.panel:hover{border-color:rgba(232,162,107,0.22)}
+.panel-glow{position:absolute;inset:0;pointer-events:none}
+.panel-glow::before{content:'';position:absolute;top:-40%;left:-20%;width:60%;height:80%;background:radial-gradient(ellipse,rgba(232,162,107,0.08),transparent 70%);filter:blur(40px)}
+.panel-glow::after{content:'';position:absolute;bottom:-30%;right:-10%;width:40%;height:60%;background:radial-gradient(ellipse,rgba(217,106,138,0.06),transparent 70%);filter:blur(40px)}
+.panel-in{padding:56px 60px;position:relative}
+.panel+.panel{margin-top:24px}
+.feat-stamp{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:3px;text-transform:uppercase;padding:6px 12px;border:1px solid rgba(232,162,107,0.3);background:rgba(232,162,107,0.05);margin-bottom:20px}
+.feat-stamp .live{width:6px;height:6px;background:#7ce5b5;border-radius:50%;box-shadow:0 0 8px #7ce5b5;animation:blink 1.6s ease-in-out infinite}
+.feat-name{font-family:var(--serif);font-size:clamp(28px,3.6vw,46px);font-weight:400;line-height:1.1;margin-bottom:6px}
+.feat-name a{color:var(--ink);text-decoration:none;background:linear-gradient(var(--amber),var(--amber)) 0 100% / 0 1px no-repeat;transition:background-size .4s}
+.feat-name a:hover{background-size:100% 1px}
+.feat-name em{font-style:italic;color:var(--amber)}
+.feat-org{font-family:var(--mono);font-size:11px;color:rgba(232,162,107,0.55);margin-bottom:32px;letter-spacing:.5px}
+.feat-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:start}
+.feat-body p{font-size:clamp(14px,1.25vw,17px);color:var(--muted);line-height:1.85;margin-bottom:16px}
+.hi{color:var(--ink);font-weight:500}.hi-a{color:var(--amber);font-style:italic;font-weight:500}.hi-r{color:var(--rose);font-style:italic;font-weight:500}.hi-c{color:var(--cyan);font-style:italic;font-weight:500}
+.tag-a{display:inline-block;color:var(--amber);background:rgba(232,162,107,0.08);border:1px solid rgba(232,162,107,0.22);font-family:var(--mono);font-size:11px;padding:1px 8px;letter-spacing:.3px;vertical-align:middle}
+.tag-r{display:inline-block;color:var(--rose);background:rgba(217,106,138,0.08);border:1px solid rgba(217,106,138,0.22);font-family:var(--mono);font-size:11px;padding:1px 8px;letter-spacing:.3px;vertical-align:middle}
+.tag-c{display:inline-block;color:var(--cyan);background:rgba(125,211,232,0.08);border:1px solid rgba(125,211,232,0.22);font-family:var(--mono);font-size:11px;padding:1px 8px;letter-spacing:.3px;vertical-align:middle}
+.feat-chips{display:flex;gap:8px;margin-top:26px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:10px;color:rgba(232,162,107,0.65);text-decoration:none;padding:8px 14px;border:1px solid rgba(232,162,107,0.2);letter-spacing:1px;transition:all .3s;text-transform:uppercase}
+.chip:hover{color:var(--amber);border-color:var(--amber);background:rgba(232,162,107,0.05)}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(232,162,107,0.10)}
+.metric{background:rgba(10,9,16,0.85);padding:28px 24px;transition:background .3s;position:relative;overflow:hidden}
+.metric::after{content:'';position:absolute;bottom:0;left:0;height:1px;width:0;background:var(--amber);transition:width .6s ease}
+.metric:hover{background:rgba(20,16,26,0.92)}.metric:hover::after{width:100%}
+.m-n{font-family:var(--serif);font-size:38px;font-weight:400;line-height:1;margin-bottom:8px;font-style:italic;color:var(--amber)}
+.m-n.rose{color:var(--rose)}.m-n.cyan{color:var(--cyan)}.m-n.ink{color:var(--ink)}
+.m-l{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.5px;line-height:1.6}
+.tl{display:flex;flex-direction:column;gap:0}
+.tl-row{display:grid;grid-template-columns:170px 1fr;gap:0;position:relative;padding-bottom:48px}
+.tl-row::after{content:'';position:absolute;left:178px;top:24px;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(232,162,107,0.3),rgba(232,162,107,0.05))}
+.tl-row:last-child{padding-bottom:0}.tl-row:last-child::after{display:none}
+.tl-node{position:absolute;left:172px;top:21px;width:13px;height:13px;border:1px solid var(--amber);background:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.tl-node::after{content:'';width:5px;height:5px;background:var(--amber);border-radius:50%}
+.tl-row.now .tl-node{box-shadow:0 0 0 4px rgba(232,162,107,0.15)}
+.tl-row.now .tl-node::after{animation:blink 1.6s infinite}
+.tl-date{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.5px;line-height:1.7;padding-top:22px;padding-right:24px;text-align:right;text-transform:uppercase}
+.tl-date b{color:var(--amber);font-weight:500;display:block;letter-spacing:1px}
+.tl-body{padding:14px 0 0 36px}
+.tl-name{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);font-style:italic;font-weight:400;margin-bottom:4px;line-height:1.15}
+.tl-name a{color:var(--ink);text-decoration:none;transition:color .3s}.tl-name a:hover{color:var(--amber)}
+.tl-role{font-family:var(--mono);font-size:10px;color:rgba(232,162,107,0.6);margin-bottom:5px;letter-spacing:.5px}
+.tl-stack{font-family:var(--mono);font-size:10px;color:rgba(192,168,118,0.55);margin-bottom:18px;letter-spacing:.3px}
+.pts{list-style:none;display:flex;flex-direction:column;gap:10px}
+.pts li{font-size:clamp(13px,1.15vw,15px);color:var(--muted);line-height:1.75;padding-left:18px;position:relative}
+.pts li::before{content:'';position:absolute;left:0;top:.7em;width:8px;height:1px;background:var(--amber);opacity:.5}
+.pts a{color:var(--amber);text-decoration:none;border-bottom:1px solid rgba(232,162,107,0.3);transition:color .3s}.pts a:hover{border-color:var(--amber)}
+.intro{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.6vw,22px);color:var(--muted);max-width:680px;line-height:1.7;margin-bottom:44px}
+.intro strong{font-style:normal;color:var(--ink);font-weight:500}
+.pubs{display:flex;flex-direction:column;gap:1px;background:rgba(232,162,107,0.10)}
+.pub{background:rgba(10,9,16,0.85);padding:26px 28px;display:grid;grid-template-columns:90px 1fr;gap:24px;transition:background .3s;position:relative;overflow:hidden}
+.pub::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--rose);transform:scaleY(0);transition:transform .4s;transform-origin:bottom}
+.pub:hover{background:rgba(18,14,24,0.92)}.pub:hover::before{transform:scaleY(1)}
+.pub-yr{font-family:var(--mono);font-size:10px;color:rgba(217,106,138,0.65);line-height:1.7;letter-spacing:.5px;text-transform:uppercase;padding-top:2px}
+.pub-yr b{display:block;color:var(--rose);font-weight:500;font-size:13px;margin-bottom:2px}
+.pub-title{font-family:var(--serif);font-size:clamp(17px,1.55vw,21px);font-style:italic;font-weight:500;margin-bottom:6px;line-height:1.3;color:var(--ink)}
+.pub-title a{color:inherit;text-decoration:none;transition:color .3s}.pub-title a:hover{color:var(--rose)}
+.pub-venue{font-family:var(--mono);font-size:10px;color:rgba(217,106,138,0.5);margin-bottom:5px;letter-spacing:.3px}
+.pub-authors{font-size:12px;color:var(--dim);font-family:var(--mono)}
+.me{color:var(--ink);font-weight:500}
+.badge{font-family:var(--mono);font-size:9px;border:1px solid rgba(125,211,232,0.4);color:var(--cyan);padding:2px 9px;margin-top:8px;display:inline-block;letter-spacing:1.5px;text-transform:uppercase}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;background:rgba(232,162,107,0.10)}
+.proj{background:rgba(10,9,16,0.85);padding:32px 30px;transition:background .35s;position:relative;overflow:hidden}
+.proj::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent);transform:scaleX(0);transition:transform .45s}
+.proj:hover{background:rgba(18,14,24,0.92)}.proj:hover::after{transform:scaleX(1)}
+.proj-idx{font-family:var(--mono);font-size:9px;color:rgba(232,162,107,0.4);margin-bottom:16px;letter-spacing:2.5px}
+.proj-name{font-family:var(--serif);font-size:clamp(18px,1.8vw,22px);font-style:italic;font-weight:500;margin-bottom:8px;line-height:1.25}
+.proj-name a{color:var(--ink);text-decoration:none;transition:color .3s}.proj-name a:hover{color:var(--amber)}
+.proj-tech{font-family:var(--mono);font-size:9px;color:rgba(232,162,107,0.5);margin-bottom:14px;letter-spacing:.3px;line-height:1.7}
+.proj-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:22px}
+.plink{font-family:var(--mono);font-size:10px;color:rgba(232,162,107,0.6);text-decoration:none;letter-spacing:1.5px;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;transition:color .3s}
+.plink:hover{color:var(--amber)}.plink::after{content:'↗';opacity:.5}
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:rgba(232,162,107,0.10)}
+.sk-box{background:rgba(10,9,16,0.85);padding:30px 26px}
+.sk-head{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(232,162,107,0.12);color:var(--amber)}
+.sk-head.rose{color:var(--rose);border-bottom-color:rgba(217,106,138,0.15)}.sk-head.cyan{color:var(--cyan);border-bottom-color:rgba(125,211,232,0.15)}.sk-head.ink{color:var(--ink);border-bottom-color:rgba(255,255,255,0.10)}
+.sk-tags{display:flex;flex-wrap:wrap;gap:6px}
+.sk-t{font-family:var(--mono);font-size:10px;color:var(--muted);padding:5px 11px;border:1px solid rgba(232,162,107,0.18);background:rgba(0,0,0,.25);transition:all .25s}
+.sk-t:hover{color:var(--amber);border-color:rgba(232,162,107,0.45);background:rgba(232,162,107,0.06)}
+#contact{text-align:center}
+.ct{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2vw,24px);color:var(--muted);max-width:600px;margin:0 auto 56px;line-height:1.7}
+.ct strong{font-style:normal;color:var(--ink);font-weight:500}.ct .ink-a{color:var(--amber);font-style:italic}
+.clinks{display:flex;justify-content:center;gap:1px;flex-wrap:wrap;background:rgba(232,162,107,0.10);max-width:780px;margin:0 auto}
+.clink{flex:1;min-width:160px;display:flex;justify-content:center;align-items:center;gap:10px;padding:22px;background:rgba(10,9,16,0.85);color:var(--muted);text-decoration:none;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;transition:all .3s}
+.clink:hover{color:var(--amber);background:rgba(18,14,24,0.95)}
+footer{border-top:1px solid var(--line);padding:24px 8vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:rgba(5,5,10,0.85);backdrop-filter:blur(20px);position:relative;z-index:10}
+.ft{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:1px}.ft span{color:var(--amber)}
+.back{font-family:var(--mono);font-size:10px;color:var(--amber);text-decoration:none;letter-spacing:2px;text-transform:uppercase}
+.fu{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.fu.in{opacity:1;transform:none}
+.fd1{transition-delay:.08s}.fd2{transition-delay:.16s}.fd3{transition-delay:.24s}
+@media(max-width:880px){.nav-mid{display:none}section{padding:80px 6vw}#hero{padding:0 6vw}.feat-grid{grid-template-columns:1fr;gap:32px}.tl-row{grid-template-columns:1fr}.tl-row::after,.tl-node,.tl-date{display:none}.tl-body{padding:0 0 28px 0}.panel-in{padding:36px 28px}footer{flex-direction:column;text-align:center}.scroll-tag{display:none}}
+
+/* ═══════════════════════════════════════════════
+   UNIFIED THEME SYSTEM — Cosmic (default) vs GPU Grid
+   ═══════════════════════════════════════════════ */
+:root{
+  --bg:#05050a;--ink:#f4ecd8;--dim:#8a8175;--muted:#c2b8a0;
+  --amber:#e8a26b;--rose:#e0795a;--cyan:#7dd3e8;--violet:#7dd3e8;
+  --line:rgba(232,162,107,0.10);
+  --accent:var(--amber);
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'Space Grotesk',system-ui,sans-serif;
+}
+[data-theme="gpu"]{
+  --bg:#04070a;--ink:#e8f6fa;--dim:#5e7480;--muted:#9bb4be;
+  --amber:#41e8ff;--rose:#a8ff60;--cyan:#41e8ff;--violet:#41e8ff;
+  --line:rgba(65,232,255,0.12);
+  --accent:var(--amber);
+}
+
+/* ══════════════════════════════════
+   PREMIUM DUAL-PILL THEME TOGGLE
+   ══════════════════════════════════ */
+#theme-toggle-wrap{
+  position:relative;
+  display:flex;align-items:center;
+  border-radius:0;
+  cursor:pointer;
+  user-select:none;
+}
+/* The outer pill container */
+#theme-toggle{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;
+  border:1px solid rgba(232,162,107,0.35);
+  background:rgba(5,4,12,0.75);
+  backdrop-filter:blur(16px);
+  cursor:pointer;
+  overflow:hidden;
+  transition:border-color .5s,box-shadow .5s;
+  width:220px;
+  height:36px;
+}
+#theme-toggle:hover{
+  border-color:rgba(232,162,107,0.7);
+  box-shadow:0 0 22px rgba(232,162,107,0.22),inset 0 0 10px rgba(232,162,107,0.04);
+}
+/* Sliding active indicator */
+#tt-slider{
+  position:absolute;
+  top:2px;bottom:2px;
+  width:calc(50% - 4px);
+  left:2px;
+  background:linear-gradient(135deg,rgba(232,162,107,0.22),rgba(232,162,107,0.08));
+  border:1px solid rgba(232,162,107,0.45);
+  box-shadow:0 0 14px rgba(232,162,107,0.3),inset 0 1px 0 rgba(255,255,255,0.08);
+  transition:transform .45s cubic-bezier(.34,1.3,.64,1),background .5s,border-color .5s,box-shadow .5s;
+  pointer-events:none;
+  z-index:1;
+}
+/* GPU-mode slider */
+[data-theme="gpu"] #tt-slider{
+  transform:translateX(calc(100% + 4px));
+  background:linear-gradient(135deg,rgba(65,232,255,0.2),rgba(65,232,255,0.07));
+  border-color:rgba(65,232,255,0.5);
+  box-shadow:0 0 18px rgba(65,232,255,0.35),inset 0 1px 0 rgba(255,255,255,0.06);
+}
+/* Individual option labels */
+.tt-opt{
+  position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  gap:6px;
+  height:100%;
+  color:rgba(232,162,107,0.38);
+  transition:color .4s;
+  padding:0 4px;
+}
+.tt-opt.active{color:rgba(232,162,107,0.95);}
+[data-theme="gpu"] .tt-opt{color:rgba(65,232,255,0.38);}
+[data-theme="gpu"] .tt-opt.active{color:rgba(65,232,255,0.95);}
+/* Icon glyphs */
+.tt-ico{
+  font-size:12px;
+  line-height:1;
+  display:inline-block;
+  transition:transform .5s cubic-bezier(.34,1.4,.64,1),text-shadow .4s;
+}
+.tt-opt.active .tt-ico{
+  text-shadow:0 0 10px rgba(232,162,107,0.8);
+  transform:scale(1.2);
+}
+[data-theme="gpu"] .tt-opt.active .tt-ico{
+  text-shadow:0 0 12px rgba(65,232,255,0.9);
+}
+.tt-txt{letter-spacing:2px;font-size:8.5px;}
+/* Scanline detail on the toggle (GPU theme) */
+#theme-toggle::after{
+  content:'';
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(65,232,255,0.04) 3px,rgba(65,232,255,0.04) 4px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .6s;
+}
+[data-theme="gpu"] #theme-toggle::after{opacity:1;}
+/* Corner bracket accents */
+#theme-toggle::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:8px;height:8px;
+  border-top:1px solid rgba(232,162,107,0.6);
+  border-left:1px solid rgba(232,162,107,0.6);
+  pointer-events:none;
+  transition:border-color .5s;
+}
+[data-theme="gpu"] #theme-toggle::before{
+  border-color:rgba(65,232,255,0.6);
+}
+/* Pulse animation on active option */
+@keyframes tt-pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.6}
+}
+.tt-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(232,162,107,0.9);
+  box-shadow:0 0 8px rgba(232,162,107,0.8);
+  animation:tt-pulse 2s ease-in-out infinite;
+  flex-shrink:0;
+}
+[data-theme="gpu"] .tt-dot{
+  background:rgba(65,232,255,0.9);
+  box-shadow:0 0 8px rgba(65,232,255,0.8);
+}
+
+/* ── TRANSITION OVERLAY ── */
+#theme-flash{
+  position:fixed;inset:0;z-index:9999;pointer-events:none;
+  opacity:0;background:var(--amber);
+  transition:opacity .25s ease;
+}
+#theme-flash.flash{opacity:.18;}
+
+/* ── SCAN LINES (GPU theme only) ── */
+#scan{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(65,232,255,0.025) 0 1px,transparent 1px 3px);
+  opacity:0;transition:opacity .6s ease;
+}
+[data-theme="gpu"] #scan{opacity:.45;}
+
+/* ── GPU BG canvas hidden by default ── */
+#bg-gpu{position:fixed;inset:0;z-index:0;opacity:0;transition:opacity .8s ease;}
+#bg-cosmic{position:fixed;inset:0;z-index:0;opacity:1;transition:opacity .8s ease;}
+[data-theme="gpu"] #bg-cosmic{opacity:0;pointer-events:none;}
+[data-theme="gpu"] #bg-gpu{opacity:1;}
+
+/* ════════════════════════════════════════════════════════
+   LIQUID GLASS SYSTEM — iOS/Apple-inspired layered glass
+   Both themes share this base; tinting is per-theme.
+   ════════════════════════════════════════════════════════
+
+   Anatomy of each glass panel:
+   ┌─────────────────────────────────────────────────────┐
+   │ specular edge  (1px bright top border)              │
+   │ refraction gradient  (subtle diagonal tint wash)    │
+   │ frosted blur substrate  (backdrop-filter)           │
+   │ inner shadow  (depth / concavity)                   │
+   │ outer glow  (ambient color spill)                   │
+   └─────────────────────────────────────────────────────┘
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Base glass upgrade for all panels ── */
+.panel,.console{
+  background:linear-gradient(
+    135deg,
+    rgba(255,255,255,0.055) 0%,
+    rgba(255,255,255,0.018) 40%,
+    rgba(0,0,0,0.18) 100%
+  ) !important;
+  backdrop-filter:blur(52px) saturate(190%) brightness(1.06) !important;
+  -webkit-backdrop-filter:blur(52px) saturate(190%) brightness(1.06) !important;
+  border-radius:20px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    inset 0 -1px 0 rgba(0,0,0,0.12),
+    inset 1px 0 0 rgba(255,255,255,0.06),
+    0 8px 32px rgba(0,0,0,0.38),
+    0 2px 8px rgba(0,0,0,0.22) !important;
+}
+/* Specular highlight top edge — the light-hitting-glass effect */
+.panel::before,.console::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  border-radius:20px 20px 0 0;
+  background:linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.22) 20%,
+    rgba(255,255,255,0.38) 50%,
+    rgba(255,255,255,0.22) 80%,
+    transparent 100%
+  );
+  pointer-events:none;z-index:3;
+}
+/* Glass refraction noise overlay (grain texture via SVG) */
+.panel::after,.console::after{
+  content:'';
+  position:absolute;inset:0;
+  border-radius:20px;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+  pointer-events:none;z-index:2;opacity:.6;
+  mix-blend-mode:overlay;
+}
+/* Hover: lift + brighter specular */
+.panel:hover,.console:hover{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -1px 0 rgba(0,0,0,0.10),
+    inset 1px 0 0 rgba(255,255,255,0.09),
+    0 16px 48px rgba(0,0,0,0.42),
+    0 4px 16px rgba(0,0,0,0.26) !important;
+  transform:translateY(-1px);
+  transition:transform .4s cubic-bezier(.2,.8,.3,1), box-shadow .4s ease, border-color .4s;
+}
+
+/* ── Metric cards: pill glass ── */
+.metric{
+  border-radius:14px;
+  backdrop-filter:blur(24px) saturate(160%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.10),inset 0 -1px 0 rgba(0,0,0,0.08) !important;
+  background:linear-gradient(160deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.28) 100%) !important;
+}
+
+/* ── Nav bar: strongest glass (Apple menu bar) ── */
+nav{
+  backdrop-filter:blur(72px) saturate(220%) brightness(1.08) !important;
+  -webkit-backdrop-filter:blur(72px) saturate(220%) brightness(1.08) !important;
+  background:linear-gradient(
+    180deg,
+    rgba(255,255,255,0.06) 0%,
+    rgba(0,0,0,0.45) 100%
+  ) !important;
+  box-shadow:
+    inset 0 -1px 0 rgba(255,255,255,0.06),
+    0 1px 0 rgba(0,0,0,0.3),
+    0 4px 24px rgba(0,0,0,0.25) !important;
+}
+
+/* ── Trajectory cards glass ── */
+.traj-card{
+  border-radius:16px;
+  backdrop-filter:blur(36px) saturate(170%) !important;
+  background:linear-gradient(135deg,rgba(255,255,255,0.045) 0%,rgba(0,0,0,0.25) 100%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.12),0 6px 20px rgba(0,0,0,0.32) !important;
+}
+
+/* ── Pub rows glass ── */
+.pub{
+  border-radius:12px;
+  backdrop-filter:blur(20px) saturate(150%) !important;
+  background:linear-gradient(135deg,rgba(255,255,255,0.03) 0%,rgba(0,0,0,0.3) 100%) !important;
+}
+
+/* ── Project cells glass ── */
+.proj{
+  border-radius:16px;
+  backdrop-filter:blur(20px) saturate(150%) !important;
+  background:linear-gradient(145deg,rgba(255,255,255,0.035) 0%,rgba(0,0,0,0.3) 100%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+
+/* ── Contact link tiles glass ── */
+.clink,.chan{
+  border-radius:12px;
+  backdrop-filter:blur(20px) saturate(150%) !important;
+  background:linear-gradient(135deg,rgba(255,255,255,0.03) 0%,rgba(0,0,0,0.28) 100%) !important;
+}
+
+/* ── Stack boxes glass ── */
+.sk-box{
+  border-radius:14px;
+  backdrop-filter:blur(24px) saturate(160%) !important;
+  background:linear-gradient(135deg,rgba(255,255,255,0.03) 0%,rgba(0,0,0,0.26) 100%) !important;
+}
+
+/* ── COSMIC THEME GLASS TINTING — warm amber refraction ── */
+:root .panel,:root .console{
+  border-color:rgba(232,162,107,0.18) !important;
+}
+:root .panel:hover,:root .console:hover{
+  border-color:rgba(232,162,107,0.32) !important;
+}
+:root nav{
+  border-bottom:1px solid rgba(232,162,107,0.12) !important;
+}
+/* Cosmic panels get a warm amber tint wash */
+:root .panel::after,:root .console::after{
+  background:radial-gradient(
+    ellipse 60% 40% at 20% 10%,
+    rgba(232,162,107,0.04) 0%,
+    transparent 70%
+  );
+  mix-blend-mode:normal;z-index:1;
+}
+:root .metric{border:1px solid rgba(232,162,107,0.09) !important;}
+:root .traj-card{border:1px solid rgba(232,162,107,0.12) !important;}
+
+/* ── GPU THEME GLASS TINTING — cool cyan refraction ── */
+[data-theme="gpu"] .panel,[data-theme="gpu"] .console{
+  border-color:rgba(65,232,255,0.18) !important;
+}
+[data-theme="gpu"] .panel:hover,[data-theme="gpu"] .console:hover{
+  border-color:rgba(65,232,255,0.35) !important;
+}
+[data-theme="gpu"] nav{
+  border-bottom:1px solid rgba(65,232,255,0.14) !important;
+}
+/* GPU panels get a cool cyan tint wash */
+[data-theme="gpu"] .panel::after,[data-theme="gpu"] .console::after{
+  background:radial-gradient(
+    ellipse 60% 40% at 20% 10%,
+    rgba(65,232,255,0.04) 0%,
+    transparent 70%
+  );
+  mix-blend-mode:normal;z-index:1;
+}
+[data-theme="gpu"] .metric{border:1px solid rgba(65,232,255,0.10) !important;}
+[data-theme="gpu"] .traj-card{border:1px solid rgba(65,232,255,0.12) !important;}
+[data-theme="gpu"] .proj{border:none !important;}
+
+/* ── Liquid glass chip/tag elements ── */
+.chip,.cta,.hl,.w3btn{
+  border-radius:8px;
+  backdrop-filter:blur(16px) saturate(160%) !important;
+}
+/* Smooth transitions for theme-switch ── */
+.panel,.metric,.proj,.pub,.clink,.chan,.sk-box,.traj-card,nav,.h-meta>span{
+  transition:
+    background .5s ease,
+    border-color .5s ease,
+    box-shadow .5s ease,
+    backdrop-filter .5s ease !important;
+}
+
+
+/* ── Typography resets: all sans+mono, no serif italic ── */
+[data-theme="gpu"] h1,[data-theme="gpu"] h2,[data-theme="gpu"] h3,
+[data-theme="gpu"] .h-name,[data-theme="gpu"] .feat-name,
+[data-theme="gpu"] .tl-name,[data-theme="gpu"] .traj-t{
+  font-family:var(--sans);font-style:normal;font-weight:700;letter-spacing:-1.5px;
+}
+/* Hero name: top half outline, bottom half solid fill */
+[data-theme="gpu"] .h-name .last{
+  color:transparent;-webkit-text-stroke:1.5px rgba(65,232,255,0.9);
+  font-style:normal;
+  text-shadow:none;
+  filter:drop-shadow(0 0 18px rgba(65,232,255,0.5));
+}
+[data-theme="gpu"] .h-name span:first-child{
+  color:#e8f6fa;font-weight:700;
+}
+/* Section titles: uppercase display + outlined accent */
+[data-theme="gpu"] .s-title{
+  font-family:var(--sans);font-style:normal;font-weight:700;
+  letter-spacing:-2px;text-transform:uppercase;
+}
+[data-theme="gpu"] .s-title em,
+[data-theme="gpu"] .s-title .rose,
+[data-theme="gpu"] .s-title .cyan{
+  font-style:normal;color:transparent;
+  -webkit-text-stroke:1px rgba(65,232,255,0.9);
+  text-shadow:0 0 30px rgba(65,232,255,0.3);
+}
+/* Eyebrow label: terminal prompt style */
+[data-theme="gpu"] .s-eyebrow{
+  font-size:10px;letter-spacing:3px;
+  color:rgba(65,232,255,0.7);
+}
+[data-theme="gpu"] .s-eyebrow::before{
+  content:'> ';color:rgba(168,255,96,0.8);
+}
+/* Body text: brighter, more legible */
+[data-theme="gpu"] .feat-body p,
+[data-theme="gpu"] .intro,
+[data-theme="gpu"] .pts li,
+[data-theme="gpu"] .ct,
+[data-theme="gpu"] .up-text,
+[data-theme="gpu"] .traj-d{
+  font-family:var(--mono);font-size:13px;line-height:1.9;
+  color:rgba(155,180,190,0.95);letter-spacing:0.2px;
+}
+/* Inline highlights in GPU mode */
+[data-theme="gpu"] .hi-a,[data-theme="gpu"] .hi-c{
+  color:rgba(65,232,255,0.95);font-style:normal;font-weight:500;
+}
+[data-theme="gpu"] .hi-r{
+  color:rgba(168,255,96,0.95);font-style:normal;font-weight:500;
+}
+[data-theme="gpu"] .tag-a,[data-theme="gpu"] .tag-c{
+  color:rgba(65,232,255,0.9);
+  background:rgba(65,232,255,0.08);
+  border-color:rgba(65,232,255,0.3);
+}
+[data-theme="gpu"] .tag-r{
+  color:rgba(168,255,96,0.9);
+  background:rgba(168,255,96,0.08);
+  border-color:rgba(168,255,96,0.3);
+}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 5vw;display:flex;justify-content:space-between;align-items:center;background:rgba(2,2,8,0.7);backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
-.logo{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:4px;text-decoration:none;opacity:.7;transition:opacity .3s}
-.logo:hover{opacity:1}
-.nav-links{display:flex;gap:30px;list-style:none}
-.nav-links a{color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;transition:color .3s}
-.nav-links a:hover{color:rgba(240,245,255,0.6)}
-.w3btn{font-family:var(--mono);font-size:10px;padding:7px 16px;border:1px solid rgba(0,229,255,0.2);background:transparent;color:rgba(0,229,255,0.45);cursor:pointer;transition:all .3s;letter-spacing:1px}
-.w3btn:hover,.w3btn.connected{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.05)}
+[data-theme="gpu"] nav{
+  background:rgba(4,7,10,0.92);
+  border-bottom:1px solid rgba(65,232,255,0.12);
+  font-family:var(--mono);
+}
+[data-theme="gpu"] .logo{color:rgba(65,232,255,0.9);}
+[data-theme="gpu"] .logo .lo-glyph{border-color:rgba(65,232,255,0.8);}
+[data-theme="gpu"] .logo .lo-glyph::after{background:rgba(65,232,255,0.9);}
+[data-theme="gpu"] .cta{
+  border-color:rgba(65,232,255,0.6);color:rgba(65,232,255,0.9);
+  font-family:var(--mono);
+}
+[data-theme="gpu"] .cta:hover{
+  background:rgba(65,232,255,0.15);
+  box-shadow:0 0 22px rgba(65,232,255,0.4);
+}
 
-/* ── HERO ── */
-#hero{height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 8vw;position:relative}
-.h-pre{font-family:var(--mono);font-size:10px;color:rgba(0,229,255,0.4);letter-spacing:5px;text-transform:uppercase;margin-bottom:26px;display:flex;align-items:center;gap:14px}
-.h-pre::before{content:'';width:30px;height:1px;background:var(--cyan);opacity:.4}
-.h-name{font-family:var(--serif);font-size:clamp(58px,11vw,138px);font-weight:700;font-style:italic;line-height:.88;letter-spacing:-1px;margin-bottom:24px}
-.h-name-1{color:rgba(255,255,255,0.95);display:block}
-.h-name-2{color:var(--cyan);display:block;font-weight:400}
-.h-divider{display:flex;align-items:center;gap:18px;margin-bottom:26px}
-.h-divider-line{flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent);opacity:.5}
-.h-divider-dot{width:4px;height:4px;background:var(--gold);opacity:.8}
-.h-sub{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;line-height:2.4;margin-bottom:32px}
-.h-sub .acc{color:var(--muted)}
-.h-desc{max-width:440px;font-size:clamp(15px,1.5vw,18px);line-height:1.9;color:var(--muted);font-weight:300;margin-bottom:50px}
-.kw{color:var(--text);font-style:italic}
-.kw-c{color:var(--cyan);font-style:italic}
-.kw-g{color:var(--gold);font-style:italic}
-.kw-v{color:var(--violet);font-style:italic}
-.h-links{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
-.hl{font-family:var(--mono);font-size:10px;color:var(--dim);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .3s;display:flex;align-items:center;gap:8px}
-.hl::after{content:'↗';opacity:.35;transition:opacity .3s}
-.hl:hover{color:var(--muted)}.hl:hover::after{opacity:.8}
-.hl.prim{color:var(--cyan);opacity:.8;border-bottom:1px solid rgba(0,229,255,0.25);padding-bottom:2px}
-.hl.prim::after{display:none}.hl.prim:hover{opacity:1}
-.scroll-ind{position:absolute;bottom:36px;right:8vw;display:flex;flex-direction:column;align-items:center;gap:8px;writing-mode:vertical-rl;font-family:var(--mono);font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.15);text-transform:uppercase}
-.scroll-ind::before{content:'';width:1px;height:44px;background:linear-gradient(to bottom,transparent,rgba(0,229,255,0.3))}
+/* ── PANELS: bracket-framed terminal windows ── */
+[data-theme="gpu"] .panel{
+  background:rgba(6,12,16,0.82);
+  border:1px solid rgba(65,232,255,0.15);
+  backdrop-filter:blur(20px);
+}
+[data-theme="gpu"] .panel::before{
+  content:'';
+  position:absolute;top:6px;left:6px;
+  width:12px;height:12px;
+  border-top:1px solid rgba(65,232,255,0.6);
+  border-left:1px solid rgba(65,232,255,0.6);
+  pointer-events:none;
+}
+[data-theme="gpu"] .panel::after{
+  content:'';
+  position:absolute;bottom:6px;right:6px;
+  width:12px;height:12px;
+  border-bottom:1px solid rgba(65,232,255,0.4);
+  border-right:1px solid rgba(65,232,255,0.4);
+  pointer-events:none;
+}
+[data-theme="gpu"] .panel:hover{border-color:rgba(65,232,255,0.35);}
+[data-theme="gpu"] .panel-border-top,
+[data-theme="gpu"] .console>.cbar{
+  background:linear-gradient(90deg,transparent,rgba(65,232,255,0.7),transparent);
+}
+[data-theme="gpu"] .panel-glow-tl{
+  background:radial-gradient(ellipse at top left,rgba(65,232,255,0.06),transparent 70%);
+}
+/* Section number labels */
+[data-theme="gpu"] .s-num{
+  font-family:var(--mono);color:rgba(65,232,255,0.4);
+  letter-spacing:4px;
+}
+[data-theme="gpu"] .s-num::before{content:'[ ';}
+[data-theme="gpu"] .s-num::after{content:' ]';}
 
-/* ── SECTIONS ── */
-section{padding:110px 8vw}
+/* ── TELEMETRY / METRICS: LED readout style ── */
+[data-theme="gpu"] .tele-n,
+[data-theme="gpu"] .m-n{
+  font-family:var(--mono);font-weight:700;
+  color:rgba(65,232,255,0.95);
+  text-shadow:0 0 16px rgba(65,232,255,0.6),0 0 4px rgba(65,232,255,0.3);
+  letter-spacing:-1px;
+}
+[data-theme="gpu"] .m-n.g,
+[data-theme="gpu"] .tele-n.lime{
+  color:rgba(168,255,96,0.95);
+  text-shadow:0 0 16px rgba(168,255,96,0.6),0 0 4px rgba(168,255,96,0.3);
+}
+[data-theme="gpu"] .m-n.v{color:rgba(65,232,255,0.7);}
+[data-theme="gpu"] .tele-l,[data-theme="gpu"] .m-l{
+  font-family:var(--mono);font-size:9px;
+  color:rgba(94,116,128,0.9);text-transform:uppercase;letter-spacing:1px;
+}
+[data-theme="gpu"] .metrics{background:rgba(65,232,255,0.06);}
+[data-theme="gpu"] .metric{
+  background:rgba(5,10,13,0.9);
+  border:1px solid rgba(65,232,255,0.08);
+}
+[data-theme="gpu"] .metric:hover{background:rgba(10,20,26,0.95);}
 
-/* GLASS PANEL */
-.panel{background:var(--glass);backdrop-filter:blur(44px) saturate(140%);-webkit-backdrop-filter:blur(44px) saturate(140%);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .4s}
-.panel:hover{border-color:var(--border-h)}
-.panel-glow{position:absolute;inset:0;pointer-events:none}
-.panel-glow-tl{position:absolute;top:0;left:0;width:300px;height:200px;background:radial-gradient(ellipse at top left,rgba(0,229,255,0.04),transparent 70%)}
-.panel-glow-br{position:absolute;bottom:0;right:0;width:200px;height:150px;background:radial-gradient(ellipse at bottom right,rgba(176,108,255,0.03),transparent 70%)}
-.panel-border-top{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .5s}
-.panel:hover .panel-border-top{opacity:.6}
-.panel-inner{padding:52px 52px}
+/* ── TIMELINE: square nodes, monospace ── */
+[data-theme="gpu"] .tl-name{
+  font-family:var(--sans);font-weight:600;font-size:clamp(18px,2vw,24px);
+  letter-spacing:-0.5px;
+}
+[data-theme="gpu"] .tl-name a:hover{color:rgba(65,232,255,1);}
+[data-theme="gpu"] .tl-role{
+  font-family:var(--mono);font-size:10px;
+  color:rgba(65,232,255,0.6);letter-spacing:1px;
+}
+[data-theme="gpu"] .tl-stack{
+  font-family:var(--mono);font-size:9px;
+  color:rgba(168,255,96,0.55);text-transform:uppercase;letter-spacing:1px;
+}
+[data-theme="gpu"] .tl-node{
+  border-color:rgba(65,232,255,0.7);
+  box-shadow:0 0 10px rgba(65,232,255,0.4);
+}
+[data-theme="gpu"] .tl-item::after{
+  background:linear-gradient(to bottom,rgba(65,232,255,0.3),rgba(65,232,255,0.03));
+}
+[data-theme="gpu"] .pts li::before{
+  content:'·';color:rgba(65,232,255,0.8);font-weight:700;
+}
+[data-theme="gpu"] .pts a{
+  color:rgba(65,232,255,0.75);
+  border-bottom-color:rgba(65,232,255,0.3);
+}
 
-.s-num{font-family:var(--mono);font-size:9px;color:rgba(0,229,255,0.35);letter-spacing:5px;text-transform:uppercase;margin-bottom:8px}
-.s-title{font-family:var(--serif);font-size:clamp(32px,4.8vw,62px);font-weight:600;font-style:italic;line-height:1.05;margin-bottom:52px;letter-spacing:-.5px}
-.s-title strong{font-style:normal;font-weight:900;color:var(--cyan)}
-.s-title .gold{font-style:normal;font-weight:900;color:var(--gold)}
-.s-title .vio{font-style:normal;font-weight:900;color:var(--violet)}
+/* ── PUBLICATIONS: code-diff aesthetic ── */
+[data-theme="gpu"] .pub-stack{background:rgba(65,232,255,0.05);}
+[data-theme="gpu"] .pub{
+  background:rgba(5,10,13,0.9);
+  border-left:2px solid rgba(65,232,255,0.08);
+}
+[data-theme="gpu"] .pub:hover::before{background:rgba(65,232,255,0.9);}
+[data-theme="gpu"] .pub-yr{
+  font-family:var(--mono);color:rgba(168,255,96,0.7);font-size:10px;
+}
+[data-theme="gpu"] .pub-title{
+  font-family:var(--sans);font-weight:600;
+  color:rgba(232,246,250,0.92);letter-spacing:-0.3px;
+}
+[data-theme="gpu"] .pub-title a:hover{color:rgba(65,232,255,0.95);}
+[data-theme="gpu"] .pub-venue{
+  font-family:var(--mono);font-size:9px;
+  color:rgba(65,232,255,0.5);letter-spacing:0.5px;
+}
+[data-theme="gpu"] .badge{
+  border-color:rgba(168,255,96,0.4);color:rgba(168,255,96,0.8);
+}
+[data-theme="gpu"] .me{color:rgba(65,232,255,0.85);font-weight:500;}
 
-/* ── FEATURED WORK ── */
-.feat-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(240,165,0,0.2);background:rgba(240,165,0,0.04);margin-bottom:18px}
-.feat-badge::before{content:'▶';font-size:7px}
-.feat-name{font-family:var(--serif);font-size:clamp(22px,3vw,38px);font-weight:600;font-style:italic;line-height:1.15;margin-bottom:6px}
-.feat-name a{color:var(--text);text-decoration:none;transition:color .3s}
-.feat-name a:hover{color:var(--cyan)}
-.feat-org{font-family:var(--mono);font-size:10px;color:rgba(0,229,255,0.45);margin-bottom:30px;letter-spacing:.5px}
-.feat-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}
-.feat-body p{font-size:clamp(13px,1.2vw,16px);color:var(--muted);line-height:1.95;margin-bottom:14px}
+/* ── PROJECTS: register bank style ── */
+[data-theme="gpu"] .proj-grid{background:rgba(65,232,255,0.06);}
+[data-theme="gpu"] .proj{background:rgba(5,10,13,0.9);}
+[data-theme="gpu"] .proj:hover{background:rgba(10,20,26,0.96);}
+[data-theme="gpu"] .proj::after{
+  background:linear-gradient(90deg,transparent,rgba(65,232,255,0.7),transparent);
+}
+[data-theme="gpu"] .proj-idx{
+  font-family:var(--mono);color:rgba(65,232,255,0.4);letter-spacing:2px;
+}
+[data-theme="gpu"] .proj-name{
+  font-family:var(--sans);font-weight:600;letter-spacing:-0.5px;
+}
+[data-theme="gpu"] .proj-tech{
+  color:rgba(168,255,96,0.6);text-transform:uppercase;letter-spacing:0.5px;
+}
+[data-theme="gpu"] .plink{
+  color:rgba(65,232,255,0.65);border-bottom-color:rgba(65,232,255,0.25);
+}
+[data-theme="gpu"] .plink:hover{color:rgba(65,232,255,1);}
 
-/* Inline keyword highlights */
-.hi-c{color:var(--cyan);font-style:italic;font-weight:500}
-.hi-g{color:var(--gold);font-style:italic;font-weight:500}
-.hi-v{color:var(--violet);font-style:italic;font-weight:500}
-.hi-w{color:rgba(240,245,255,0.9);font-weight:500}
-.tag-c{display:inline-block;color:var(--cyan);background:var(--cyan-d);border:1px solid rgba(0,229,255,0.18);font-family:var(--mono);font-size:10px;padding:1px 7px;letter-spacing:.3px;border-radius:0;vertical-align:middle}
-.tag-g{display:inline-block;color:var(--gold);background:var(--gold-d);border:1px solid rgba(240,165,0,0.18);font-family:var(--mono);font-size:10px;padding:1px 7px;letter-spacing:.3px;vertical-align:middle}
-.tag-v{display:inline-block;color:var(--violet);background:var(--violet-d);border:1px solid rgba(176,108,255,0.18);font-family:var(--mono);font-size:10px;padding:1px 7px;letter-spacing:.3px;vertical-align:middle}
+/* ── STACK: spectral readout ── */
+[data-theme="gpu"] .sk-grid{background:rgba(65,232,255,0.06);}
+[data-theme="gpu"] .sk-box{background:rgba(5,10,13,0.9);}
+[data-theme="gpu"] .sk-head{
+  color:rgba(65,232,255,0.75);
+  border-bottom-color:rgba(65,232,255,0.15);
+}
+[data-theme="gpu"] .sk-head.g{color:rgba(168,255,96,0.75);}
+[data-theme="gpu"] .sk-t{
+  border-color:rgba(65,232,255,0.15);
+  color:rgba(155,180,190,0.8);
+}
+[data-theme="gpu"] .sk-t:hover{
+  color:rgba(65,232,255,0.95);
+  border-color:rgba(65,232,255,0.5);
+  background:rgba(65,232,255,0.06);
+  box-shadow:0 0 10px rgba(65,232,255,0.15);
+}
+/* Stack row color-coding in GPU mode */
+[data-theme="gpu"] .sk-box.c .sk-t{color:rgba(65,232,255,0.7);border-color:rgba(65,232,255,0.2);}
+[data-theme="gpu"] .sk-box.g .sk-t{color:rgba(168,255,96,0.7);border-color:rgba(168,255,96,0.2);}
+[data-theme="gpu"] .sk-box.v .sk-t{color:rgba(65,232,255,0.55);border-color:rgba(65,232,255,0.15);}
 
-.feat-chips{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
-.chip{font-family:var(--mono);font-size:9px;color:rgba(0,229,255,0.5);text-decoration:none;padding:7px 14px;border:1px solid rgba(0,229,255,0.15);letter-spacing:1px;transition:all .3s;text-transform:uppercase}
-.chip:hover{color:var(--cyan);border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.04)}
-.chip.gd{color:rgba(240,165,0,0.5);border-color:rgba(240,165,0,0.15)}
-.chip.gd:hover{color:var(--gold);border-color:rgba(240,165,0,0.4)}
-
-/* Metrics */
-.metrics{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.05)}
-.metric{background:rgba(3,4,18,0.72);padding:24px 22px;backdrop-filter:blur(16px);transition:background .3s}
-.metric:hover{background:rgba(6,8,28,0.85)}
-.m-n{font-family:var(--mono);font-size:26px;font-weight:700;line-height:1;margin-bottom:6px}
-.m-n.c{color:var(--cyan)}
-.m-n.g{color:var(--gold)}
-.m-n.v{color:var(--violet)}
-.m-l{font-size:11px;color:var(--dim);letter-spacing:.3px;line-height:1.6}
-.panel+.panel{margin-top:20px}
-
-/* ── TIMELINE ── */
-.tl-item{display:grid;grid-template-columns:150px 1fr;gap:0;position:relative;padding-bottom:44px}
-.tl-item::after{content:'';position:absolute;left:158px;top:22px;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(0,229,255,0.25),rgba(0,229,255,0.04))}
-.tl-item:last-child{padding-bottom:0}.tl-item:last-child::after{display:none}
-.tl-node{position:absolute;left:154px;top:19px;width:9px;height:9px;border:1px solid var(--cyan);background:var(--bg);opacity:.7}
-.tl-date{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.5px;line-height:2;padding-top:18px;padding-right:22px;text-align:right;text-transform:uppercase}
-.tl-body{padding:14px 0 0 32px}
-.tl-name{font-family:var(--serif);font-size:clamp(17px,2vw,24px);font-style:italic;font-weight:600;margin-bottom:4px;line-height:1.2}
-.tl-name a{color:var(--text);text-decoration:none;transition:color .3s}
-.tl-name a:hover{color:var(--cyan)}
-.tl-role{font-family:var(--mono);font-size:10px;color:rgba(0,229,255,0.5);margin-bottom:3px;letter-spacing:.5px}
-.tl-stack{font-family:var(--mono);font-size:9px;color:rgba(240,165,0,0.55);margin-bottom:16px;letter-spacing:.3px}
-.pts{list-style:none;display:flex;flex-direction:column;gap:9px}
-.pts li{font-size:clamp(12px,1.1vw,14px);color:var(--muted);line-height:1.8;padding-left:16px;position:relative}
-.pts li::before{content:'–';position:absolute;left:0;color:rgba(0,229,255,0.35);font-family:var(--mono)}
-.pts a{color:rgba(0,229,255,0.65);text-decoration:none;border-bottom:1px solid rgba(0,229,255,0.15);transition:color .3s}
-.pts a:hover{color:var(--cyan)}
-
-/* ── RESEARCH ── */
-.research-intro{font-family:var(--serif);font-style:italic;font-size:clamp(14px,1.4vw,18px);color:var(--muted);max-width:560px;line-height:1.9;margin-bottom:40px}
-.research-intro strong{font-style:normal;color:rgba(240,245,255,0.8);font-weight:600}
-.pub-stack{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.04)}
-.pub{background:rgba(4,5,18,0.7);backdrop-filter:blur(12px);padding:22px 26px;display:grid;grid-template-columns:68px 1fr;gap:22px;transition:all .3s;position:relative;overflow:hidden}
-.pub::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transition:transform .4s;transform-origin:bottom}
-.pub:hover{background:rgba(8,10,30,0.82)}.pub:hover::before{transform:scaleY(1)}
-.pub-yr{font-family:var(--mono);font-size:9px;color:rgba(240,165,0,0.5);line-height:1.8;letter-spacing:.5px;text-transform:uppercase;padding-top:2px}
-.pub-title{font-family:var(--serif);font-size:clamp(13px,1.3vw,16px);font-style:italic;font-weight:600;margin-bottom:4px;line-height:1.4;color:rgba(240,245,255,0.85)}
-.pub-title a{color:inherit;text-decoration:none;transition:color .3s}
-.pub-title a:hover{color:var(--gold)}
-.pub-venue{font-family:var(--mono);font-size:9px;color:rgba(240,165,0,0.45);margin-bottom:3px;letter-spacing:.3px}
-.pub-authors{font-size:11px;color:var(--dim);font-family:var(--mono)}
-.me{color:rgba(240,245,255,0.6)}
-.badge{font-family:var(--mono);font-size:9px;border:1px solid rgba(176,108,255,0.3);color:rgba(176,108,255,0.65);padding:2px 8px;margin-top:6px;display:inline-block;letter-spacing:1px}
-
-/* ── PROJECTS ── */
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:1px;background:rgba(255,255,255,0.04)}
-.proj{background:rgba(4,5,18,0.68);backdrop-filter:blur(20px);padding:30px 28px;transition:background .35s;position:relative;overflow:hidden}
-.proj::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);transform:scaleX(0);transition:transform .45s;transform-origin:center}
-.proj:hover{background:rgba(8,12,34,0.82)}.proj:hover::after{transform:scaleX(1)}
-.proj-idx{font-family:var(--mono);font-size:9px;color:rgba(0,229,255,0.25);margin-bottom:14px;letter-spacing:2px}
-.proj-name{font-family:var(--serif);font-size:clamp(15px,1.6vw,20px);font-style:italic;font-weight:600;margin-bottom:7px;line-height:1.25;color:rgba(240,245,255,0.9)}
-.proj-name a{color:inherit;text-decoration:none;transition:color .3s}
-.proj-name a:hover{color:var(--cyan)}
-.proj-tech{font-family:var(--mono);font-size:9px;color:rgba(240,165,0,0.5);margin-bottom:12px;letter-spacing:.3px;line-height:1.8}
-.proj-desc{font-size:clamp(12px,1.1vw,13px);color:var(--dim);line-height:1.85;margin-bottom:20px}
-.plink{font-family:var(--mono);font-size:9px;color:rgba(0,229,255,0.45);text-decoration:none;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid rgba(0,229,255,0.15);padding-bottom:2px;transition:all .3s}
-.plink:hover{color:var(--cyan);border-color:rgba(0,229,255,0.5)}
-
-/* ── STACK ── */
-.sk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:1px;background:rgba(255,255,255,0.04)}
-.sk-box{background:rgba(4,5,18,0.65);backdrop-filter:blur(12px);padding:26px 22px}
-.sk-head{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08)}
-.sk-head.c{color:rgba(0,229,255,0.7)}
-.sk-head.g{color:rgba(240,165,0,0.7)}
-.sk-head.v{color:rgba(176,108,255,0.7)}
-.sk-tags{display:flex;flex-wrap:wrap;gap:6px}
-.sk-t{font-family:var(--mono);font-size:10px;color:var(--dim);padding:4px 10px;border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,.25);transition:all .25s;cursor:default}
-.sk-t:hover{color:rgba(240,245,255,0.75);border-color:rgba(255,255,255,0.18)}
-/* Cyan category tool tags */
-.sk-box.c .sk-t{color:rgba(0,229,255,0.6);border-color:rgba(0,229,255,0.22);background:rgba(0,229,255,0.03)}
-.sk-box.c .sk-t:hover{color:var(--cyan);border-color:rgba(0,229,255,0.55);background:rgba(0,229,255,0.08);box-shadow:0 0 10px rgba(0,229,255,0.18),inset 0 0 6px rgba(0,229,255,0.06)}
-/* Gold category tool tags */
-.sk-box.g .sk-t{color:rgba(240,165,0,0.6);border-color:rgba(240,165,0,0.22);background:rgba(240,165,0,0.03)}
-.sk-box.g .sk-t:hover{color:var(--gold);border-color:rgba(240,165,0,0.55);background:rgba(240,165,0,0.08);box-shadow:0 0 10px rgba(240,165,0,0.18),inset 0 0 6px rgba(240,165,0,0.06)}
-/* Violet category tool tags */
-.sk-box.v .sk-t{color:rgba(176,108,255,0.6);border-color:rgba(176,108,255,0.22);background:rgba(176,108,255,0.03)}
-.sk-box.v .sk-t:hover{color:var(--violet);border-color:rgba(176,108,255,0.55);background:rgba(176,108,255,0.08);box-shadow:0 0 10px rgba(176,108,255,0.18),inset 0 0 6px rgba(176,108,255,0.06)}
+/* ── FEATURED WORK: chip/stamp refinements ── */
+[data-theme="gpu"] .feat-badge,.feat-stamp{
+  font-family:var(--mono);letter-spacing:2px;
+}
+[data-theme="gpu"] .feat-badge{
+  color:rgba(65,232,255,0.8);
+  border-color:rgba(65,232,255,0.25);
+  background:rgba(65,232,255,0.05);
+}
+[data-theme="gpu"] .chip{
+  color:rgba(65,232,255,0.6);
+  border-color:rgba(65,232,255,0.2);
+  font-family:var(--mono);
+}
+[data-theme="gpu"] .chip:hover{
+  color:rgba(65,232,255,1);border-color:rgba(65,232,255,0.7);
+  background:rgba(65,232,255,0.06);
+  box-shadow:0 0 12px rgba(65,232,255,0.2);
+}
 
 /* ── CONTACT ── */
-#contact{text-align:center}
-.ct{font-family:var(--serif);font-style:italic;font-size:clamp(16px,2vw,22px);color:var(--muted);max-width:480px;margin:0 auto 48px;line-height:1.85}
-.ct strong{font-style:normal;color:rgba(240,245,255,0.75)}
-.clinks{display:flex;justify-content:center;gap:1px;flex-wrap:wrap;background:rgba(255,255,255,0.04);max-width:700px;margin:0 auto}
-.clink{flex:1;min-width:140px;display:flex;justify-content:center;align-items:center;gap:9px;padding:20px;background:rgba(4,5,18,0.65);backdrop-filter:blur(20px);color:var(--dim);text-decoration:none;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;transition:all .3s}
-.clink:hover{color:var(--cyan);background:rgba(0,229,255,0.04)}
-
-footer{border-top:1px solid var(--border);padding:20px 8vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;background:rgba(2,2,8,0.85);backdrop-filter:blur(24px)}
-.ft{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:1px}
-.ft span{color:rgba(0,229,255,0.4)}
-
-/* REVEAL */
-.fu{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s ease}
-.fu.in{opacity:1;transform:none}
-.fd{transition-delay:.1s}.fd2{transition-delay:.2s}.fd3{transition-delay:.3s}
-
-@media(max-width:768px){
-  .nav-links{display:none}
-  section{padding:80px 5vw}
-  #hero{padding:0 6vw}
-  .feat-grid{grid-template-columns:1fr}
-  .tl-item{grid-template-columns:1fr}
-  .tl-item::after,.tl-node,.tl-date{display:none}
-  .tl-body{padding:0 0 28px 0}
-  .panel-inner{padding:32px 24px}
-  footer{flex-direction:column;text-align:center}
+[data-theme="gpu"] .ct{font-family:var(--mono);}
+[data-theme="gpu"] .ct strong{color:rgba(65,232,255,0.9);}
+[data-theme="gpu"] .clinks{background:rgba(65,232,255,0.06);border:1px solid rgba(65,232,255,0.12);}
+[data-theme="gpu"] .clink{
+  background:rgba(5,10,13,0.9);color:rgba(94,116,128,0.9);
+  font-family:var(--mono);
 }
+[data-theme="gpu"] .clink:hover{color:rgba(65,232,255,0.95);background:rgba(10,20,26,0.96);}
+[data-theme="gpu"] .chan-l{font-family:var(--sans);font-weight:600;}
+
+/* ── RESEARCH lineage ── */
+[data-theme="gpu"] .lin-node{
+  border-color:rgba(65,232,255,0.7);
+  box-shadow:0 0 10px rgba(65,232,255,0.4);
+}
+[data-theme="gpu"] .lin:hover .lin-body::before{background:rgba(65,232,255,0.9);}
+[data-theme="gpu"] .lin-tag{
+  color:rgba(65,232,255,0.7);border-color:rgba(65,232,255,0.25);
+}
+[data-theme="gpu"] .lin-tag.rev{
+  color:rgba(168,255,96,0.8);border-color:rgba(168,255,96,0.35);
+}
+[data-theme="gpu"] .pub-title a,.lin .pub-title a{transition:color .3s;}
+
+/* ── TRAJECTORY CARDS ── */
+[data-theme="gpu"] .traj-card{
+  background:rgba(6,12,16,0.82);border:1px solid rgba(65,232,255,0.1);
+}
+[data-theme="gpu"] .traj-card:hover{background:rgba(10,20,26,0.94);}
+[data-theme="gpu"] .traj-card.now::before{background:rgba(65,232,255,0.9);}
+[data-theme="gpu"] .traj-card.next::before{background:rgba(168,255,96,0.9);}
+[data-theme="gpu"] .traj-card.exp::before{background:rgba(255,94,168,0.9);}
+[data-theme="gpu"] .traj-card.now .traj-k{color:rgba(65,232,255,0.85);}
+[data-theme="gpu"] .traj-card.next .traj-k{color:rgba(168,255,96,0.85);}
+[data-theme="gpu"] .traj-t{color:rgba(232,246,250,0.92);}
+
+/* ── HERO STAMP & LINKS ── */
+[data-theme="gpu"] .h-stamp{
+  font-family:var(--mono);color:rgba(65,232,255,0.6);
+}
+[data-theme="gpu"] .h-stamp .blink{
+  background:rgba(65,232,255,0.9);
+  box-shadow:0 0 12px rgba(65,232,255,0.8);
+}
+[data-theme="gpu"] .h-tag{
+  font-family:var(--mono);color:rgba(155,180,190,0.9);
+  font-size:clamp(13px,1.3vw,15px);line-height:1.9;
+}
+[data-theme="gpu"] .h-tag b{color:rgba(232,246,250,0.95);}
+[data-theme="gpu"] .h-tag .accent,.h-tag .c{color:rgba(65,232,255,0.9);}
+
+/* Convert the single h-meta box into glass tiles for the tags */
+[data-theme="gpu"] .h-meta{
+  background:transparent;border:none;
+}
+[data-theme="gpu"] .h-meta>span{
+  border:1px solid rgba(65,232,255,0.15);
+  background:linear-gradient(135deg,rgba(65,232,255,0.06),rgba(0,0,0,0.3));
+  backdrop-filter:blur(24px);
+  padding:14px 18px;
+  border-radius:12px;
+  font-family:var(--mono);
+}
+[data-theme="gpu"] .h-meta>span>b{color:rgba(65,232,255,0.85);}
+[data-theme="gpu"] .hl{
+  border-color:rgba(65,232,255,0.2);color:rgba(155,180,190,0.8);
+  font-family:var(--mono);
+}
+[data-theme="gpu"] .hl:hover{color:rgba(65,232,255,0.95);border-color:rgba(65,232,255,0.6);}
+[data-theme="gpu"] .hl.prim{
+  background:rgba(65,232,255,0.15);
+  border-color:rgba(65,232,255,0.6);
+  color:rgba(65,232,255,0.95);
+}
+[data-theme="gpu"] .hl.prim:hover{
+  background:rgba(65,232,255,0.25);
+  box-shadow:0 0 20px rgba(65,232,255,0.35);
+}
+
+/* ── FOOTER ── */
+[data-theme="gpu"] footer{
+  border-top-color:rgba(65,232,255,0.12);
+  background:rgba(4,7,10,0.9);font-family:var(--mono);
+}
+[data-theme="gpu"] .ft span{color:rgba(65,232,255,0.5);}
+
+/* ── SCROLL REVEAL stays same ── */
+[data-theme="gpu"] .fu.in{opacity:1;transform:none;}
 </style>
 </head>
 <body>
-<canvas id="cv"></canvas>
-<canvas id="noise" style="position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.22"></canvas>
 
-<nav>
-  <a href="#hero" class="logo">Aditya.T</a>
-  <ul class="nav-links">
-    <li><a href="#gsoc">Work</a></li>
-    <li><a href="#experience">Exp</a></li>
+<canvas id="bg-cosmic"></canvas>
+<canvas id="bg-gpu"></canvas>
+<div id="scan"></div>
+<div id="theme-flash"></div>
+<div id="vignette"></div>
+<canvas id="particles"></canvas>
+
+<div class="app">
+
+<nav id="nav">
+  <a href="#hero" class="logo"><span class="lo-glyph"></span>ADITYA · T</a>
+  <ul class="nav-mid">
+    <li><a href="#feat">Work</a></li>
+    <li><a href="#exp">Experience</a></li>
     <li><a href="#research">Research</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#stack">Stack</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <button class="w3btn" id="wbtn">⬡ Connect Wallet</button>
+  <div style="display:flex;gap:10px;align-items:center"><div id="theme-toggle-wrap">
+  <div id="theme-toggle" role="button" onclick="toggleTheme()" aria-label="Switch theme" tabindex="0">
+    <span id="tt-slider"></span>
+    <span class="tt-opt active" id="tt-cosmic">
+      <span class="tt-dot"></span>
+      <span class="tt-ico">✦</span>
+      <span class="tt-txt">Cosmic</span>
+    </span>
+    <span class="tt-opt" id="tt-gpu">
+      <span class="tt-ico">⊞</span>
+      <span class="tt-txt">GPU Grid</span>
+    </span>
+  </div>
+</div><a href="https://drive.google.com/file/u/0/d/1rebI8SXe8pjzczuKqacmOeyYnYRHAf_g/view" target="_blank" class="cta">Résumé ↗</a></div>
 </nav>
 
-<div class="content">
-
-<!-- HERO -->
 <section id="hero">
-  <p class="h-pre">Compiler Engineering · HPC · IIT Jodhpur · 2026</p>
-  <h1 class="h-name">
-    <span class="h-name-1">Aditya</span>
-    <span class="h-name-2">Trivedi</span>
-  </h1>
-  <div class="h-divider">
-    <div class="h-divider-line"></div>
-    <div class="h-divider-dot"></div>
-    <div class="h-divider-line" style="background:linear-gradient(90deg,transparent,rgba(176,108,255,0.4))"></div>
+  <p class="h-stamp"><span class="blink"></span>Compiler Engineer · Low-level systems · Class of '26</p>
+  <h1 class="h-name"><span>Aditya</span><span class="last">Trivedi.</span></h1>
+  <p class="h-tag">I build the layer between language and silicon — <b>compiler IR</b>, <span class="accent">parallel runtimes</span>, and <b>GPU offloading</b>. GSoC '25 at Fortran-Lang, core LFortran contributor, four published papers, with early LLVM upstream contributions. <span class="accent">Joining Qualcomm's ARM compiler team</span> in July 2026 — chasing <span class="accent">MLIR &amp; ML compilers</span> along the way.</p>
+  <div class="h-meta">
+    <span><b>↗ Focus</b><i>Compiler IR · Codegen</i></span>
+    <span><b>↗ Upstream</b><i>LLVM · LFortran</i></span>
+    <span><b>↗ Papers</b><i>4 · HiPC, EuroPDP, FGCS</i></span>
+    <span><b>↗ GSoC</b><i>'25 · Fortran-Lang</i></span>
   </div>
-  <p class="h-sub">
-    <span class="acc">GSoC 2025 · Fortran-Lang</span> &nbsp;/&nbsp;
-    LFortran Compiler &nbsp;/&nbsp;
-    <span class="acc">HPC Research · Published Author</span>
-  </p>
-  <p class="h-desc">
-    Working at the lowest layers — <span class="kw-c">compiler IR design</span>,
-    <span class="kw-g">parallel runtime engineering</span>, and
-    <span class="kw-v">GPU offloading</span>.
-    Four published papers on parallel graph algorithms.
-    Final year at <span class="kw">IIT Jodhpur</span>.
-  </p>
   <div class="h-links">
-    <a href="#gsoc" class="hl prim">Featured Work</a>
+    <a href="#feat" class="hl prim">Featured Work</a>
     <a href="https://github.com/adit4443ya" target="_blank" class="hl">GitHub</a>
     <a href="https://www.linkedin.com/in/adit4443ya/" target="_blank" class="hl">LinkedIn</a>
     <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="hl">GSoC Blog</a>
   </div>
-  <div class="scroll-ind">Scroll</div>
+  <div class="scroll-tag">DRAG TO ORBIT · SCROLL TO FALL IN</div>
 </section>
 
-<!-- GSOC FEATURED -->
-<section id="gsoc">
-  <div class="panel fu">
-    <div class="panel-glow"><div class="panel-glow-tl"></div><div class="panel-glow-br"></div></div>
-    <div class="panel-border-top"></div>
-    <div class="panel-inner">
-      <p class="s-num">01 // Featured</p>
-      <h2 class="s-title">The Work That <strong>Defined</strong> the Year</h2>
-
-      <div class="feat-badge">Google Summer of Code 2025 · Fortran-Lang · May–Sept</div>
-      <h3 class="feat-name"><a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">OpenMP 6.0 Infrastructure & GPU Offloading in LFortran</a></h3>
-      <p class="feat-org">C++ · Fortran · OpenMP · CUDA · LLVM / ASR</p>
-
-      <div class="feat-grid">
-        <div class="feat-body">
-          <p>LFortran is a from-scratch Fortran compiler targeting LLVM and C backends. My GSoC project built <span class="hi-c">OpenMP</span> deep enough to eventually enable <span class="hi-g">GPU execution of Fortran</span> — something no open-source Fortran compiler handles cleanly today.</p>
-          <p>The significant architectural decision: OpenMP handling was entangled with the <tag-c class="tag-c">DoConcurrentLoop</tag-c> path. I proposed and implemented a dedicated <span class="tag-c">OMPRegion ASR node</span> — giving OpenMP <span class="hi-w">first-class representation in the IR tree</span>. This unlocked structurally clean handling of nested and hierarchical parallelism that was architecturally impossible before.</p>
-          <p>With the IR foundation in place: <span class="hi-g">13+ constructs</span>, <span class="hi-g">8+ clauses</span> spanning thread, team, and task models — then extended the C-backend to emit compilable host-device code for <span class="tag-g">OpenMP Target Offloading</span> on NVIDIA GPUs. A <span class="hi-v">custom GPU emulator</span> (&lt;250 lines) handles CI without physical hardware.</p>
-          <div class="feat-chips">
-            <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="chip">↗ Blog · 12 weeks</a>
-            <a href="https://github.com/lfortran/lfortran/issues/4497#issuecomment-3089155987" target="_blank" class="chip">↗ GPU Thread</a>
-            <a href="https://github.com/lfortran/lfortran/commits?author=adit4443ya" target="_blank" class="chip gd">↗ Commits</a>
-          </div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="m-n c">13+</div><div class="m-l">OpenMP constructs implemented</div></div>
-          <div class="metric"><div class="m-n g">8+</div><div class="m-l">Clauses — thread, team, task</div></div>
-          <div class="metric"><div class="m-n v">&lt;250</div><div class="m-l">Lines · custom GPU emulator</div></div>
-          <div class="metric"><div class="m-n c">12wk</div><div class="m-l">Documented engineering</div></div>
-        </div>
-      </div>
+<style>
+.trajectory{padding:64px 8vw 0;position:relative;z-index:10}
+.traj-head{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(232,162,107,0.55);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.traj-head::before{content:'';width:18px;height:1px;background:var(--amber);opacity:.5}
+.traj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.traj-card{background:rgba(10,9,16,0.72);backdrop-filter:blur(20px);padding:30px 32px;position:relative;overflow:hidden;transition:background .35s}
+.traj-card:hover{background:rgba(18,14,24,0.9)}
+.traj-card::before{content:'';position:absolute;top:0;left:0;width:0;height:2px;transition:width .55s ease}
+.traj-card:hover::before{width:100%}
+.traj-card.now::before{background:var(--cyan)}.traj-card.next::before{background:var(--amber)}.traj-card.exp::before{background:var(--rose)}
+.traj-k{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.traj-card.now .traj-k{color:var(--cyan)}.traj-card.next .traj-k{color:var(--amber)}.traj-card.exp .traj-k{color:var(--rose)}
+.traj-k .d{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;animation:blink 1.8s ease-in-out infinite}
+.traj-t{font-family:var(--serif);font-size:clamp(20px,2vw,27px);font-style:italic;color:var(--ink);line-height:1.18;margin-bottom:11px}
+.traj-d{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.75;letter-spacing:.2px}
+.traj-d b{color:var(--ink);font-weight:500}
+@media(max-width:760px){.traj-grid{grid-template-columns:1fr}}
+</style>
+<section class="trajectory">
+  <p class="traj-head">Trajectory — where I am, where I'm headed</p>
+  <div class="traj-grid">
+    <div class="traj-card now">
+      <div class="traj-k"><span class="d"></span>Now</div>
+      <div class="traj-t">Open-source compilers</div>
+      <div class="traj-d"><b>LFortran</b> core contributor · <b>LLVM / ClangIR</b> upstream · GSoC '25 with Fortran-Lang.</div>
     </div>
-  </div>
-
-  <div class="panel fu fd">
-    <div class="panel-glow"><div class="panel-glow-tl" style="background:radial-gradient(ellipse at top left,rgba(240,165,0,0.035),transparent 70%)"></div><div class="panel-glow-br"></div></div>
-    <div class="panel-border-top" style="background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
-    <div class="panel-inner">
-      <div class="feat-badge" style="color:var(--cyan);border-color:rgba(0,229,255,0.2);background:rgba(0,229,255,0.03)">Open Source · Sept 2024 – Sept 2025</div>
-      <h3 class="feat-name"><a href="https://github.com/lfortran/lfortran/commits?author=adit4443ya" target="_blank">LFortran Compiler — Core Contributor</a></h3>
-      <p class="feat-org">C++ · Fortran · MPI · ISO_C_BINDING</p>
-
-      <div class="feat-grid">
-        <div class="feat-body">
-          <p>Contributed to compiling <span class="tag-g">POT3D</span> — Predictive Science's <span class="hi-c">MPI + OpenMP solar magnetic field solver</span> used in real space weather research — with LFortran. The <span class="hi-w">9th production-grade third-party code</span> LFortran had ever compiled, a public milestone for the project.</p>
-          <p>Built a <span class="tag-c">pure Fortran MPI wrapper library</span> using <span class="hi-v">ISO_C_BINDING</span> with 30+ subroutine implementations — eliminating C-wrapper overhead entirely. Now lives in the <span class="hi-c">fortran_mpi</span> repo under the lfortran org. Separately: <span class="hi-g">50+ compiler issues</span> resolved across OpenMP, OOP, structs, and strings.</p>
-          <div class="feat-chips">
-            <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank" class="chip gd">↗ POT3D Blog</a>
-            <a href="https://github.com/lfortran/fortran_mpi/" target="_blank" class="chip">↗ fortran_mpi</a>
-          </div>
-        </div>
-        <div class="metrics">
-          <div class="metric"><div class="m-n g">50+</div><div class="m-l">Compiler issues resolved</div></div>
-          <div class="metric"><div class="m-n c">30+</div><div class="m-l">MPI subroutines, pure Fortran</div></div>
-          <div class="metric"><div class="m-n v">0.95×</div><div class="m-l">Compile time vs GFortran</div></div>
-          <div class="metric"><div class="m-n g">0.75×</div><div class="m-l">Runtime vs GFortran (POT3D)</div></div>
-        </div>
-      </div>
+    <div class="traj-card next">
+      <div class="traj-k"><span class="d"></span>Next</div>
+      <div class="traj-t">Qualcomm · ARM team</div>
+      <div class="traj-d">Joining as a <b>Compiler Engineer</b> on the <b>ARM</b> team — July 2026. Backend codegen &amp; optimization.</div>
+    </div>
+    <div class="traj-card exp">
+      <div class="traj-k"><span class="d"></span>Exploring</div>
+      <div class="traj-t">MLIR &amp; ML compilers</div>
+      <div class="traj-d">Where I'm pointing my curiosity — <b>tensor IR</b>, accelerator codegen, the ML-compiler stack.</div>
     </div>
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="panel fu">
-    <div class="panel-glow"><div class="panel-glow-tl"></div><div class="panel-glow-br"></div></div>
-    <div class="panel-border-top"></div>
-    <div class="panel-inner">
-      <p class="s-num">02 // Experience</p>
-      <h2 class="s-title">Where I've <span class="gold">Shipped</span></h2>
-      <div>
-        <div class="tl-item">
-          <div class="tl-date">May 2025<br>Sept 2025</div>
+<style>
+/* ═══ EDITORIAL SECTION HEADER — floats over the cosmos ═══ */
+.s-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:18px}
+.s-head .s-eyebrow{margin-bottom:0}
+.s-coord{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--dim);text-align:right;line-height:1.9;text-transform:uppercase;white-space:nowrap}
+.s-coord b{color:rgba(232,162,107,0.75);font-weight:500}
+.s-title{margin-bottom:0}
+.s-lede{font-family:var(--serif);font-style:italic;font-size:clamp(16px,1.5vw,21px);color:var(--muted);max-width:620px;line-height:1.65;margin:24px 0 0}
+.s-lede strong{font-style:normal;color:var(--ink);font-weight:500}
+
+/* ═══ INSTRUMENT CONSOLE — frosted plate that seats the content ═══ */
+.console{position:relative;margin-top:46px;
+  background:linear-gradient(180deg,rgba(11,10,17,0.66),rgba(8,7,13,0.5));
+  backdrop-filter:blur(30px) saturate(140%);-webkit-backdrop-filter:blur(30px) saturate(140%);
+  border:1px solid rgba(232,162,107,0.13);
+  padding:clamp(26px,3.4vw,54px)}
+.console::before{content:'';position:absolute;top:8px;left:8px;width:16px;height:16px;border-top:1px solid rgba(232,162,107,0.55);border-left:1px solid rgba(232,162,107,0.55);pointer-events:none}
+.console::after{content:'';position:absolute;bottom:8px;right:8px;width:16px;height:16px;border-bottom:1px solid rgba(232,162,107,0.55);border-right:1px solid rgba(232,162,107,0.55);pointer-events:none}
+/* faint top scanline accent */
+.console>.cbar{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,162,107,0.5),transparent)}
+@media(max-width:880px){.console{padding:24px 20px}.s-head{flex-direction:column;gap:8px}.s-coord{text-align:left}}
+
+/* ═══ shared: unbox text-heavy sections, float on starfield ═══ */
+.flo{position:relative}
+.flo>.flo-scrim{position:absolute;inset:-4% -2%;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 30% 38%,rgba(6,5,11,0.72),rgba(6,5,11,0.30) 55%,transparent 78%);
+  filter:blur(34px)}
+
+/* ───── TRANSMISSION DOSSIERS (featured) ───── */
+.dossiers{display:flex;flex-direction:column;margin-top:6px}
+.dos[data-c="amber"]{--rc:var(--amber)}
+.dos[data-c="cyan"]{--rc:var(--cyan)}
+.dos[data-c="rose"]{--rc:var(--rose)}
+.dos{position:relative;display:grid;grid-template-columns:118px 1fr;gap:42px;padding:60px 0;border-top:1px solid var(--line)}
+.dos:first-child{border-top:none;padding-top:4px}
+.dos-rail{position:relative;display:flex;flex-direction:column;align-items:center;padding-top:6px}
+.dos-num{font-family:var(--serif);font-style:italic;font-size:clamp(46px,5.4vw,82px);line-height:.82;color:transparent;-webkit-text-stroke:1px color-mix(in oklab,var(--rc) 60%,transparent);position:relative}
+.dos-num::after{content:'';position:absolute;inset:-30% -40%;background:radial-gradient(circle,color-mix(in oklab,var(--rc) 26%,transparent),transparent 68%);filter:blur(14px);z-index:-1}
+.dos-beam{flex:1;width:1px;margin-top:20px;min-height:46px;background:linear-gradient(to bottom,var(--rc),color-mix(in oklab,var(--rc) 12%,transparent));box-shadow:0 0 9px color-mix(in oklab,var(--rc) 60%,transparent)}
+.dos-tick{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--rc);margin-top:12px;writing-mode:vertical-rl;opacity:.6}
+.dos-main{min-width:0}
+.dos-main .feat-stamp{color:var(--rc);border-color:color-mix(in oklab,var(--rc) 32%,transparent);background:color-mix(in oklab,var(--rc) 6%,transparent)}
+.dos-main .feat-name a{background:linear-gradient(var(--rc),var(--rc)) 0 100% / 0 1px no-repeat}
+.dos-main .feat-name em{color:var(--rc)}
+.dos-main .feat-org{color:color-mix(in oklab,var(--rc) 60%,var(--dim))}
+/* telemetry strip — hairline-separated, no boxes */
+.tele{display:grid;grid-template-columns:repeat(4,1fr);margin-top:34px;border-top:1px solid color-mix(in oklab,var(--rc) 20%,transparent)}
+.tele-c{padding:20px 20px 0 22px;border-left:1px solid color-mix(in oklab,var(--rc) 12%,transparent);position:relative}
+.tele-c:first-child{border-left:none;padding-left:0}
+.tele-c::before{content:'';position:absolute;top:-1px;left:22px;width:0;height:1px;background:var(--rc);transition:width .6s ease}
+.tele-c:first-child::before{left:0}
+.dos:hover .tele-c::before{width:46px}
+.tele-n{font-family:var(--serif);font-style:italic;font-size:clamp(30px,3vw,40px);line-height:1;color:var(--rc);margin-bottom:9px}
+.tele-l{font-family:var(--mono);font-size:9.5px;letter-spacing:.5px;color:var(--dim);line-height:1.6;text-transform:uppercase}
+@media(max-width:880px){
+  .dos{grid-template-columns:1fr;gap:18px;padding:44px 0}
+  .dos-rail{flex-direction:row;align-items:baseline;gap:16px}
+  .dos-beam,.dos-tick{display:none}
+  .tele{grid-template-columns:1fr 1fr;gap:0}
+  .tele-c{border-top:1px solid color-mix(in oklab,var(--rc) 12%,transparent);padding:18px 16px 0}
+  .tele-c:nth-child(odd){border-left:none;padding-left:0}
+}
+/* understated "also upstream" footnote — clearly secondary to the flagships */
+.upstream{display:grid;grid-template-columns:118px 1fr;gap:42px;padding:34px 0 4px;border-top:1px solid var(--line);align-items:baseline}
+.up-tick{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;padding-top:3px}
+.up-text{font-size:13px;line-height:1.85;color:var(--muted);max-width:660px}
+.up-text a{color:var(--cyan);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--cyan) 32%,transparent)}
+.up-text a:hover{color:var(--ink)}
+.up-text code{font-family:var(--mono);font-size:11.5px;color:var(--ink)}
+@media(max-width:880px){.upstream{grid-template-columns:1fr;gap:8px}}
+
+/* ───── RESEARCH LINEAGE — git-graph of one problem ───── */
+.res-figs{font-family:var(--mono);font-size:12px;letter-spacing:.3px;color:var(--dim);margin:0 0 6px;line-height:1.7}
+.res-figs b{font-family:var(--serif);font-style:italic;font-weight:400;font-size:15px;color:var(--amber)}
+/* headline results as real bar meters */
+.res-results{display:flex;gap:54px;flex-wrap:wrap;margin:30px 0 14px;max-width:620px}
+.res-stat{flex:1;min-width:210px}
+.res-stat .rs-top{display:flex;align-items:baseline;gap:10px;margin-bottom:11px}
+.res-stat .rs-n{font-family:var(--serif);font-style:italic;font-size:clamp(38px,4.4vw,56px);line-height:.9;color:var(--amber)}
+.res-stat.b .rs-n{color:var(--cyan)}
+.res-stat .rs-l{font-family:var(--mono);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.rs-bar{position:relative;height:3px;background:rgba(232,162,107,0.12);overflow:hidden}
+.rs-bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--amber);box-shadow:0 0 10px var(--amber);transition:width 1.3s cubic-bezier(.2,.8,.25,1)}
+.res-stat.b .rs-bar i{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.rs-scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--dim);margin-top:7px;opacity:.7}
+/* the lineage graph */
+.lineage{position:relative;margin-top:46px;max-width:880px}
+.lineage::before{content:'';position:absolute;left:103px;top:18px;bottom:18px;width:1px;background:linear-gradient(to bottom,transparent,rgba(232,162,107,0.4) 8%,rgba(125,211,232,0.4) 92%,transparent)}
+.lin{position:relative;display:grid;grid-template-columns:90px 1fr;gap:34px;padding:18px 0 26px;align-items:start}
+.lin-yr{text-align:right;padding-top:1px}
+.lin-yr b{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--ink);line-height:1;display:block}
+.lin-yr span{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase}
+.lin-node{position:absolute;left:97px;top:23px;width:13px;height:13px;background:var(--bg);border:1px solid var(--amber);transform:rotate(45deg);z-index:1;transition:box-shadow .4s,background .4s}
+.lin:last-child .lin-node{border-color:var(--cyan)}
+.lin:hover .lin-node{background:var(--amber);box-shadow:0 0 14px var(--amber)}
+.lin:last-child:hover .lin-node{background:var(--cyan);box-shadow:0 0 14px var(--cyan)}
+.lin-body{min-width:0;padding-left:8px}
+.lin-tags{display:flex;gap:7px;margin-bottom:9px;flex-wrap:wrap}
+.lin-tag{font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--amber);border:1px solid rgba(232,162,107,0.3);padding:3px 9px;text-transform:uppercase}
+.lin-tag.rev{color:var(--cyan);border-color:rgba(125,211,232,0.35)}
+.lin .pub-title{margin-bottom:6px}
+@media(max-width:880px){
+  .lineage::before{left:71px}
+  .lin{grid-template-columns:62px 1fr;gap:26px}
+  .lin-node{left:65px}
+  .lin-yr b{font-size:21px}
+}
+</style>
+<section id="feat" class="flo">
+  <div class="flo-scrim"></div>
+  <div class="s-head"><p class="s-eyebrow">01 / Featured</p><div class="s-coord">SECTOR 01 · FLAGSHIP<br><b>2 transmissions</b></div></div>
+  <h2 class="s-title">The work that <em>defined</em><br>the year.</h2>
+  <div class="console"><span class="cbar"></span>
+  <div class="dossiers">
+    <div class="dos fu" data-c="amber">
+      <div class="dos-rail">
+        <div class="dos-num">01</div>
+        <div class="dos-beam"></div>
+        <div class="dos-tick">TRANSMISSION</div>
+      </div>
+      <div class="dos-main">
+        <p class="feat-stamp"><span class="live"></span>Google Summer of Code 2025 · Fortran-Lang · May → Sept</p>
+        <h3 class="feat-name"><a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">OpenMP 6.0 Infrastructure & <em>GPU Offloading</em> in LFortran</a></h3>
+        <p class="feat-org">C++ · Fortran · OpenMP · CUDA · LLVM / ASR</p>
+        <div class="feat-body">
+          <p>LFortran is a from-scratch Fortran compiler targeting LLVM and C backends. My GSoC project built <span class="hi-a">OpenMP</span> deep enough to eventually enable <span class="hi-a">GPU execution of Fortran</span> — something no open-source Fortran compiler handles cleanly today.</p>
+          <p>The architectural decision: OpenMP handling was entangled with the <span class="tag-a">DoConcurrentLoop</span> path. I proposed and implemented a dedicated <span class="tag-a">OMPRegion ASR node</span> — giving OpenMP <span class="hi">first-class representation in the IR tree</span>. This unlocked structurally clean nested and hierarchical parallelism.</p>
+          <p>On that foundation: <span class="hi-a">13+ constructs</span>, <span class="hi-a">8+ clauses</span> across thread, team, and task models — then extended the C-backend to emit compilable host-device code for <span class="tag-r">OpenMP Target Offloading</span> on NVIDIA GPUs. A <span class="hi-c">custom GPU emulator</span> under 250 lines handles CI without physical hardware.</p>
+        </div>
+        <div class="tele">
+          <div class="tele-c"><div class="tele-n">13+</div><div class="tele-l">OpenMP constructs end-to-end</div></div>
+          <div class="tele-c"><div class="tele-n">8+</div><div class="tele-l">Clauses — thread, team, task</div></div>
+          <div class="tele-c"><div class="tele-n">‹250</div><div class="tele-l">Lines — custom GPU emulator</div></div>
+          <div class="tele-c"><div class="tele-n">12wk</div><div class="tele-l">Documented compiler work</div></div>
+        </div>
+        <div class="feat-chips">
+          <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="chip">↗ Blog · 12 weeks</a>
+          <a href="https://github.com/lfortran/lfortran/issues/4497#issuecomment-3089155987" target="_blank" class="chip">↗ GPU Thread</a>
+          <a href="https://github.com/lfortran/lfortran/commits?author=adit4443ya" target="_blank" class="chip">↗ Commits</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dos fu" data-c="cyan">
+      <div class="dos-rail">
+        <div class="dos-num">02</div>
+        <div class="dos-beam"></div>
+        <div class="dos-tick">TRANSMISSION</div>
+      </div>
+      <div class="dos-main">
+        <p class="feat-stamp"><span class="live"></span>Open Source · LFortran · Sept 2024 → Sept 2025</p>
+        <h3 class="feat-name"><a href="https://github.com/lfortran/lfortran/commits?author=adit4443ya" target="_blank">LFortran Compiler — <em>Core Contributor</em></a></h3>
+        <p class="feat-org">C++ · Fortran · MPI · ISO_C_BINDING</p>
+        <div class="feat-body">
+          <p>Contributed to compiling <span class="tag-a">POT3D</span> — Predictive Science's <span class="hi-a">MPI + OpenMP solar magnetic field solver</span> used in real space-weather research. The <span class="hi">9th production-grade third-party code</span> LFortran ever compiled.</p>
+          <p>Built a <span class="tag-c">pure Fortran MPI wrapper library</span> using <span class="hi-c">ISO_C_BINDING</span> with 30+ subroutine implementations — eliminating C-wrapper overhead. Now lives in the <span class="hi-a">fortran_mpi</span> repo under the lfortran org. Separately: <span class="hi-r">50+ compiler issues</span> resolved across OpenMP, OOP, structs, and strings.</p>
+        </div>
+        <div class="tele">
+          <div class="tele-c"><div class="tele-n">50+</div><div class="tele-l">Compiler issues resolved</div></div>
+          <div class="tele-c"><div class="tele-n">30+</div><div class="tele-l">MPI subroutines, pure Fortran</div></div>
+          <div class="tele-c"><div class="tele-n">0.95×</div><div class="tele-l">Compile time vs GFortran</div></div>
+          <div class="tele-c"><div class="tele-n">0.75×</div><div class="tele-l">Runtime vs GFortran</div></div>
+        </div>
+        <div class="feat-chips">
+          <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank" class="chip">↗ POT3D Blog</a>
+          <a href="https://github.com/lfortran/fortran_mpi/" target="_blank" class="chip">↗ fortran_mpi</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="upstream fu">
+      <div class="up-tick">Also upstream</div>
+      <p class="up-text">Beyond the two flagship efforts, smaller upstream contributions: a single merged <a href="https://github.com/llvm/llvm-project/pull/180714" target="_blank">ClangIR x86 <code>rdtsc</code> / <code>rdtscp</code> builtins PR</a> (#180714) in the LLVM monorepo, plus ongoing Flang OpenMP work.</p>
+    </div>
+  </div>
+  </div>
+</section>
+
+<style>
+/* ───── FLIGHT PATH (experience) — unboxed glowing trajectory ───── */
+#exp .tl-node{box-shadow:0 0 10px color-mix(in oklab,var(--amber) 55%,transparent)}
+#exp .tl-row::after{background:linear-gradient(to bottom,color-mix(in oklab,var(--amber) 55%,transparent),rgba(232,162,107,0.06))}
+#exp .tl-name a{background:linear-gradient(var(--amber),var(--amber)) 0 100% / 0 1px no-repeat;transition:background-size .4s}
+#exp .tl-name a:hover{background-size:100% 1px;color:var(--ink)}
+</style>
+<section id="exp" class="flo">
+  <div class="flo-scrim"></div>
+  <div class="s-head"><p class="s-eyebrow">02 / Experience</p><div class="s-coord">SECTOR 02 · TRAJECTORY<br><b>2022 → 2026</b></div></div>
+  <h2 class="s-title">Where I've <span class="rose">shipped.</span></h2>
+  <div class="console"><span class="cbar"></span>
+  <div class="tl fu">
+        <div class="tl-row now">
+          <div class="tl-date"><b>Jul 2026</b>incoming</div>
+          <div class="tl-node"></div>
+          <div class="tl-body">
+            <h3 class="tl-name"><a href="https://www.qualcomm.com/" target="_blank">Qualcomm India — Compiler Engineer</a></h3>
+            <div class="tl-role">ARM Compiler Team</div>
+            <div class="tl-stack">C++ · LLVM · ARM / AArch64 codegen · backend optimization</div>
+            <ul class="pts">
+              <li>Joining the <span class="tag-a">ARM compiler team</span> — backend codegen, optimization passes, and toolchain work across Qualcomm's ARM platforms.</li>
+              <li>Bringing low-level <span class="hi-a">LLVM &amp; IR</span> experience into <span class="hi-c">production compiler engineering</span> at scale.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date"><b>2026</b></div>
+          <div class="tl-node"></div>
+          <div class="tl-body">
+            <h3 class="tl-name"><a href="https://github.com/llvm/llvm-project/pull/180714" target="_blank">LLVM / ClangIR — Upstream Contributor</a></h3>
+            <div class="tl-role">x86 builtins · IR lowering</div>
+            <div class="tl-stack">C++ · ClangIR · MLIR · LLVM</div>
+            <ul class="pts">
+              <li>Merged <span class="tag-r">PR #180714</span> into the LLVM monorepo — <span class="hi-r">rdtsc / rdtscp</span> x86 timestamp-counter builtins in ClangIR.</li>
+              <li>Active Flang OpenMP contributions upstream.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date"><b>May → Sept 2025</b></div>
           <div class="tl-node"></div>
           <div class="tl-body">
             <h3 class="tl-name"><a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">Google Summer of Code 2025 · Fortran-Lang</a></h3>
             <div class="tl-role">Compiler Developer</div>
             <div class="tl-stack">C++ · Fortran · OpenMP · CUDA · ASR/IR</div>
             <ul class="pts">
-              <li>Designed the <span class="tag-c">OMPRegion ASR node</span> — a new IR abstraction giving OpenMP first-class representation, enabling scalable <span class="hi-c">OpenMP 6.0</span> feature development and GPU-targeted codegen.</li>
-              <li><span class="hi-g">13+ constructs</span>, <span class="hi-g">8+ clauses</span> — thread, team, and task parallelism models fully covered.</li>
-              <li>Extended C-backend for <span class="tag-g">OpenMP Target Offloading</span> on NVIDIA GPUs — host-device dual-mode emission and OpenMP/CUDA codegen. <a href="https://github.com/lfortran/lfortran/issues/4497#issuecomment-3089155987" target="_blank">[Discussion]</a></li>
-              <li><span class="hi-v">CUDA-centric GPU emulator</span> (&lt;250 lines) as a runtime library for hardware-free CI testing.</li>
+              <li>Designed the <span class="tag-a">OMPRegion ASR node</span> — IR abstraction giving OpenMP first-class representation, enabling scalable <span class="hi-a">OpenMP 6.0</span> work and GPU codegen.</li>
+              <li><span class="hi-a">13+ constructs</span>, <span class="hi-a">8+ clauses</span> — thread, team, and task models.</li>
+              <li>Extended C-backend for <span class="tag-r">OpenMP Target Offloading</span> on NVIDIA GPUs. <a href="https://github.com/lfortran/lfortran/issues/4497#issuecomment-3089155987" target="_blank">[Discussion]</a></li>
+              <li><span class="hi-c">Custom GPU emulator</span> (&lt;250 lines) for hardware-free CI.</li>
             </ul>
           </div>
         </div>
-        <div class="tl-item">
-          <div class="tl-date">Sept 2024<br>Sept 2025</div>
-          <div class="tl-node" style="border-color:var(--gold)"></div>
+        <div class="tl-row">
+          <div class="tl-date"><b>Sept 2024 → 2025</b></div>
+          <div class="tl-node"></div>
           <div class="tl-body">
             <h3 class="tl-name"><a href="https://github.com/lfortran/lfortran/commits?author=adit4443ya" target="_blank">LFortran — Compiler Development Engineer</a></h3>
-            <div class="tl-role" style="color:rgba(240,165,0,0.5)">Core Contributor</div>
+            <div class="tl-role">Core Contributor</div>
             <div class="tl-stack">C++ · Fortran · MPI · Python</div>
             <ul class="pts">
-              <li>Helped compile <span class="tag-g">POT3D</span> solar physics codebase — <span class="hi-g">0.95× compile</span>, <span class="hi-g">0.75× runtime</span> vs GFortran. <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank">[Official Blog]</a></li>
-              <li>Built <span class="tag-c">pure Fortran MPI wrappers</span> via <span class="hi-v">ISO_C_BINDING</span>, 30+ subroutines. <a href="https://github.com/lfortran/fortran_mpi/" target="_blank">[fortran_mpi]</a></li>
-              <li><span class="hi-g">50+ issues resolved</span>: OpenMP, OOP, structs, string handling.</li>
+              <li>Helped compile <span class="tag-a">POT3D</span> solar-physics codebase — <span class="hi-a">0.95× compile</span>, <span class="hi-a">0.75× runtime</span> vs GFortran. <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank">[Blog]</a></li>
+              <li>Built <span class="tag-c">pure Fortran MPI wrappers</span> via <span class="hi-c">ISO_C_BINDING</span>, 30+ subroutines. <a href="https://github.com/lfortran/fortran_mpi/" target="_blank">[fortran_mpi]</a></li>
+              <li><span class="hi-r">50+ issues resolved</span>: OpenMP, OOP, structs, string handling.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-date"><b>2022 → 2026</b></div>
+          <div class="tl-node"></div>
+          <div class="tl-body">
+            <h3 class="tl-name">Indian Institute of Technology, Jodhpur</h3>
+            <div class="tl-role">B.Tech, Computer Science · CGPA 8+</div>
+            <div class="tl-stack">Graduation · May 2026</div>
+            <ul class="pts">
+              <li>HPC research with <span class="hi-a">Prof. Dip Sankar Banerjee</span> on dynamic graph algorithms.</li>
+              <li>Four papers, three years, one problem class.</li>
             </ul>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </section>
 
-<!-- RESEARCH -->
-<section id="research">
-  <div class="panel fu">
-    <div class="panel-glow"><div class="panel-glow-tl" style="background:radial-gradient(ellipse at top left,rgba(240,165,0,0.03),transparent 70%)"></div><div class="panel-glow-br" style="background:radial-gradient(ellipse at bottom right,rgba(0,229,255,0.025),transparent 70%)"></div></div>
-    <div class="panel-border-top" style="background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
-    <div class="panel-inner">
-      <p class="s-num">03 // Research</p>
-      <h2 class="s-title">Four Papers, <span class="gold">One Problem</span></h2>
-      <p class="research-intro">
-        Maintaining a <strong>Maximal Independent Set</strong> on dynamic graphs as edges are inserted and deleted — at <strong>billion-edge scale</strong> — using parallel GPU and multi-core compute. Work with Prof. Dip Sankar Banerjee, IIT Jodhpur. One problem, four publications, three years.
-      </p>
-      <div class="pub-stack">
-        <div class="pub fu">
-          <div class="pub-yr">IEEE<br>HiPC<br>2024</div>
-          <div>
-            <p class="pub-title"><a href="https://ieeexplore.ieee.org/document/10898364" target="_blank">Fast MIS on Incremental Graphs</a></p>
-            <div class="pub-venue">IEEE HiPC 2024 · Student Research Symposium</div>
-            <div class="pub-authors"><span class="me">Aditya Trivedi</span>, P. Nijhara, D.S. Banerjee</div>
-          </div>
-        </div>
-        <div class="pub fu fd">
-          <div class="pub-yr">Euro<br>PDP<br>2025</div>
-          <div>
-            <p class="pub-title"><a href="https://www.researchgate.net/publication/391309268_Fast_Maximal_Independent_Sets_on_Dynamic_Graphs" target="_blank">Fast Maximal Independent Sets on Dynamic Graphs</a></p>
-            <div class="pub-venue">EuroMicro PDP 2025</div>
-            <div class="pub-authors">P. Nijhara, <span class="me">Aditya Trivedi</span>, D.S. Banerjee</div>
-          </div>
-        </div>
-        <div class="pub fu fd2">
-          <div class="pub-yr">IEEE<br>HiPC<br>2025</div>
-          <div>
-            <p class="pub-title"><a href="https://ieeexplore.ieee.org/document/10898364" target="_blank">Fast and Accurate MIS on Dynamic Graphs</a></p>
-            <div class="pub-venue">IEEE HiPC 2025 · Student Research Symposium</div>
-            <div class="pub-authors">A.H. Singh, <span class="me">Aditya Trivedi</span>, N. Sharma, A. Pandey, D.S. Banerjee</div>
-          </div>
-        </div>
-        <div class="pub fu fd3">
-          <div class="pub-yr">Elsevier<br>FGCS<br>2025</div>
-          <div>
-            <p class="pub-title">ParMIS: Fast and Unified MIS Maintenance Framework for Large-Scale Dynamic Graphs</p>
-            <div class="pub-venue">Elsevier Future Generation Computer Systems</div>
-            <div class="pub-authors">P. Nijhara, <span class="me">Aditya Trivedi</span>, A.H. Singh, N. Sharma, A. Pandey, D.S. Banerjee</div>
-            <span class="badge">Under Review</span>
-          </div>
-        </div>
+<section id="research" class="flo">
+  <div class="flo-scrim"></div>
+  <div class="s-head"><p class="s-eyebrow">03 / Research</p><div class="s-coord">SECTOR 03 · RESEARCH<br><b>4 papers</b></div></div>
+  <h2 class="s-title">Four papers, <span class="rose">one problem.</span></h2>
+  <p class="s-lede">Maintaining a <strong>Maximal Independent Set</strong> on dynamic graphs as edges are inserted and deleted — at <strong>billion-edge scale</strong> — with parallel GPU and multi-core compute.</p>
+  <div class="console"><span class="cbar"></span>
+  <p class="res-figs">Best measured results — <b>15.64×</b> on insertions and <b>10.57×</b> on deletions, against the sequential baseline.</p>
+  <div class="lineage">
+    <div class="lin fu">
+      <div class="lin-node"></div>
+      <div class="lin-yr"><b>2024</b><span>Origin</span></div>
+      <div class="lin-body">
+        <div class="lin-tags"><span class="lin-tag">IEEE HiPC</span><span class="lin-tag">SRS</span></div>
+        <p class="pub-title"><a href="https://ieeexplore.ieee.org/document/10898364" target="_blank">Fast MIS on Incremental Graphs</a></p>
+        <div class="pub-authors"><span class="me">Aditya Trivedi</span>, P. Nijhara, D.S. Banerjee</div>
+      </div>
+    </div>
+    <div class="lin fu fd1">
+      <div class="lin-node"></div>
+      <div class="lin-yr"><b>2025</b><span>Extends</span></div>
+      <div class="lin-body">
+        <div class="lin-tags"><span class="lin-tag">EuroMicro PDP</span></div>
+        <p class="pub-title"><a href="https://www.researchgate.net/publication/391309268_Fast_Maximal_Independent_Sets_on_Dynamic_Graphs" target="_blank">Fast Maximal Independent Sets on Dynamic Graphs</a></p>
+        <div class="pub-authors">P. Nijhara, <span class="me">Aditya Trivedi</span>, D.S. Banerjee</div>
+      </div>
+    </div>
+    <div class="lin fu fd2">
+      <div class="lin-node"></div>
+      <div class="lin-yr"><b>2025</b><span>Refines</span></div>
+      <div class="lin-body">
+        <div class="lin-tags"><span class="lin-tag">IEEE HiPC</span><span class="lin-tag">SRS</span></div>
+        <p class="pub-title"><a href="https://ieeexplore.ieee.org/document/10898364" target="_blank">Fast and Accurate MIS on Dynamic Graphs</a></p>
+        <div class="pub-authors">A.H. Singh, <span class="me">Aditya Trivedi</span>, N. Sharma, A. Pandey, D.S. Banerjee</div>
+      </div>
+    </div>
+    <div class="lin fu fd3">
+      <div class="lin-node"></div>
+      <div class="lin-yr"><b>2025</b><span>Unifies</span></div>
+      <div class="lin-body">
+        <div class="lin-tags"><span class="lin-tag">Elsevier FGCS</span><span class="lin-tag rev">Under Review</span></div>
+        <p class="pub-title">ParMIS: Fast &amp; Unified MIS Maintenance for Large-Scale Dynamic Graphs</p>
+        <div class="pub-authors">P. Nijhara, <span class="me">Aditya Trivedi</span>, A.H. Singh, N. Sharma, A. Pandey, D.S. Banerjee</div>
       </div>
     </div>
   </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="panel fu">
-    <div class="panel-glow"><div class="panel-glow-tl" style="background:radial-gradient(ellipse at top left,rgba(176,108,255,0.03),transparent 70%)"></div><div class="panel-glow-br"></div></div>
-    <div class="panel-border-top" style="background:linear-gradient(90deg,transparent,var(--violet),transparent)"></div>
-    <div class="panel-inner">
-      <p class="s-num">04 // Projects</p>
-      <h2 class="s-title">Systems Work, <span class="vio">Bottom to Top</span></h2>
-      <div class="proj-grid">
-        <div class="proj">
-          <div class="proj-idx">// 001 — SYSTEMS</div>
-          <h3 class="proj-name"><a href="https://github.com/adit4443ya/MIPS-Simulator" target="_blank">MIPS CPU Pipeline Simulator</a></h3>
-          <div class="proj-tech">C++ · Computer Architecture · 5-Stage Pipeline</div>
-          <p class="proj-desc">Functional MIPS pipeline simulator — full IF/ID/EX/MEM/WB cycle in C++. Direct context for compiler backend work: understanding what generated code actually runs on.</p>
-          <a href="https://github.com/adit4443ya/MIPS-Simulator" target="_blank" class="plink">GitHub ↗</a>
-        </div>
-        <div class="proj">
-          <div class="proj-idx">// 002 — CONCURRENCY</div>
-          <h3 class="proj-name"><a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank">Multi-Threaded Web Crawler</a></h3>
-          <div class="proj-tech">C++ · POSIX Threads · Concurrent Queue</div>
-          <p class="proj-desc">Concurrent web crawler using OS-level threading primitives — thread pool, concurrent queue, synchronization. No library abstraction. Built to understand OS concurrency from first principles.</p>
-          <a href="https://github.com/adit4443ya/Multi-Threaded-Crawling" target="_blank" class="plink">GitHub ↗</a>
-        </div>
-        <div class="proj">
-          <div class="proj-idx">// 003 — HPC · EDGE</div>
-          <h3 class="proj-name"><a href="https://llama-parallel-inference-presentati.vercel.app/" target="_blank">Parallel LLM Inference on RISC-V</a></h3>
-          <div class="proj-tech">C++ · OpenMP · MPI · RISC-V · Edge Computing</div>
-          <p class="proj-desc">Transformer models (15M–1B params) on RISC-V hardware. MPI intra-layer parallelization: 3.42× speedup, +19.6% over OpenMP on 110M parameter models.</p>
-          <a href="https://llama-parallel-inference-presentati.vercel.app/" target="_blank" class="plink">Slides ↗</a>
-        </div>
-        <div class="proj">
-          <div class="proj-idx">// 004 — ML SYSTEMS</div>
-          <h3 class="proj-name"><a href="https://github.com/adit4443ya/Distributed-Learning-on-Cloud" target="_blank">Federated Learning · Fraud Detection</a></h3>
-          <div class="proj-tech">Python · Azure ML · LSTM · Differential Privacy</div>
-          <p class="proj-desc">Privacy-preserving federated system on Azure. ε ≈ 1.5 differential privacy. 92% accuracy. 73% training time reduction vs centralized baseline.</p>
-          <a href="https://github.com/adit4443ya/Distributed-Learning-on-Cloud" target="_blank" class="plink">GitHub ↗</a>
-        </div>
-        <div class="proj">
-          <div class="proj-idx">// 005 — FULL STACK</div>
-          <h3 class="proj-name"><a href="https://github.com/adit4443ya/WorkHub-Pro" target="_blank">WorkHubPro — Task Platform</a></h3>
-          <div class="proj-tech">Kotlin · Jetpack Compose · Go · PostgreSQL</div>
-          <p class="proj-desc">Full-stack task management — Go backend, Kotlin/Compose frontend, 140+ commits, SOA, real-time WebSockets, RBAC, PostgreSQL query optimization.</p>
-          <a href="https://github.com/adit4443ya/WorkHub-Pro" target="_blank" class="plink">GitHub ↗</a>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- STACK -->
-<section id="stack">
-  <div class="panel fu">
-    <div class="panel-glow"><div class="panel-glow-tl"></div><div class="panel-glow-br"></div></div>
-    <div class="panel-border-top"></div>
-    <div class="panel-inner">
-      <p class="s-num">05 // Stack</p>
-      <h2 class="s-title">Tools of <strong>the Trade</strong></h2>
-      <div class="sk-grid">
-        <div class="sk-box c"><div class="sk-head c">Languages</div><div class="sk-tags"><span class="sk-t">C / C++</span><span class="sk-t">Fortran</span><span class="sk-t">Python</span><span class="sk-t">Rust</span><span class="sk-t">Go</span><span class="sk-t">Kotlin</span><span class="sk-t">JS</span><span class="sk-t">Bash</span></div></div>
-        <div class="sk-box g"><div class="sk-head g">HPC & Parallel</div><div class="sk-tags"><span class="sk-t">OpenMP</span><span class="sk-t">CUDA</span><span class="sk-t">MPI</span><span class="sk-t">LLVM</span><span class="sk-t">ARMv9</span><span class="sk-t">RISC-V</span><span class="sk-t">NUMA</span></div></div>
-        <div class="sk-box v"><div class="sk-head v">Compiler / IR</div><div class="sk-tags"><span class="sk-t">ASR Design</span><span class="sk-t">AST→ASR</span><span class="sk-t">C-backend</span><span class="sk-t">GDB</span><span class="sk-t">ISO_C_BINDING</span><span class="sk-t">Linux</span></div></div>
-        <div class="sk-box c"><div class="sk-head c">ML / Infra</div><div class="sk-tags"><span class="sk-t">TensorFlow</span><span class="sk-t">PyTorch</span><span class="sk-t">Azure ML</span><span class="sk-t">Docker</span><span class="sk-t">PostgreSQL</span><span class="sk-t">Git</span></div></div>
+<style>
+/* ───── OBSERVATORY CONSOLE (projects) ───── */
+.obs{display:grid;grid-template-columns:0.96fr 1.04fr;gap:72px;align-items:start;margin-top:6px}
+.cat-row[data-c="amber"]{--rc:var(--amber)}
+.cat-row[data-c="rose"]{--rc:var(--rose)}
+.cat-row[data-c="cyan"]{--rc:var(--cyan)}
+.cat-row[data-c="violet"]{--rc:var(--violet)}
+/* catalog — hairline rows strung on an orbital track, no boxes */
+.cat{display:flex;flex-direction:column;position:relative}
+.cat::before{content:'';position:absolute;left:17px;top:38px;bottom:38px;width:1px;background:linear-gradient(to bottom,transparent,rgba(232,162,107,.22) 12%,rgba(232,162,107,.22) 88%,transparent)}
+.cat-row{position:relative;display:grid;grid-template-columns:36px 1fr 16px;align-items:center;gap:20px;width:100%;text-align:left;cursor:pointer;padding:24px 6px 24px 0;border-top:1px solid rgba(232,162,107,.08);transition:padding-left .4s cubic-bezier(.2,.7,.3,1)}
+.cat-row:first-child{border-top:none}
+.cat-node{width:13px;height:13px;border-radius:50%;border:1px solid var(--rc);background:var(--bg);justify-self:center;position:relative;transition:box-shadow .45s,transform .45s}
+.cat-node::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--rc);opacity:.32;transition:opacity .45s}
+.cat-meta{display:flex;flex-direction:column;gap:5px;min-width:0}
+.cat-desig{font-family:var(--mono);font-size:9px;letter-spacing:2.5px;color:var(--dim);transition:color .35s}
+.cat-name{font-family:var(--serif);font-style:italic;font-size:clamp(19px,1.9vw,25px);line-height:1.08;color:var(--muted);transition:color .35s}
+.cat-tech{font-family:var(--mono);font-size:10px;letter-spacing:.3px;color:rgba(192,168,118,.45)}
+.cat-go{font-family:var(--mono);font-size:13px;color:var(--rc);opacity:0;transform:translateX(-7px);transition:opacity .35s,transform .35s}
+.cat-row:hover .cat-name{color:var(--ink)}
+.cat-row.on{padding-left:16px}
+.cat-row.on .cat-node{box-shadow:0 0 0 4px color-mix(in oklab,var(--rc) 16%,transparent),0 0 18px var(--rc);transform:scale(1.1)}
+.cat-row.on .cat-node::after{opacity:1}
+.cat-row.on .cat-desig{color:var(--rc)}
+.cat-row.on .cat-name{color:var(--ink)}
+.cat-row.on .cat-go{opacity:.7;transform:none}
+.cat-inline{display:none;grid-column:2 / -1}
+.cat-inline .cd-text{display:block;font-size:13.5px;line-height:1.8;color:var(--muted);margin:12px 0 14px}
+.cat-inline .cd-src{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rc);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--rc) 35%,transparent);padding-bottom:2px}
+/* viewport — the scope */
+.viewport{position:sticky;top:108px;--rc:var(--amber)}
+.scope{position:relative;width:100%;max-width:340px;aspect-ratio:1/1;margin:0 auto 26px;display:flex;align-items:center;justify-content:center}
+.scope.swap{animation:scopeswap .55s cubic-bezier(.2,.7,.3,1)}
+@keyframes scopeswap{0%{transform:scale(.95);opacity:.45}100%{transform:none;opacity:1}}
+.scope-ring{position:absolute;border-radius:50%;border:1px solid color-mix(in oklab,var(--rc,var(--amber)) 22%,transparent);transition:border-color .5s}
+.scope-ring.r1{inset:4%}
+.scope-ring.r2{inset:20%;border-color:color-mix(in oklab,var(--rc,var(--amber)) 32%,transparent)}
+.scope-ring.r3{inset:37%;border-style:dashed;border-color:color-mix(in oklab,var(--rc,var(--amber)) 22%,transparent)}
+.scope-dash{position:absolute;inset:0;width:100%;height:100%;animation:spin 30s linear infinite}
+.scope-dash circle{fill:none;stroke:color-mix(in oklab,var(--rc,var(--amber)) 50%,transparent);stroke-width:.5;stroke-dasharray:2 8;transition:stroke .5s}
+.scope-sweep{position:absolute;inset:4%;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,color-mix(in oklab,var(--rc,var(--amber)) 18%,transparent) 38deg,transparent 66deg);animation:spin 6.5s linear infinite;mix-blend-mode:screen}
+.scope-glow{position:absolute;width:60%;height:60%;border-radius:50%;background:radial-gradient(circle,color-mix(in oklab,var(--rc,var(--amber)) 40%,transparent),transparent 66%);filter:blur(8px);transition:background .5s}
+.scope-idx{position:absolute;font-family:var(--serif);font-style:italic;font-size:clamp(58px,7vw,88px);color:var(--ink);z-index:2;line-height:1;mix-blend-mode:screen}
+.scope-tick{position:absolute;font-family:var(--mono);font-size:8px;letter-spacing:2px;color:color-mix(in oklab,var(--rc,var(--amber)) 60%,var(--dim));text-transform:uppercase}
+.scope-tick.t1{top:-2px;left:50%;transform:translateX(-50%)}
+.scope-tick.t2{bottom:-2px;left:50%;transform:translateX(-50%)}
+.ob-body{max-width:430px;margin:0 auto}
+.ob-desig{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;color:var(--rc);margin-bottom:14px;display:flex;align-items:center;gap:11px}
+.ob-desig::before{content:'';width:20px;height:1px;background:var(--rc);opacity:.6}
+.ob-name{font-family:var(--serif);font-style:italic;font-size:clamp(27px,3vw,40px);line-height:1.06;margin-bottom:9px;color:var(--ink)}
+.ob-tech{font-family:var(--mono);font-size:10px;letter-spacing:.4px;color:rgba(192,168,118,.6);margin-bottom:22px}
+.ob-desc{font-size:14.5px;line-height:1.85;color:var(--muted);margin-bottom:24px}
+.ob-metric{display:flex;align-items:baseline;gap:12px;width:max-content;margin-bottom:26px;padding:11px 18px;border:1px solid color-mix(in oklab,var(--rc) 26%,transparent);background:color-mix(in oklab,var(--rc) 6%,transparent)}
+.ob-metric[hidden]{display:none}
+.ob-mn{font-family:var(--serif);font-style:italic;font-size:30px;color:var(--rc);line-height:1}
+.ob-ml{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);max-width:130px;line-height:1.55}
+.ob-link{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rc);text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding-bottom:3px;border-bottom:1px solid color-mix(in oklab,var(--rc) 35%,transparent);transition:gap .3s}
+.ob-link::after{content:'↗'}
+.ob-link:hover{gap:13px}
+@media(max-width:880px){
+  .obs{grid-template-columns:1fr;gap:0}
+  .viewport{display:none}
+  .cat-row.on .cat-inline{display:block}
+}
+</style>
+<section id="projects" class="flo">
+  <div class="flo-scrim"></div>
+  <div class="s-head"><p class="s-eyebrow">04 / Projects</p><div class="s-coord">SECTOR 04 · CATALOG<br><b>6 objects</b></div></div>
+  <h2 class="s-title">Systems work, <span class="cyan">bottom-up.</span></h2>
+  <div class="console"><span class="cbar"></span>
+  <div class="obs fu">
+    <div class="cat" id="cat">
+      <div class="cat-row on" data-i="001" data-c="amber" data-metric="" data-ml="" data-href="https://github.com/adit4443ya">
+        <span class="cat-node"></span>
+        <span class="cat-meta">
+          <span class="cat-desig">PRJ·001 — ARCHITECTURE</span>
+          <span class="cat-name">MIPS Pipeline Simulator</span>
+          <span class="cat-tech">C++ · Computer Architecture</span>
+        </span>
+        <span class="cat-go">↗</span>
+        <span class="cat-inline"><span class="cd-text">Cycle-accurate 5-stage MIPS pipeline with hazard detection, forwarding, and branch prediction — modeling stalls and data dependencies at the microarchitecture level.</span><a class="cd-src" href="https://github.com/adit4443ya" target="_blank">Source ↗</a></span>
+      </div>
+      <div class="cat-row" data-i="002" data-c="cyan" data-metric="" data-ml="" data-href="https://github.com/adit4443ya">
+        <span class="cat-node"></span>
+        <span class="cat-meta">
+          <span class="cat-desig">PRJ·002 — CONCURRENCY</span>
+          <span class="cat-name">Multi-Threaded Web Crawler</span>
+          <span class="cat-tech">Go · Concurrency · Channels</span>
+        </span>
+        <span class="cat-go">↗</span>
+        <span class="cat-inline"><span class="cd-text">Concurrent crawler with a worker pool, bounded queues, and graceful backpressure — tuned for throughput without overwhelming target hosts.</span><a class="cd-src" href="https://github.com/adit4443ya" target="_blank">Source ↗</a></span>
+      </div>
+      <div class="cat-row" data-i="003" data-c="rose" data-metric="3.42×" data-ml="speedup over baseline inference" data-href="https://github.com/adit4443ya">
+        <span class="cat-node"></span>
+        <span class="cat-meta">
+          <span class="cat-desig">PRJ·003 — HPC · LLM</span>
+          <span class="cat-name">Parallel LLM Inference on RISC-V</span>
+          <span class="cat-tech">C · RISC-V · OpenMP · SIMD</span>
+        </span>
+        <span class="cat-go">↗</span>
+        <span class="cat-inline"><span class="cd-text">Optimized transformer inference on a RISC-V target — vectorized kernels and threading delivering a 3.42× speedup over the baseline.</span><a class="cd-src" href="https://github.com/adit4443ya" target="_blank">Source ↗</a></span>
+      </div>
+      <div class="cat-row" data-i="004" data-c="rose" data-metric="" data-ml="" data-href="https://github.com/adit4443ya">
+        <span class="cat-node"></span>
+        <span class="cat-meta">
+          <span class="cat-desig">PRJ·004 — ML · PRIVACY</span>
+          <span class="cat-name">Federated Fraud Detection</span>
+          <span class="cat-tech">Python · Federated Learning</span>
+        </span>
+        <span class="cat-go">↗</span>
+        <span class="cat-inline"><span class="cd-text">Privacy-preserving fraud model trained across distributed nodes without centralizing sensitive transaction data — federated aggregation end-to-end.</span><a class="cd-src" href="https://github.com/adit4443ya" target="_blank">Source ↗</a></span>
+      </div>
+      <div class="cat-row" data-i="005" data-c="amber" data-metric="" data-ml="" data-href="https://github.com/adit4443ya">
+        <span class="cat-node"></span>
+        <span class="cat-meta">
+          <span class="cat-desig">PRJ·005 — FULL-STACK</span>
+          <span class="cat-name">WorkHubPro</span>
+          <span class="cat-tech">React · Node · PostgreSQL</span>
+        </span>
+        <span class="cat-go">↗</span>
+        <span class="cat-inline"><span class="cd-text">Full-stack workspace and project-management platform — auth, role-based access, and real-time collaboration features.</span><a class="cd-src" href="https://github.com/adit4443ya" target="_blank">Source ↗</a></span>
+      </div>
+      <div class="cat-row" data-i="006" data-c="cyan" data-metric="30+" data-ml="MPI subroutines, pure Fortran" data-href="https://github.com/lfortran/fortran_mpi/">
+        <span class="cat-node"></span>
+        <span class="cat-meta">
+          <span class="cat-desig">PRJ·006 — OPEN SOURCE</span>
+          <span class="cat-name">fortran_mpi</span>
+          <span class="cat-tech">Fortran · MPI · ISO_C_BINDING</span>
+        </span>
+        <span class="cat-go">↗</span>
+        <span class="cat-inline"><span class="cd-text">Pure-Fortran MPI wrapper library, 30+ subroutines, eliminating C-wrapper overhead. Maintained under the LFortran organization.</span><a class="cd-src" href="https://github.com/lfortran/fortran_mpi/" target="_blank">Source ↗</a></span>
       </div>
     </div>
+    <aside class="viewport" id="view">
+      <div class="scope" id="scope">
+        <span class="scope-ring r1"></span>
+        <span class="scope-ring r2"></span>
+        <span class="scope-ring r3"></span>
+        <span class="scope-sweep"></span>
+        <svg class="scope-dash" viewBox="0 0 200 200"><circle cx="100" cy="100" r="84"></circle></svg>
+        <span class="scope-glow"></span>
+        <span class="scope-tick t1">OBSERVATION</span>
+        <span class="scope-idx" id="ob-idx">001</span>
+        <span class="scope-tick t2">LOCKED</span>
+      </div>
+      <div class="ob-body">
+        <p class="ob-desig" id="ob-desig">PRJ·001 — ARCHITECTURE</p>
+        <h3 class="ob-name" id="ob-name">MIPS Pipeline Simulator</h3>
+        <p class="ob-tech" id="ob-tech">C++ · Computer Architecture</p>
+        <p class="ob-desc" id="ob-desc">Cycle-accurate 5-stage MIPS pipeline with hazard detection, forwarding, and branch prediction — modeling stalls and data dependencies at the microarchitecture level.</p>
+        <div class="ob-metric" id="ob-metric" hidden><span class="ob-mn" id="ob-mn"></span><span class="ob-ml" id="ob-ml"></span></div>
+        <a class="ob-link" id="ob-link" href="https://github.com/adit4443ya" target="_blank">Source</a>
+      </div>
+    </aside>
+  </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="panel fu" style="max-width:760px;margin:0 auto">
-    <div class="panel-glow"><div class="panel-glow-tl"></div><div class="panel-glow-br"></div></div>
-    <div class="panel-border-top"></div>
-    <div class="panel-inner" style="text-align:center">
-      <p class="s-num" style="text-align:center">06 // Contact</p>
-      <h2 class="s-title" style="margin-bottom:20px">Get in <strong>Touch</strong></h2>
-      <p class="ct">Open to <strong>compiler engineering</strong> roles, <strong>HPC research</strong> positions, and interesting systems problems. Happy to talk parallel computing, graph algorithms, or anything compiler-adjacent.</p>
-      <div class="clinks">
-        <a href="mailto:adit4443ya@gmail.com" class="clink">✉ Email</a>
-        <a href="https://github.com/adit4443ya" target="_blank" class="clink">⌥ GitHub</a>
-        <a href="https://www.linkedin.com/in/adit4443ya/" target="_blank" class="clink">◈ LinkedIn</a>
-        <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="clink">◎ Blog</a>
-      </div>
+<style>
+/* ───── SPECTRAL READOUT (stack) ───── */
+.spectra{display:flex;flex-direction:column;border-top:1px solid var(--line);margin-top:6px}
+.spec-row{display:grid;grid-template-columns:236px 1fr;gap:48px;align-items:center;padding:30px 4px;border-bottom:1px solid var(--line);transition:background .35s}
+.spec-row:hover{background:rgba(232,162,107,0.025)}
+.spec-cat{font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--rc);display:flex;align-items:center;gap:16px}
+.spec-k{font-family:var(--serif);font-style:italic;font-size:32px;line-height:1;color:var(--rc);opacity:.55}
+.spec-tags{display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:880px){.spec-row{grid-template-columns:1fr;gap:16px;padding:24px 4px}}
+</style>
+<section id="stack" class="flo">
+  <div class="flo-scrim"></div>
+  <div class="s-head"><p class="s-eyebrow">05 / Stack</p><div class="s-coord">SECTOR 05 · INSTRUMENTS<br><b>5 bands</b></div></div>
+  <h2 class="s-title">The tools I <em>reach for.</em></h2>
+  <div class="console"><span class="cbar"></span>
+  <div class="spectra fu">
+    <div class="spec-row" style="--rc:var(--amber)">
+      <div class="spec-cat"><span class="spec-k">01</span>Languages</div>
+      <div class="spec-tags"><span class="sk-t">C</span><span class="sk-t">C++</span><span class="sk-t">Fortran</span><span class="sk-t">Rust</span><span class="sk-t">Go</span><span class="sk-t">Kotlin</span><span class="sk-t">Python</span></div>
     </div>
+    <div class="spec-row" style="--rc:var(--rose)">
+      <div class="spec-cat"><span class="spec-k">02</span>Parallel &amp; HPC</div>
+      <div class="spec-tags"><span class="sk-t">OpenMP</span><span class="sk-t">CUDA</span><span class="sk-t">MPI</span><span class="sk-t">SIMD</span><span class="sk-t">Pthreads</span></div>
+    </div>
+    <div class="spec-row" style="--rc:var(--cyan)">
+      <div class="spec-cat"><span class="spec-k">03</span>Compilers &amp; IR</div>
+      <div class="spec-tags"><span class="sk-t">LLVM</span><span class="sk-t">MLIR</span><span class="sk-t">ClangIR</span><span class="sk-t">ASR / IR design</span><span class="sk-t">Codegen</span></div>
+    </div>
+    <div class="spec-row" style="--rc:var(--rose)">
+      <div class="spec-cat"><span class="spec-k">04</span>Architectures</div>
+      <div class="spec-tags"><span class="sk-t">AArch64 / ARM</span><span class="sk-t">ARMv9</span><span class="sk-t">RISC-V</span><span class="sk-t">x86</span></div>
+    </div>
+    <div class="spec-row" style="--rc:var(--cyan)">
+      <div class="spec-cat"><span class="spec-k">05</span>Exploring</div>
+      <div class="spec-tags"><span class="sk-t">MLIR</span><span class="sk-t">ML Compilers</span><span class="sk-t">Tensor IR</span><span class="sk-t">Accelerators</span></div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<style>
+/* ───── SIGNAL CHANNELS (contact finale) ───── */
+#contact{text-align:center}
+.transmit{display:flex;align-items:flex-end;justify-content:center;gap:5px;height:42px;margin:0 auto 14px}
+.transmit i{width:4px;background:var(--amber);box-shadow:0 0 8px color-mix(in oklab,var(--amber) 60%,transparent);transform-origin:bottom;animation:eq 1.1s ease-in-out infinite}
+.transmit i:nth-child(1){height:40%;animation-delay:-.1s}
+.transmit i:nth-child(2){height:75%;animation-delay:-.5s}
+.transmit i:nth-child(3){height:100%;animation-delay:-.2s}
+.transmit i:nth-child(4){height:60%;animation-delay:-.7s}
+.transmit i:nth-child(5){height:85%;animation-delay:-.35s}
+@keyframes eq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.transmit-l{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:36px;display:flex;align-items:center;justify-content:center;gap:8px}
+.transmit-l::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);animation:blink 1.6s ease-in-out infinite}
+.channels{display:flex;justify-content:center;flex-wrap:wrap;gap:0;max-width:760px;margin:0 auto;border-top:1px solid rgba(232,162,107,0.14)}
+.chan{flex:1;min-width:150px;display:flex;flex-direction:column;align-items:center;gap:7px;padding:30px 18px 26px;text-decoration:none;position:relative;border-left:1px solid rgba(232,162,107,0.10)}
+.chan:first-child{border-left:none}
+.chan::before{content:'';position:absolute;top:-1px;left:0;right:0;margin:auto;width:0;height:1px;background:var(--amber);box-shadow:0 0 8px var(--amber);transition:width .4s ease}
+.chan:hover::before{width:60%}
+.chan-i{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:rgba(232,162,107,0.4);transition:color .3s}
+.chan-l{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--muted);transition:color .3s}
+.chan:hover .chan-l{color:var(--ink)}
+.chan:hover .chan-i{color:var(--amber)}
+@media(max-width:880px){.chan{min-width:50%;border-left:none}}
+</style>
+<section id="contact" class="flo">
+  <div class="flo-scrim"></div>
+  <p class="s-eyebrow" style="justify-content:center">06 / Contact</p>
+  <h2 class="s-title" style="text-align:center">Let's talk <em>compilers.</em></h2>
+  <div class="console" style="margin-top:40px"><span class="cbar"></span>
+  <p class="ct">Not job hunting — <strong>joining Qualcomm's ARM compiler team in July 2026</strong>. But always <span class="ink-a">open to community conversations and open-source collaboration</span>. If you work on MLIR, ML compilers, LLVM, or parallel runtimes — or just want to talk IR design — reach out.</p>
+  <div class="transmit"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="transmit-l">Channel open · transmitting</div>
+  <div class="channels">
+    <a href="/cdn-cgi/l/email-protection#6706030e13535353541e0627000a060e0b4904080a" class="chan"><span class="chan-i">01 · MAIL</span><span class="chan-l">Email</span></a>
+    <a href="https://github.com/adit4443ya" target="_blank" class="chan"><span class="chan-i">02 · CODE</span><span class="chan-l">GitHub</span></a>
+    <a href="https://www.linkedin.com/in/adit4443ya/" target="_blank" class="chan"><span class="chan-i">03 · NET</span><span class="chan-l">LinkedIn</span></a>
+    <a href="https://drive.google.com/file/u/0/d/1rebI8SXe8pjzczuKqacmOeyYnYRHAf_g/view" target="_blank" class="chan"><span class="chan-i">04 · DOC</span><span class="chan-l">Résumé</span></a>
+  </div>
   </div>
 </section>
 
 <footer>
-  <span class="ft">ADITYA TRIVEDI · IIT JODHPUR · B.TECH CSE · 2026</span>
-  <span class="ft">block/<span id="blk" style="color:rgba(0,229,255,0.4)">8521044</span> · eth:mainnet</span>
+  <div class="ft">© 2026 <span>ADITYA TRIVEDI</span> · Compiler Engineer · Built with Three.js</div>
+  
 </footer>
+
 </div>
 
-<script>
-// ══════════════════════════════════════════════
-//  DEEP SPACE — vibrant, high-contrast nebula
-// ══════════════════════════════════════════════
-const cv=document.getElementById('cv');
-const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:false});
-R.setPixelRatio(Math.min(devicePixelRatio,1.8));
-R.setSize(innerWidth,innerHeight);
-R.setClearColor(0x020208,1);
-const S=new THREE.Scene();
-S.fog=new THREE.FogExp2(0x020208,0.0018);
-const cam=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,0.1,2000);
-cam.position.z=0;
 
-// ─ Stars ─
-function starLayer(n,spread,sz,op,col){
-  const g=new THREE.BufferGeometry(),p=new Float32Array(n*3);
-  for(let i=0;i<n*3;i++)p[i]=(Math.random()-.5)*spread;
-  g.setAttribute('position',new THREE.BufferAttribute(p,3));
-  S.add(new THREE.Points(g,new THREE.PointsMaterial({color:col,size:sz,transparent:true,opacity:op,sizeAttenuation:true})));
-}
-starLayer(3200,900,.06,.55,0xffffff);
-starLayer(600,900,.2,.22,0x9ecfff);
-starLayer(180,700,.4,.18,0xffd080);
-starLayer(40,600,.7,.14,0x00ffcc); // bright cyan giants
 
-// ─ Nebula cloud builder ─
-function cloud(n,cx,cy,cz,rx,ry,rz,c1,c2,sz,op){
-  const g=new THREE.BufferGeometry(),p=new Float32Array(n*3),c=new Float32Array(n*3);
-  const ca=new THREE.Color(c1),cb=new THREE.Color(c2),cc=new THREE.Color();
-  for(let i=0;i<n;i++){
-    const r=Math.pow(Math.random(),.5);
-    const a=Math.random()*Math.PI*2,b=Math.acos(2*Math.random()-1);
-    p[i*3]=cx+r*Math.sin(b)*Math.cos(a)*rx+(Math.random()-.5)*rx*.6;
-    p[i*3+1]=cy+r*Math.sin(b)*Math.sin(a)*ry+(Math.random()-.5)*ry*.4;
-    p[i*3+2]=cz+r*Math.cos(b)*rz+(Math.random()-.5)*rz*.5;
-    cc.copy(ca).lerp(cb,Math.random());
-    const br=.35+Math.random()*.65;
-    c[i*3]=cc.r*br;c[i*3+1]=cc.g*br;c[i*3+2]=cc.b*br;
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ───── RAY-MARCHED GRAVITATIONAL-LENSING BLACK HOLE (GLSL) ───── */
+let TW = { intensity: 1, palette: 'amber', vantage: 'free' };
+// per-palette colours: disk(outer), hot(inner), star, nebula  — as 0..1 vec3
+const PAL = {
+  amber:  { disk:[1.00,0.62,0.30], hot:[1.00,0.93,0.78], star:[1.00,0.94,0.86], neb:[0.91,0.64,0.42] },
+  cyan:   { disk:[0.45,0.82,1.00], hot:[0.90,0.99,1.00], star:[0.92,1.00,1.00], neb:[0.36,0.95,1.00] },
+  violet: { disk:[0.78,0.62,1.00], hot:[1.00,0.94,1.00], star:[0.95,0.92,1.00], neb:[0.72,0.58,1.00] },
+};
+let renderer,scene,camera,quad,clock,uniforms;
+let lensMat,brightMat,blurMat,compMat,rtScene,rtH1,rtH2,RW,RH,BW,BH;
+const RSCALE=0.85;
+const VERT=`varying vec2 vUv; void main(){vUv=position.xy*0.5+0.5; gl_Position=vec4(position,1.0);}`;
+/* ── HDR ray-marched black hole: lensing + photon ring + relativistic disk ── */
+const LENS=`
+precision highp float;
+varying vec2 vUv;
+uniform vec2 iRes; uniform float iTime;
+uniform float camYaw,camPitch,camDist,fov,intensity,lookX,lookY;
+uniform vec3 uDisk,uHot,uStar,uNeb;
+#define STEPS 230
+float h31(vec3 p){p=fract(p*0.3183099+0.1);p*=17.0;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
+float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float vn(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
+ return mix(mix(mix(h31(i),h31(i+vec3(1,0,0)),f.x),mix(h31(i+vec3(0,1,0)),h31(i+vec3(1,1,0)),f.x),f.y),
+            mix(mix(h31(i+vec3(0,0,1)),h31(i+vec3(1,0,1)),f.x),mix(h31(i+vec3(0,1,1)),h31(i+vec3(1,1,1)),f.x),f.y),f.z);}
+float fbm(vec3 p){float a=0.5,s=0.0;for(int i=0;i<4;i++){s+=a*vn(p);p*=2.03;a*=0.5;}return s;}
+// ── temperature-coloured twinkling stars (3 density layers) ──
+vec3 stars(vec3 d){
+  vec3 c=vec3(0.0);
+  for(int k=0;k<3;k++){
+    float sc=8.0+float(k)*13.0;
+    vec2 uv=vec2(atan(d.z,d.x),asin(clamp(d.y,-1.0,1.0)))*sc;
+    vec2 id=floor(uv),f=fract(uv);
+    float hh=h21(id+float(k)*71.3);
+    float thr=0.93-float(k)*0.015;
+    if(hh>thr){
+      vec2 ce=vec2(h21(id+1.7),h21(id+4.1));
+      float dd=length(f-ce);
+      float core=smoothstep(0.09,0.0,dd);
+      float mag=(hh-thr)/(1.0-thr);
+      float temp=h21(id+9.9);
+      vec3 col=mix(vec3(1.0,0.78,0.55),vec3(0.72,0.85,1.0),temp);
+      col=mix(col,vec3(1.0),0.25);
+      float tw=0.55+0.45*sin(iTime*2.5+hh*60.0);
+      c+=col*core*mag*mag*tw*2.2;
+    }
   }
-  g.setAttribute('position',new THREE.BufferAttribute(p,3));
-  g.setAttribute('color',new THREE.BufferAttribute(c,3));
-  S.add(new THREE.Points(g,new THREE.PointsMaterial({size:sz,vertexColors:true,transparent:true,opacity:op,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true})));
+  return c;
 }
-
-// DEEP BACKGROUND — inky void with faint blue wash
-cloud(6000,  0, 0,-240,180,70,50,'#010b18','#03213a',3.5,.06);
-// OUTER NEBULA — rich teal/cyan
-cloud(4000, 12, 6,-180,110,45,30,'#083a42','#0e9aa8',2.5,.10);
-// BRIGHT CORE — electric cyan
-cloud(1500,  6, 3,-140, 50,20,15,'#00bcd4','#00e5ff',1.8,.14);
-// AMBER/GOLD star-forming pillars
-cloud(1800,-18,-7,-130, 42,16,12,'#7c3a00','#c87200',2.0,.11);
-// HOT PINK/MAGENTA gas (Carina's real colour)
-cloud(1200, 22,10,-150, 35,14,10,'#6b0038','#d4006c',1.8,.09);
-// VIOLET outer halo
-cloud(3500, -6, 8,-200,140,58,40,'#12063a','#2a0f6b',3.8,.05);
-// BRIGHT PILLAR TENDRILS
-cloud(700,  18,-10,-110,  8,30, 5,'#004d40','#00e5ff',1.4,.18);
-cloud(500, -10, 12,-100,  6,22, 4,'#4a0020','#ff4080',1.2,.15);
-// FOREGROUND WISPS (close, large, very faint)
-cloud(1200,  0,  0, -45, 70,25,12,'#030d18','#061c2e',5,.035);
-
-// ─ BLACK HOLE ─
-const BHP=new THREE.Vector3(58,14,-210);
-const bh=new THREE.Mesh(new THREE.SphereGeometry(8,32,32),new THREE.MeshBasicMaterial({color:0x000000}));
-bh.position.copy(BHP);S.add(bh);
-// Photon ring — sharp amber
-const pr=new THREE.Mesh(new THREE.TorusGeometry(9.4,.28,16,128),new THREE.MeshBasicMaterial({color:0xf0a500,transparent:true,opacity:.95}));
-pr.position.copy(BHP);pr.rotation.x=1.12;S.add(pr);
-// Inner glow arc
-const arc=new THREE.Mesh(new THREE.TorusGeometry(9.4,1.1,16,128),new THREE.MeshBasicMaterial({color:0xf0a500,transparent:true,opacity:.08,blending:THREE.AdditiveBlending,depthWrite:false}));
-arc.position.copy(BHP);arc.rotation.x=1.12;S.add(arc);
-// Accretion disks
-[[10.5,1.6,0xff6a00,.48],[14,1.2,0xe03a00,.28],[18,.8,0x881800,.13]].forEach(([r,w,c,o])=>{
-  const d=new THREE.Mesh(new THREE.TorusGeometry(r,w,12,128),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,blending:THREE.AdditiveBlending,depthWrite:false}));
-  d.position.copy(BHP);d.rotation.x=1.12;S.add(d);
-});
-
-// ─ NEUTRON STAR ─ icy & tight
-const NSP=new THREE.Vector3(-38,-12,-90);
-const ns=new THREE.Mesh(new THREE.SphereGeometry(.9,16,16),new THREE.MeshBasicMaterial({color:0xddfffe}));
-ns.position.copy(NSP);S.add(ns);
-[2,3.8,5.8].forEach((r,i)=>{
-  const h=new THREE.Mesh(new THREE.SphereGeometry(r,16,16),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:.055-i*.012,blending:THREE.AdditiveBlending,depthWrite:false}));
-  h.position.copy(NSP);S.add(h);
-});
-const jmat=new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:.28,blending:THREE.AdditiveBlending,depthWrite:false});
-const j1=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,50,8),jmat);j1.position.copy(NSP);S.add(j1);
-const j2=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,50,8),jmat.clone());j2.position.copy(NSP);S.add(j2);
-
-// ─ WORMHOLE RINGS (deep background) ─
-const wm1=new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:.1,wireframe:true});
-const wr1=new THREE.Mesh(new THREE.TorusGeometry(32,1.2,8,120),wm1);wr1.position.set(0,0,-160);S.add(wr1);
-const wr2=new THREE.Mesh(new THREE.TorusGeometry(25,.6,8,120),new THREE.MeshBasicMaterial({color:0xb06cff,transparent:true,opacity:.06,wireframe:true}));
-wr2.position.set(0,0,-160);S.add(wr2);
-
-// ─ MOUSE + SCROLL ─
-let mx=0,my=0,sy=0;
-document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=-(e.clientY/innerHeight-.5)*2;});
-window.addEventListener('scroll',()=>sy=window.scrollY);
-
-const clk=new THREE.Clock();
-const diskMeshes=S.children.filter(c=>c.geometry&&c.geometry.type==='TorusGeometry'&&c!==pr&&c!==arc&&c!==wr1&&c!==wr2);
-
-function loop(){
-  requestAnimationFrame(loop);
-  const t=clk.getElapsedTime();
-  cam.position.x+=(mx*5-cam.position.x)*.03;
-  cam.position.y+=(my*3-cam.position.y)*.03;
-  cam.position.z+=((-sy*.028)-cam.position.z)*.04;
-  cam.lookAt(mx*.6,my*.4,-100);
-  pr.rotation.z=t*2;arc.rotation.z=t*2;
-  wr1.rotation.z=t*.04;wr2.rotation.z=-t*.055;
-  const p=1+Math.sin(t*5.5)*.25;
-  ns.scale.setScalar(p);j1.rotation.z=t*5;j2.rotation.z=t*5+.15;
-  R.render(S,cam);
+// ── Milky-Way galactic band with dust lanes ──
+vec3 band(vec3 d){
+  vec3 bn=normalize(vec3(0.25,1.0,0.35));
+  float lat=dot(d,bn);
+  float b=exp(-lat*lat*26.0);
+  float dust=fbm(d*5.0+vec3(0.0,0.0,iTime*0.003));
+  float fine=fbm(d*20.0);
+  vec3 col=mix(uNeb*0.7,vec3(0.92,0.86,0.78),0.45);
+  float lane=mix(0.22,1.0,smoothstep(0.0,0.45,abs(lat)+(fbm(d*3.5)-0.5)*0.35));
+  float glow=b*(0.2+fine*0.7)*(0.45+dust*0.8)*lane;
+  return col*glow*0.6;
 }
-loop();
-
-window.addEventListener('resize',()=>{
-  cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();R.setSize(innerWidth,innerHeight);
-});
-
-// ── FILM GRAIN ──
-const nc=document.getElementById('noise');
-const ctx=nc.getContext('2d');
-nc.width=innerWidth;nc.height=innerHeight;
-let gt=0;
-function grain(){
-  requestAnimationFrame(grain);
-  if(++gt%3)return;
-  const id=ctx.createImageData(nc.width,nc.height),d=id.data;
-  for(let i=0;i<d.length;i+=4){
-    const v=Math.random()*255|0;
-    d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.random()*16|0;
+// ── volumetric emission nebula: layered Hα/OIII with dark dust lanes + embedded stars ──
+vec3 nebula(vec3 d){
+  vec3 nd=normalize(vec3(-0.15,0.18,0.97));
+  float al=dot(d,nd);
+  if(al<0.32) return vec3(0.0);
+  float field=al;
+  float base=fbm(d*1.8+vec3(11.0,3.0,iTime*0.004));
+  float detail=fbm(d*4.6+vec3(-5.0,8.0,iTime*0.002));
+  float fine=fbm(d*11.0);
+  float cloud=pow(smoothstep(0.42,0.95,base*0.7+detail*0.4),1.8);
+  // dark dust lanes carve through
+  float dust=smoothstep(0.35,0.6,fbm(d*3.2+vec3(20.0)));
+  cloud*=mix(0.25,1.0,dust);
+  // colour: magenta Hα core → teal OIII edges → blue reflection
+  vec3 ha=vec3(0.95,0.28,0.5), oiii=vec3(0.2,0.75,0.78), refl=vec3(0.35,0.45,0.95);
+  vec3 col=mix(oiii,ha,smoothstep(0.4,0.85,base));
+  col=mix(col,refl,smoothstep(0.5,0.9,detail)*0.5);
+  col=mix(col,uNeb,0.25);
+  col+=vec3(1.0)*pow(fine,3.0)*cloud*0.5; // embedded bright knots
+  float falloff=smoothstep(0.32,0.62,al);
+  return col*cloud*falloff*1.28;
+}
+// ── banded gas-giant planet with ring system (lit, limb-darkened) ──
+vec3 gasGiant(vec3 d){
+  vec3 pd=normalize(vec3(-0.32,0.30,-0.90));
+  float ang=0.155, sa=sin(ang), ca=cos(ang);
+  float al=dot(d,pd);
+  vec3 up=normalize(vec3(0.12,1.0,0.05));
+  vec3 px=normalize(cross(up,pd)), py=cross(pd,px);
+  vec3 lightDir=normalize(vec3(0.7,0.3,-0.2));
+  vec2 q=vec2(dot(d,px),dot(d,py))/max(al,1e-3);
+  float rN=length(q)/sa;
+  vec3 col=vec3(0.0);
+  // ring system (tilted ellipse, squashed in y)
+  float ry=q.y/sa/0.32;
+  float rE=length(vec2(q.x/sa,ry));
+  if(al>0.5){
+    float ring=smoothstep(1.32,1.4,rE)*(1.0-smoothstep(2.05,2.15,rE));
+    float gap=smoothstep(1.68,1.72,rE)-smoothstep(1.78,1.82,rE); // Cassini gap
+    ring*=(1.0-gap*0.8);
+    // ring behind planet hidden on top half (simple occlusion)
+    float behind=(q.y>0.0 && rN<1.0)?0.0:1.0;
+    col+=vec3(0.82,0.74,0.6)*ring*0.42*behind;
   }
-  ctx.putImageData(id,0,0);
+  // planet sphere
+  if(al>ca){
+    float z=sqrt(max(0.0,1.0-rN*rN));
+    vec3 nrm=normalize(px*(q.x/sa)+py*(q.y/sa)+pd*z);
+    float lat=dot(nrm,up);
+    float bandPat=0.5+0.5*sin(lat*20.0+fbm(vec3(lat*7.0,iTime*0.008,0.0))*5.0);
+    vec3 base=mix(vec3(0.74,0.58,0.4),vec3(0.93,0.85,0.72),bandPat);
+    base=mix(base,vec3(0.62,0.36,0.28),smoothstep(0.55,0.8,fbm(nrm*5.0))); // storm belts
+    float spot=smoothstep(0.12,0.0,length(nrm-normalize(vec3(0.4,-0.3,0.85)))); // great red spot
+    base=mix(base,vec3(0.8,0.32,0.22),spot*0.8);
+    float diff=max(0.0,dot(nrm,lightDir));
+    float limb=pow(max(0.0,z),0.45);
+    col+=base*(0.05+diff*1.35)*limb;
+  }
+  return col;
 }
-grain();
-window.addEventListener('resize',()=>{nc.width=innerWidth;nc.height=innerHeight;});
+// ── distant tilted spiral galaxy ──
+vec3 galaxy(vec3 d){
+  vec3 gd=normalize(vec3(-0.6,0.32,-0.72));
+  float along=dot(d,gd);
+  if(along<0.82) return vec3(0.0);
+  vec3 up=normalize(vec3(0.12,1.0,0.0));
+  vec3 gx=normalize(cross(up,gd));
+  vec3 gy=cross(gd,gx);
+  vec2 p=vec2(dot(d,gx),dot(d,gy))/max(along,0.001)*15.0;
+  float r=length(p);
+  float ang=atan(p.y,p.x);
+  float arms=0.5+0.5*cos(2.0*ang+r*3.2+0.6);
+  float disk=exp(-r*r*0.05)*(0.35+arms*0.65);
+  float core=exp(-r*r*1.6)*2.2;
+  vec3 col=mix(vec3(0.78,0.68,1.0),vec3(1.0,0.94,0.82),core);
+  return col*(disk+core)*0.7;
+}
+// ── pulsar / neutron star: brilliant blue-white point, diffraction spikes, rotating beams ──
+vec3 pulsar(vec3 d){
+  vec3 pd=normalize(vec3(0.62,0.46,0.64));
+  float al=dot(d,pd);
+  if(al<0.86) return vec3(0.0);
+  vec3 up=normalize(vec3(0.0,1.0,0.15));
+  vec3 px=normalize(cross(up,pd)), py=cross(pd,px);
+  vec2 p=vec2(dot(d,px),dot(d,py))/max(al,0.001)*46.0;
+  float r=length(p);
+  vec3 col=vec3(0.0);
+  // hot core
+  col+=mix(vec3(0.75,0.86,1.0),vec3(1.0),0.4)*exp(-r*r*2.6)*4.0;
+  // 4-point diffraction spikes
+  float sx=exp(-abs(p.y)*9.0)*exp(-abs(p.x)*0.5);
+  float sy=exp(-abs(p.x)*9.0)*exp(-abs(p.y)*0.5);
+  col+=vec3(0.7,0.85,1.0)*(sx+sy)*1.4;
+  // twin lighthouse beams sweeping (precession)
+  float spin=iTime*1.6;
+  vec2 bdir=vec2(cos(spin),sin(spin));
+  float along=dot(p,bdir), perp=abs(dot(p,vec2(-bdir.y,bdir.x)));
+  float beam=exp(-perp*perp*0.9)*smoothstep(0.0,2.0,abs(along))*exp(-r*0.06);
+  float flash=0.5+0.5*sin(iTime*5.0);
+  col+=vec3(0.6,0.8,1.0)*beam*1.6*(0.4+0.6*flash);
+  return col;
+}
+// ── supernova-remnant shell nebula (filamentary) ──
+vec3 remnant(vec3 d){
+  vec3 cd=normalize(vec3(0.1,-0.55,0.83));
+  float al=dot(d,cd);
+  if(al<0.70) return vec3(0.0);
+  vec3 up=normalize(vec3(0.0,1.0,0.0));
+  vec3 cx=normalize(cross(up,cd)), cy=cross(cd,cx);
+  vec2 p=vec2(dot(d,cx),dot(d,cy))/max(al,0.001)*9.0;
+  float r=length(p);
+  float ang=atan(p.y,p.x);
+  float shell=exp(-pow((r-1.6)*1.4,2.0));           // ring shell
+  float fil=0.5+0.5*sin(ang*16.0+fbm(d*8.0)*8.0);   // filaments
+  float turb=fbm(d*6.0+vec3(3.0));
+  vec3 col=mix(vec3(0.2,0.7,0.85),vec3(0.95,0.35,0.55),fil); // teal→magenta
+  return col*shell*(0.4+fil*0.6)*(0.5+turb*0.7)*1.15;
+}
+// ── broad drifting gas clouds: fills the whole sky with faint coloured nebulosity ──
+vec3 driftClouds(vec3 d){
+  float base=fbm(d*1.25+vec3(-8.0,4.0,iTime*0.0025));
+  float detail=fbm(d*3.1+vec3(17.0,-6.0,iTime*0.0015));
+  float cloud=pow(smoothstep(0.46,0.96,base*0.7+detail*0.4),2.1);
+  // dark dust carving so it never reads flat
+  float dust=smoothstep(0.34,0.62,fbm(d*2.4+vec3(40.0)));
+  cloud*=mix(0.3,1.0,dust);
+  // teal OIII drifting into magenta Hα into deep indigo
+  vec3 a=vec3(0.10,0.24,0.34), b=vec3(0.30,0.12,0.34), c=vec3(0.55,0.22,0.30);
+  vec3 col=mix(a,b,smoothstep(0.4,0.8,base));
+  col=mix(col,c,smoothstep(0.6,0.95,detail)*0.5);
+  return col*cloud*0.30;
+}
+// ── faint dark-matter / cosmic-web filaments threading the void ──
+vec3 darkWeb(vec3 d){
+  float f=fbm(d*2.1+vec3(30.0,7.0,iTime*0.002));
+  float g=fbm(d*4.7+vec3(0.0,21.0,5.0));
+  // ridged filaments: sharp thin threads where the field crests
+  float fil=pow(smoothstep(0.55,0.82,f),3.2)+pow(smoothstep(0.62,0.84,g),4.0)*0.6;
+  // sparse cool nodes where filaments cross
+  float node=pow(smoothstep(0.7,0.9,f*g),3.0);
+  vec3 col=mix(vec3(0.10,0.13,0.30),vec3(0.26,0.34,0.62),fil);
+  return col*fil*0.13 + vec3(0.5,0.62,1.0)*node*0.10;
+}
+vec3 sky(vec3 d){ return stars(d)+band(d)+nebula(d)+galaxy(d)+pulsar(d)+remnant(d)+gasGiant(d)+driftClouds(d)+darkWeb(d); }
+void main(){
+  vec2 uv=(gl_FragCoord.xy-0.5*iRes)/iRes.y;
+  vec3 ro=vec3(sin(camYaw)*cos(camPitch),sin(camPitch),cos(camYaw)*cos(camPitch))*camDist;
+  vec3 fwd=normalize(-ro), rgt=normalize(cross(vec3(0.0,1.0,0.0),fwd)), upv=cross(fwd,rgt);
+  vec3 vel=normalize(fwd+(uv.x+lookX)*rgt*fov+(uv.y+lookY)*upv*fov);
+  vec3 pos=ro;
+  float Rs=1.0, GM=1.05, rin=1.9, rout=6.2;
+  vec3 col=vec3(0.0); float trans=1.0; bool cap=false; float rmin=1e3;
+  for(int i=0;i<STEPS;i++){
+    float r2=dot(pos,pos), r=sqrt(r2);
+    rmin=min(rmin,r);
+    if(r<Rs){cap=true;break;}
+    float dt=0.055+0.05*r;                 // finer steps near the hole
+    vec3 acc=-normalize(pos)*GM/r2;
+    vec3 npos=pos+vel*dt;
+    vec3 nvel=normalize(vel+acc*dt);
+    if(pos.y*npos.y<0.0){
+      float tt=pos.y/(pos.y-npos.y);
+      vec3 hit=mix(pos,npos,tt);
+      float rr=length(hit.xz);
+      if(rr>rin&&rr<rout){
+        float ang=atan(hit.z,hit.x);
+        float spin=iTime*0.5*intensity;
+        // swirling turbulence — spiral arms + fine structure
+        float swirl=ang*2.0 - 5.0/sqrt(rr) + spin;
+        float dens=fbm(vec3(cos(swirl)*rr,sin(swirl)*rr,rr*0.4)*0.42);
+        dens=pow(dens,1.7)*1.5;
+        float radial=smoothstep(rin,rin+0.4,rr)*(1.0-smoothstep(rout-2.0,rout,rr));
+        float temp=1.0-smoothstep(rin,rin+2.6,rr);
+        vec3 dcol=mix(uDisk,uHot,temp*temp);
+        dcol+=uHot*temp*temp*1.2;            // inner edge runs white-hot
+        vec3 orb=normalize(vec3(-hit.z,0.0,hit.x));
+        float beta=0.55*(1.0-smoothstep(rin,rout,rr));
+        float dop=dot(orb,normalize(ro-hit));
+        float beam=pow(clamp(1.0+beta*dop,0.2,2.6),4.0);   // relativistic beaming
+        dcol=mix(dcol,dcol*vec3(0.65,0.82,1.5),clamp(dop,0.0,1.0)*0.5);
+        dcol=mix(dcol,dcol*vec3(1.5,0.7,0.45),clamp(-dop,0.0,1.0)*0.4);
+        float alpha=clamp(dens*radial,0.0,1.0);
+        col+=dcol*beam*alpha*trans*2.4;
+        trans*=(1.0-alpha);
+      }
+    }
+    pos=npos; vel=nvel;
+    if(r>46.0)break; if(trans<0.015)break;
+  }
+  if(!cap) col+=sky(normalize(vel))*trans;
+  // photon ring — light grazing the photon sphere (~1.5 Rs) piles up into a bright Einstein ring
+  float ring=exp(-pow((rmin-1.5)*4.5,2.0));
+  col+=mix(uHot,vec3(1.0),0.4)*ring*6.0;
+  // faint outer halo just past the ring
+  col+=uHot*exp(-pow((rmin-1.75)*3.0,2.0))*0.8;
+  gl_FragColor=vec4(col,1.0);
+}`;
+const BRIGHT=`precision highp float; varying vec2 vUv; uniform sampler2D tDiff; uniform float thresh;
+void main(){vec3 c=texture2D(tDiff,vUv).rgb; float l=dot(c,vec3(0.2126,0.7152,0.0722)); float k=max(0.0,l-thresh); gl_FragColor=vec4(c*k/(l+1e-4),1.0);}`;
+const BLUR=`precision highp float; varying vec2 vUv; uniform sampler2D tDiff; uniform vec2 dir,texel;
+void main(){vec2 o=dir*texel; vec3 c=texture2D(tDiff,vUv).rgb*0.227027;
+ c+=texture2D(tDiff,vUv+o*1.3846).rgb*0.316216; c+=texture2D(tDiff,vUv-o*1.3846).rgb*0.316216;
+ c+=texture2D(tDiff,vUv+o*3.2308).rgb*0.070270; c+=texture2D(tDiff,vUv-o*3.2308).rgb*0.070270;
+ gl_FragColor=vec4(c,1.0);}`;
+const COMP=`precision highp float; varying vec2 vUv; uniform sampler2D tScene,tBloom; uniform float bloomStr;
+vec3 aces(vec3 x){return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.0,1.0);}
+void main(){
+ vec3 s=texture2D(tScene,vUv).rgb;
+ vec3 b=texture2D(tBloom,vUv).rgb;
+ vec3 c=s+b*bloomStr;
+ c=aces(c*1.05);
+ c=pow(c,vec3(1.0/2.2));
+ float v=smoothstep(1.25,0.3,length(vUv-0.5));
+ c*=mix(0.62,1.0,v);
+ // subtle film grain
+ float g=fract(sin(dot(vUv*vec2(1920.0,1080.0),vec2(12.9898,78.233)))*43758.5453);
+ c+=(g-0.5)*0.015;
+ gl_FragColor=vec4(c,1.0);
+}`;
+function palVec(name){const p=PAL[name];return {uDisk:new THREE.Vector3(...p.disk),uHot:new THREE.Vector3(...p.hot),uStar:new THREE.Vector3(...p.star),uNeb:new THREE.Vector3(...p.neb)};}
+function makeRT(w,h){return new THREE.WebGLRenderTarget(w,h,{type:THREE.HalfFloatType,minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,format:THREE.RGBAFormat,depthBuffer:false,stencilBuffer:false});}
+function sizeRTs(){
+  RW=Math.max(4,Math.floor(innerWidth*RSCALE));RH=Math.max(4,Math.floor(innerHeight*RSCALE));
+  BW=Math.max(4,Math.floor(RW*0.5));BH=Math.max(4,Math.floor(RH*0.5));
+  rtScene.setSize(RW,RH);rtH1.setSize(BW,BH);rtH2.setSize(BW,BH);
+  lensMat.uniforms.iRes.value.set(RW,RH);
+}
+function initThree(){
+  const cv=document.getElementById('bg-cosmic');
+  renderer=new THREE.WebGLRenderer({canvas:cv,antialias:false,alpha:false});
+  renderer.setPixelRatio(1);renderer.setSize(innerWidth,innerHeight);
+  scene=new THREE.Scene();camera=new THREE.Camera();clock=new THREE.Clock();
+  quad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),new THREE.MeshBasicMaterial());
+  scene.add(quad);
+  rtScene=makeRT(4,4);rtH1=makeRT(4,4);rtH2=makeRT(4,4);
+  const pv=palVec(TW.palette);
+  lensMat=new THREE.ShaderMaterial({vertexShader:VERT,fragmentShader:LENS,depthTest:false,depthWrite:false,uniforms:{
+    iRes:{value:new THREE.Vector2()},iTime:{value:0},
+    camYaw:{value:0.55},camPitch:{value:0.16},camDist:{value:24.0},fov:{value:1.05},intensity:{value:TW.intensity},lookX:{value:-0.16},lookY:{value:0.05},
+    uDisk:{value:pv.uDisk},uHot:{value:pv.uHot},uStar:{value:pv.uStar},uNeb:{value:pv.uNeb}}});
+  brightMat=new THREE.ShaderMaterial({vertexShader:VERT,fragmentShader:BRIGHT,depthTest:false,depthWrite:false,uniforms:{tDiff:{value:null},thresh:{value:1.0}}});
+  blurMat=new THREE.ShaderMaterial({vertexShader:VERT,fragmentShader:BLUR,depthTest:false,depthWrite:false,uniforms:{tDiff:{value:null},dir:{value:new THREE.Vector2()},texel:{value:new THREE.Vector2()}}});
+  compMat=new THREE.ShaderMaterial({vertexShader:VERT,fragmentShader:COMP,depthTest:false,depthWrite:false,uniforms:{tScene:{value:null},tBloom:{value:null},bloomStr:{value:1.25}}});
+  uniforms=lensMat.uniforms;
+  sizeRTs();
+  addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);sizeRTs();});
+  animate();
+}
+function pass(mat,target){quad.material=mat;renderer.setRenderTarget(target||null);renderer.render(scene,camera);}
+/* ── orbit + scroll + parallax camera ── */
+let yaw=0.55,pitch=0.16,tYaw=0.55,tPitch=0.16,dragging=false,lastX=0,lastY=0,scrollY=0,pmx=0,pmy=0;
+function isInteractive(t){return t && t.closest && t.closest('a,button,input,textarea,.cta,.hl,.chip,.clink');}
+addEventListener('pointerdown',e=>{if(isInteractive(e.target))return;dragging=true;lastX=e.clientX;lastY=e.clientY;});
+addEventListener('pointerup',()=>dragging=false);
+addEventListener('pointermove',e=>{
+  if(dragging){tYaw-=(e.clientX-lastX)*0.005;tPitch+=(e.clientY-lastY)*0.005;tPitch=Math.max(-0.04,Math.min(1.25,tPitch));lastX=e.clientX;lastY=e.clientY;}
+  else{pmx=(e.clientX/innerWidth-0.5);pmy=(e.clientY/innerHeight-0.5);}
+});
+addEventListener('scroll',()=>{scrollY=window.scrollY;});
+function animate(){
+  requestAnimationFrame(animate);
+  if(!lensMat)return;
+  const U=lensMat.uniforms;
+  U.iTime.value=clock.getElapsedTime();
+  U.intensity.value=TW.intensity;
+  if(!dragging)tYaw+=0.0006*(0.5+TW.intensity);
+  yaw+=(tYaw-yaw)*0.06; pitch+=(tPitch-pitch)*0.06;
+  // scroll = a guided tour across the cosmos; the black hole is one stop, not the star
+  const docH=Math.max(1,(document.documentElement.scrollHeight-innerHeight));
+  let prog=Math.min(1,Math.max(0,scrollY/docH));
+  if(window.__tourTarget!=null){const cur=(typeof window.__tour==='number')?window.__tour:0;window.__tour=cur+(window.__tourTarget-cur)*0.05;}
+  if(window.__tour!=null)prog=window.__tour;
+  U.camYaw.value=yaw+pmx*0.12+prog*2.6;            // wide pan — hole drifts off, others enter
+  U.camPitch.value=Math.max(-0.05,Math.min(1.25,pitch - pmy*0.05 + Math.sin(prog*3.14159)*0.42));
+  U.camDist.value=24.0+prog*10.0;                  // pull back so the hole stays compact
+  U.lookX.value=pmx*0.04 - 0.16 + prog*0.30;       // hero: hole sits right-of-centre, room for nebula
+  U.lookY.value=-pmy*0.03 + 0.05;
+  // multi-pass: lensing → bright-pass → separable blur (×2) → composite
+  pass(lensMat,rtScene);
+  brightMat.uniforms.tDiff.value=rtScene.texture; pass(brightMat,rtH1);
+  blurMat.uniforms.texel.value.set(1/BW,1/BH);
+  blurMat.uniforms.tDiff.value=rtH1.texture; blurMat.uniforms.dir.value.set(1,0); pass(blurMat,rtH2);
+  blurMat.uniforms.tDiff.value=rtH2.texture; blurMat.uniforms.dir.value.set(0,1); pass(blurMat,rtH1);
+  blurMat.uniforms.tDiff.value=rtH1.texture; blurMat.uniforms.dir.value.set(2.4,0); pass(blurMat,rtH2);
+  blurMat.uniforms.tDiff.value=rtH2.texture; blurMat.uniforms.dir.value.set(0,2.4); pass(blurMat,rtH1);
+  compMat.uniforms.tScene.value=rtScene.texture; compMat.uniforms.tBloom.value=rtH1.texture;
+  pass(compMat,null);
+}
+if(window.THREE){initThree();}else{addEventListener('load',()=>window.THREE&&initThree());}
 
-// ── SCROLL REVEAL ──
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.06,rootMargin:'0px 0px -40px 0px'});
+/* ───────────── PARTICLE CURSOR ───────────── */
+(()=>{
+  const c=document.getElementById('particles'),ctx=c.getContext('2d');
+  let W,H,DPR=Math.min(devicePixelRatio,2);
+  function size(){W=innerWidth;H=innerHeight;c.width=W*DPR;c.height=H*DPR;c.style.width=W+'px';c.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);}
+  size();addEventListener('resize',size);
+  const P=[],MAX=260;let lx=W/2,ly=H/2,cmx=W/2,cmy=H/2;
+  const cols=['rgba(232,162,107,','rgba(217,106,138,','rgba(125,211,232,','rgba(255,240,216,'];
+  addEventListener('pointermove',e=>{
+    const dx=e.clientX-lx,dy=e.clientY-ly,sp=Math.hypot(dx,dy);
+    cmx=e.clientX;cmy=e.clientY;
+    const n=Math.min(7,1+Math.floor(sp/7));
+    for(let i=0;i<n;i++)P.push({x:e.clientX,y:e.clientY,vx:(Math.random()-.5)*1.2+dx*0.05,vy:(Math.random()-.5)*1.2+dy*0.05,life:1,size:0.5+Math.random()*1.6,col:cols[Math.random()*cols.length|0],decay:0.01+Math.random()*0.02});
+    while(P.length>MAX)P.shift();lx=e.clientX;ly=e.clientY;
+  });
+  function frame(){requestAnimationFrame(frame);ctx.clearRect(0,0,W,H);
+    for(let i=P.length-1;i>=0;i--){const p=P[i];p.vx*=0.97;p.vy*=0.97;const ax=cmx-p.x,ay=cmy-p.y,d=Math.hypot(ax,ay);if(d>8&&d<160){p.vx+=ax/d*0.03;p.vy+=ay/d*0.03;}p.x+=p.vx;p.y+=p.vy;p.life-=p.decay;if(p.life<=0){P.splice(i,1);continue;}ctx.beginPath();ctx.fillStyle=p.col+p.life.toFixed(3)+')';ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();}}
+  frame();
+})();
+
+/* ───────────── SCROLL REVEAL + NAV ───────────── */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:0.12});
 document.querySelectorAll('.fu').forEach(el=>io.observe(el));
+/* fill research bar-meters when they scroll into view */
+const barIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.rs-bar i').forEach(b=>{b.style.width=b.dataset.w+'%';});barIO.unobserve(e.target);}}),{threshold:0.4});
+document.querySelectorAll('.res-results').forEach(el=>barIO.observe(el));
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40);});
+</script>
 
-// ── WALLET ──
-document.getElementById('wbtn').addEventListener('click',async()=>{
-  const b=document.getElementById('wbtn');
-  if(window.ethereum){try{const[a]=await window.ethereum.request({method:'eth_requestAccounts'});b.textContent=a.slice(0,6)+'…'+a.slice(-4);b.classList.add('connected');}catch{b.textContent='Declined';}}
-  else{b.textContent='No wallet';setTimeout(()=>b.textContent='⬡ Connect Wallet',2000);}
-});
 
-let blk=8521044;
-setInterval(()=>{blk+=Math.floor(Math.random()*3)+1;const e=document.getElementById('blk');if(e)e.textContent=blk.toLocaleString();},4200);
+
+<script>
+/* ───── OBSERVATORY CONSOLE wiring ───── */
+(function(){
+  const cat=document.getElementById('cat');
+  if(!cat)return;
+  const view=document.getElementById('view');
+  const scope=document.getElementById('scope');
+  const E=id=>document.getElementById(id);
+  const canHover=window.matchMedia('(hover:hover)').matches;
+  function activate(row){
+    if(row.classList.contains('on'))return;
+    cat.querySelectorAll('.cat-row').forEach(r=>r.classList.remove('on'));
+    row.classList.add('on');
+    view.style.setProperty('--rc','var(--'+row.dataset.c+')');
+    E('ob-idx').textContent=row.dataset.i;
+    E('ob-desig').textContent=row.querySelector('.cat-desig').textContent;
+    E('ob-name').textContent=row.querySelector('.cat-name').textContent;
+    E('ob-tech').textContent=row.querySelector('.cat-tech').textContent;
+    E('ob-desc').textContent=row.querySelector('.cd-text').textContent;
+    E('ob-link').href=row.dataset.href;
+    const m=E('ob-metric');
+    if(row.dataset.metric){m.hidden=false;E('ob-mn').textContent=row.dataset.metric;E('ob-ml').textContent=row.dataset.ml;}
+    else m.hidden=true;
+    scope.classList.remove('swap');void scope.offsetWidth;scope.classList.add('swap');
+  }
+  cat.querySelectorAll('.cat-row').forEach(row=>{
+    if(canHover)row.addEventListener('pointerenter',()=>activate(row));
+    row.addEventListener('click',e=>{
+      if(e.target.closest('.cd-src'))return;       // let source links navigate
+      if(!canHover&&row.classList.contains('on')){ // tap active row again → collapse
+        row.classList.remove('on');return;
+      }
+      activate(row);
+    });
+  });
+})();
+</script>
+
+<script>
+/* ── UNIFIED THEME TOGGLE ── */
+(function(){
+  const root=document.documentElement;
+  const flash=document.getElementById('theme-flash');
+  let current='cosmic';
+  // Keyboard support for toggle
+  const tgl=document.getElementById('theme-toggle');
+  if(tgl)tgl.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleTheme();}});
+
+  // GPU Three.js state
+  let gpuScene,gpuCamera,gpuRenderer,gpuGrid,gpuClock,gpuCubes=[],gpuFloor,
+      gpuRaycaster,gpuNdc,gpuHovered=null,gpuTip,gpuStreams,gpuStreamData=[],
+      gpuDispatch,gpuBlockTX=6,gpuBlockTZ=6,gpuBlockCX=6,gpuBlockCZ=6,
+      gpuBlockTimer=0,gpuLastT=0,gpuRunning=false,gpuFrame=null;
+  const GX=16,GZ=16,SPC=3.2,BLK=4;
+
+  function initGPU(){
+    if(gpuRunning)return;
+    const cv=document.getElementById('bg-gpu');
+    gpuRenderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+    gpuRenderer.setPixelRatio(Math.min(devicePixelRatio,2));
+    gpuRenderer.setSize(innerWidth,innerHeight);
+    gpuScene=new THREE.Scene();
+    gpuScene.fog=new THREE.FogExp2(0x04070a,0.016);
+    gpuCamera=new THREE.PerspectiveCamera(56,innerWidth/innerHeight,0.1,400);
+    gpuCamera.position.set(0,15,42);
+    gpuClock=new THREE.Clock();
+    gpuRaycaster=new THREE.Raycaster();
+    gpuNdc=new THREE.Vector2(-2,-2);
+    const cA=new THREE.Color(0x41e8ff),cB=new THREE.Color(0xa8ff60);
+    gpuScene.add(new THREE.AmbientLight(0x1a2630,0.7));
+    const l1=new THREE.PointLight(0x41e8ff,1.5,260);l1.position.set(0,40,10);gpuScene.add(l1);
+    const l2=new THREE.PointLight(0xa8ff60,1.1,260);l2.position.set(-40,18,30);gpuScene.add(l2);
+    gpuFloor=new THREE.Mesh(new THREE.PlaneGeometry(GX*SPC*1.6,GZ*SPC*1.6),
+      new THREE.MeshStandardMaterial({color:0x070d12,metalness:0.85,roughness:0.35}));
+    gpuFloor.rotation.x=-Math.PI/2;gpuFloor.position.y=-2.0;gpuScene.add(gpuFloor);
+    const gh=new THREE.GridHelper(GX*SPC*1.5,GX,0x41e8ff,0x41e8ff);
+    gh.material.transparent=true;gh.material.opacity=0.10;gh.position.y=-1.98;gpuScene.add(gh);
+    gpuGrid=new THREE.Group();gpuScene.add(gpuGrid);
+    gpuCubes=[];
+    for(let x=0;x<GX;x++)for(let z=0;z<GZ;z++){
+      const g=new THREE.BoxGeometry(1.5,1.5,1.5);
+      const m=new THREE.MeshStandardMaterial({color:0x0c1822,emissive:cA.clone(),emissiveIntensity:0.15,metalness:0.4,roughness:0.35,transparent:true,opacity:0.32});
+      const c=new THREE.Mesh(g,m);
+      c.position.set((x-GX/2+0.5)*SPC,0,(z-GZ/2+0.5)*SPC);
+      const eg=new THREE.LineSegments(new THREE.EdgesGeometry(g),new THREE.LineBasicMaterial({color:0x41e8ff,transparent:true,opacity:0.3}));
+      c.add(eg);
+      const lin=x*GZ+z;
+      c.userData={x,z,lin,warp:Math.floor(lin/32),lane:lin%32,phase:(x+z)*0.34,base:cA.clone(),hot:cB.clone(),edge:eg.material,active:0};
+      gpuGrid.add(c);gpuCubes.push(c);
+    }
+    const SN=240,spos=new Float32Array(SN*3),scol=new Float32Array(SN*3);
+    gpuStreamData=[];
+    for(let i=0;i<SN;i++){
+      const fixed=(Math.floor(Math.random()*GX)-GX/2+0.5)*SPC;
+      const axis=Math.random()<0.5,hot=Math.random()<0.5;
+      gpuStreamData.push({axis,fixed,t:Math.random(),speed:0.05+Math.random()*0.16,y:0.4+Math.random()*1.3,hot});
+      const col=hot?cB:cA;
+      scol[i*3]=col.r;scol[i*3+1]=col.g;scol[i*3+2]=col.b;
+    }
+    const sg=new THREE.BufferGeometry();
+    sg.setAttribute('position',new THREE.BufferAttribute(spos,3));
+    sg.setAttribute('color',new THREE.BufferAttribute(scol,3));
+    gpuStreams=new THREE.Points(sg,new THREE.PointsMaterial({size:0.5,vertexColors:true,transparent:true,opacity:0.95,blending:THREE.AdditiveBlending,depthWrite:false}));
+    gpuScene.add(gpuStreams);
+    const bs=BLK*SPC;
+    gpuDispatch=new THREE.Group();
+    const dGlow=new THREE.Mesh(new THREE.PlaneGeometry(bs*1.05,bs*1.05),
+      new THREE.MeshBasicMaterial({color:0xa8ff60,transparent:true,opacity:0.12,blending:THREE.AdditiveBlending,depthWrite:false}));
+    dGlow.rotation.x=-Math.PI/2;dGlow.position.y=-1.92;
+    const dFrame=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(bs,5.2,bs)),
+      new THREE.LineBasicMaterial({color:0xa8ff60,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending}));
+    dFrame.position.y=1.4;
+    const corners=new THREE.Group();
+    const cm=new THREE.LineBasicMaterial({color:0x41e8ff,transparent:true,opacity:0.8,blending:THREE.AdditiveBlending});
+    const h=bs/2,arm=SPC*0.6;
+    [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([sx,sz])=>{
+      const gg=new THREE.BufferGeometry();
+      gg.setAttribute('position',new THREE.BufferAttribute(new Float32Array([
+        sx*h,0,sz*h, sx*h-sx*arm,0,sz*h, sx*h,0,sz*h, sx*h,0,sz*h-sz*arm]),3));
+      corners.add(new THREE.LineSegments(gg,cm));
+    });
+    corners.position.y=-1.9;
+    gpuDispatch.add(dGlow);gpuDispatch.add(dFrame);gpuDispatch.add(corners);
+    gpuGrid.add(gpuDispatch);
+    gpuDispatch.userData={glow:dGlow,frame:dFrame,corners};
+    gpuRunning=true;
+    gpuLoop();
+    addEventListener('resize',()=>{gpuCamera.aspect=innerWidth/innerHeight;gpuCamera.updateProjectionMatrix();gpuRenderer.setSize(innerWidth,innerHeight);});
+  }
+
+  let gpuMx=0,gpuMy=0,gpuTmx=0,gpuTmy=0,gpuSY=0;
+  function gpuLoop(){
+    gpuFrame=requestAnimationFrame(gpuLoop);
+    const t=gpuClock.getElapsedTime();
+    const dt=Math.min(0.05,t-gpuLastT);gpuLastT=t;
+    gpuMx+=(gpuTmx-gpuMx)*0.04;gpuMy+=(gpuTmy-gpuMy)*0.04;
+    gpuBlockTimer-=dt;
+    if(gpuBlockTimer<=0){
+      gpuBlockTimer=1.3+Math.random()*0.7;
+      const nb=GX/BLK;
+      gpuBlockTX=Math.floor(Math.random()*nb)*BLK+(BLK-1)/2;
+      gpuBlockTZ=Math.floor(Math.random()*nb)*BLK+(BLK-1)/2;
+    }
+    gpuBlockCX+=(gpuBlockTX-gpuBlockCX)*Math.min(1,dt*7);
+    gpuBlockCZ+=(gpuBlockTZ-gpuBlockCZ)*Math.min(1,dt*7);
+    const blkPulse=0.55+0.45*Math.sin(t*4.0);
+    const half=(BLK-1)/2;
+    for(const c of gpuCubes){
+      const d=c.userData;
+      const w1=Math.sin(t*1.5-d.phase),w2=Math.sin(t*1.05-(d.x-d.z)*0.3+2.1);
+      let active=Math.max(Math.max(0,w1),Math.max(0,w2)*0.75);
+      const fx=Math.max(0,1-Math.max(0,Math.abs(d.x-gpuBlockCX)-half)/1.0);
+      const fz=Math.max(0,1-Math.max(0,Math.abs(d.z-gpuBlockCZ)-half)/1.0);
+      const inBlk=fx*fz;d.inBlk=inBlk;
+      if(inBlk>0)active=Math.max(active,inBlk*(0.7+blkPulse*0.3));
+      d.active=active;
+      c.position.y=active*active*2.6+inBlk*1.1;
+      c.material.opacity=0.22+active*0.55;
+      c.material.emissiveIntensity=0.12+active*1.6+inBlk*0.6;
+      d.edge.opacity=0.22+active*0.75;
+      const col=d.base.clone().lerp(d.hot,Math.max(active,inBlk));
+      c.material.emissive.copy(col);d.edge.color.copy(col);
+      c.scale.setScalar(0.82+active*0.42+inBlk*0.12);
+    }
+    if(gpuStreams){
+      const ext=GX*SPC*0.5,arr=gpuStreams.geometry.attributes.position.array;
+      for(let i=0;i<gpuStreamData.length;i++){
+        const s=gpuStreamData[i];s.t+=s.speed*0.016*3.0;if(s.t>1)s.t-=1;
+        const u=(s.t*2-1)*ext;
+        if(s.axis){arr[i*3]=u;arr[i*3+1]=s.y;arr[i*3+2]=s.fixed;}
+        else{arr[i*3]=s.fixed;arr[i*3+1]=s.y;arr[i*3+2]=u;}
+      }
+      gpuStreams.geometry.attributes.position.needsUpdate=true;
+      gpuStreams.rotation.y=gpuGrid.rotation.y;
+    }
+    if(gpuDispatch){
+      gpuDispatch.position.x=(gpuBlockCX-GX/2+0.5)*SPC;
+      gpuDispatch.position.z=(gpuBlockCZ-GZ/2+0.5)*SPC;
+      const ud=gpuDispatch.userData;
+      ud.frame.material.opacity=0.32+blkPulse*0.4;
+      ud.glow.material.opacity=0.08+blkPulse*0.14;
+      ud.corners.children.forEach(l=>l.material.opacity=0.5+blkPulse*0.45);
+    }
+    gpuGrid.rotation.y=t*0.022+gpuMx*0.35;
+    gpuCamera.position.x=gpuMx*9;
+    gpuCamera.position.y=15-gpuMy*5+Math.sin(t*0.2)*0.8;
+    gpuCamera.position.z=42-gpuSY*0.018;
+    gpuCamera.lookAt(0,0,0);
+    gpuRenderer.render(gpuScene,gpuCamera);
+  }
+
+  addEventListener('pointermove',e=>{gpuTmx=(e.clientX/innerWidth-0.5);gpuTmy=(e.clientY/innerHeight-0.5);});
+  addEventListener('scroll',()=>{gpuSY=window.scrollY;});
+
+  window.toggleTheme=function(){
+    const going=current==='cosmic'?'gpu':'cosmic';
+    flash.classList.add('flash');
+    setTimeout(()=>{
+      root.setAttribute('data-theme',going);
+      current=going;
+      // Update dual-pill active states
+      document.getElementById('tt-cosmic').classList.toggle('active',going==='cosmic');
+      document.getElementById('tt-gpu').classList.toggle('active',going==='gpu');
+      // Init GPU renderer on first switch
+      if(going==='gpu'&&!gpuRunning&&window.THREE)initGPU();
+    },200);
+    setTimeout(()=>flash.classList.remove('flash'),500);
+    // keyboard support
+    document.getElementById('theme-toggle').addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleTheme();}
+    });
+  };
+})();
 </script>
 </body>
 </html>
