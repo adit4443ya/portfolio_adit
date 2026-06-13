@@ -325,8 +325,8 @@ footer{border-top:1px solid var(--line);padding:24px 8vw;display:flex;justify-co
 }
 [data-theme="gpu"] #scan{opacity:.45;}
 
-/* ── GPU BG canvas hidden by default ── */
-#bg-gpu{position:fixed;inset:0;z-index:0;opacity:0;transition:opacity .8s ease;}
+/* ── Realistic object canvas: transparent, visible in BOTH worlds ── */
+#bg-gpu{position:fixed;inset:0;z-index:0;opacity:1;transition:opacity .8s ease;pointer-events:none;}
 #bg-cosmic{position:fixed;inset:0;z-index:0;opacity:1;transition:opacity .8s ease;}
 [data-theme="gpu"] #bg-cosmic{opacity:0;pointer-events:none;}
 [data-theme="gpu"] #bg-gpu{opacity:1;}
@@ -2078,179 +2078,188 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile=innerWidth<760;
 
-  /* ═══════════════════════════════════════════════════
-     CRYOGENIC WORLD — absolute zero crystal void
-     Central compound crystal: octahedron wireframe + chrome icosahedra + crystal spires
-     Frost field: 3000 particles crystallizing outward from core
-     30 orbiting crystal fragments at mid-radius
-     Mouse parallax: ultra-slow (frozen time feel)
-     ═══════════════════════════════════════════════════ */
-  let cScene,cCam,cRenderer,cClock,cCore,cOuter,cInner,cMid,
-      cSpires=[],cFrost,cFrostData=[],cFragments=[],cKeyLight,
-      cRunning=false,cMx=0,cMy=0,cTmx=0,cTmy=0,cSY=0;
-  const ICE=new THREE.Color(0x7edfff), FROST=new THREE.Color(0xc8f0ff);
+  /* ═══════════════════════════════════════════════════════════════
+     REALISTIC OBJECT ENGINE  ·  shared by both worlds
+     Real graphics: PMREM environment-mapped PBR metals (true reflections),
+     ACES filmic tone-mapping, sRGB output. Objects REVEAL + the camera
+     orbits/descends as you scroll.
+       SUPERNOVA → polished chrome monolith + molten reflective debris
+                   orbiting the black hole, igniting in as you scroll
+       CRYO      → faceted glass-ice crystals + chrome core, cold reflections
+     ═══════════════════════════════════════════════════════════════ */
+  let oRenderer,oScene,oCam,oClock,pmrem,envWarm,envCold,
+      gSuper,gCryo,oLights,oRunning=false,
+      oMx=0,oMy=0,oTmx=0,oTmy=0,oScY=0,oDocH=1;
+  const sm=(a,b,x)=>{const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
 
-  function initCryo(){
-    if(cRunning)return;
-    const cv=document.getElementById('bg-gpu');
-    cRenderer=new THREE.WebGLRenderer({canvas:cv,antialias:!mobile,alpha:true});
-    cRenderer.setPixelRatio(Math.min(devicePixelRatio,2));
-    cRenderer.setSize(innerWidth,innerHeight);
-    cScene=new THREE.Scene();
-    cScene.fog=new THREE.FogExp2(0x010a14,0.021);
-    cCam=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,0.1,500);
-    cCam.position.set(0,0,42);
-    cClock=new THREE.Clock();
-
-    // Cold clinical lighting
-    cScene.add(new THREE.AmbientLight(0x041020,0.7));
-    cKeyLight=new THREE.PointLight(0x7edfff,2.4,320);
-    cKeyLight.position.set(30,35,50);cScene.add(cKeyLight);
-    const cfill=new THREE.PointLight(0x0044cc,1.4,300);
-    cfill.position.set(-40,-20,30);cScene.add(cfill);
-    const crim=new THREE.PointLight(0xeaffff,0.9,220);
-    crim.position.set(0,-38,-25);cScene.add(crim);
-
-    // Central compound crystal
-    cCore=new THREE.Group();cScene.add(cCore);
-
-    // Outer octahedron wireframe
-    cOuter=new THREE.LineSegments(
-      new THREE.EdgesGeometry(new THREE.OctahedronGeometry(10,0)),
-      new THREE.LineBasicMaterial({color:0x7edfff,transparent:true,opacity:0.28,
-        blending:THREE.AdditiveBlending}));
-    cCore.add(cOuter);
-
-    // Mid icosahedron — chrome mirror with ice emissive
-    cMid=new THREE.Mesh(new THREE.IcosahedronGeometry(5.8,1),
-      new THREE.MeshStandardMaterial({color:0x0a1a30,emissive:ICE.clone(),
-        emissiveIntensity:0.35,metalness:0.92,roughness:0.03,flatShading:true}));
-    cCore.add(cMid);
-
-    // Inner glowing crystal core — white hot centre
-    cInner=new THREE.Mesh(new THREE.IcosahedronGeometry(3.0,0),
-      new THREE.MeshStandardMaterial({color:0xeaffff,emissive:FROST.clone(),
-        emissiveIntensity:0.9,metalness:0.85,roughness:0.0,flatShading:true}));
-    cCore.add(cInner);
-
-    // 6 crystal spires shooting along ±X ±Y ±Z
-    const up=new THREE.Vector3(0,1,0);
-    const spireGeo=new THREE.ConeGeometry(0.32,7.0,4);
-    [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]].forEach(([ax,ay,az])=>{
-      const s=new THREE.Mesh(spireGeo,new THREE.MeshStandardMaterial({
-        color:0x7edfff,emissive:ICE.clone(),emissiveIntensity:0.5,
-        metalness:0.9,roughness:0.0,flatShading:true}));
-      s.position.set(ax*10.5,ay*10.5,az*10.5);
-      s.quaternion.setFromUnitVectors(up,new THREE.Vector3(ax,ay,az));
-      cCore.add(s);cSpires.push(s);
-    });
-
-    // Frost field — particles crystallizing outward from core
-    const FN=mobile?1200:3000;
-    const fPos=new Float32Array(FN*3),fCol=new Float32Array(FN*3);
-    cFrostData=[];
-    for(let i=0;i<FN;i++){
-      const r=0.5+Math.random()*38;
-      const theta=Math.random()*Math.PI*2;
-      const phi=Math.acos(2*Math.random()-1);
-      cFrostData.push({r,theta,phi,
-        speed:0.018+Math.random()*0.055,
-        maxR:34+Math.random()*10});
-      const c=Math.random()<0.6?ICE:FROST;
-      fCol[i*3]=c.r;fCol[i*3+1]=c.g;fCol[i*3+2]=c.b;
+  // irregular "rock"/"crystal" geometry by displacing an icosahedron
+  function chunk(r,detail,amp){
+    const g=new THREE.IcosahedronGeometry(r,detail);
+    const p=g.attributes.position;
+    for(let i=0;i<p.count;i++){
+      const x=p.getX(i),y=p.getY(i),z=p.getZ(i);
+      const n=Math.sin(x*1.7+1.3)*Math.cos(y*2.1)*Math.sin(z*1.9+0.5);
+      const k=1+n*amp;
+      p.setXYZ(i,x*k,y*k,z*k);
     }
-    const fGeo=new THREE.BufferGeometry();
-    fGeo.setAttribute('position',new THREE.Float32BufferAttribute(fPos,3));
-    fGeo.setAttribute('color',new THREE.Float32BufferAttribute(fCol,3));
-    cFrost=new THREE.Points(fGeo,new THREE.PointsMaterial({
-      size:0.38,vertexColors:true,transparent:true,opacity:0.85,
-      blending:THREE.AdditiveBlending,depthWrite:false}));
-    cScene.add(cFrost);
-
-    // 30 orbiting crystal fragments at mid-radius
-    const fragGeo=new THREE.OctahedronGeometry(0.5,0);
-    for(let i=0;i<30;i++){
-      const f=new THREE.Mesh(fragGeo,new THREE.MeshStandardMaterial({
-        color:0x7edfff,emissive:ICE.clone(),emissiveIntensity:0.5,
-        metalness:0.95,roughness:0.0,flatShading:true}));
-      const a=(i/30)*Math.PI*2,el=(Math.random()-0.5)*Math.PI*0.6;
-      const rr=16+Math.random()*8,sc=0.3+Math.random()*0.9;
-      f.position.set(Math.cos(a)*Math.cos(el)*rr,Math.sin(el)*rr,Math.sin(a)*Math.cos(el)*rr);
-      f.userData={a,el,rr,sc,
-        sp:(0.02+Math.random()*0.04)*(Math.random()<0.5?1:-1),
-        rx:(Math.random()-0.5)*0.04,ry:(Math.random()-0.5)*0.04};
-      f.scale.setScalar(sc);
-      cScene.add(f);cFragments.push(f);
-    }
-
-    cRunning=true;cLoop();
-    addEventListener('resize',()=>{
-      if(!cRenderer)return;
-      cCam.aspect=innerWidth/innerHeight;
-      cCam.updateProjectionMatrix();
-      cRenderer.setSize(innerWidth,innerHeight);
-    });
+    g.computeVertexNormals();
+    return g;
   }
 
-  function cLoop(){
-    requestAnimationFrame(cLoop);
-    if(current!=='gpu')return;
-    const t=cClock.getElapsedTime();
-    // Very slow mouse response — everything is frozen
-    cMx+=(cTmx-cMx)*0.025;cMy+=(cTmy-cMy)*0.025;
+  // procedural studio environment → real-looking reflections on metal
+  function buildEnv(topHex,botHex,blobHex){
+    const s=new THREE.Scene();
+    const sky=new THREE.Mesh(new THREE.SphereGeometry(80,32,16),
+      new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,
+        uniforms:{top:{value:new THREE.Color(topHex)},bot:{value:new THREE.Color(botHex)}},
+        vertexShader:'varying vec3 vp;void main(){vp=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+        fragmentShader:'varying vec3 vp;uniform vec3 top,bot;void main(){float h=clamp(normalize(vp).y*0.5+0.5,0.0,1.0);gl_FragColor=vec4(mix(bot,top,h),1.0);}'}));
+    s.add(sky);
+    const b1=new THREE.Mesh(new THREE.SphereGeometry(11,16,16),new THREE.MeshBasicMaterial({color:blobHex}));
+    b1.position.set(26,30,18);s.add(b1);
+    const b2=new THREE.Mesh(new THREE.SphereGeometry(6,16,16),new THREE.MeshBasicMaterial({color:0xffffff}));
+    b2.position.set(-30,-12,24);s.add(b2);
+    const tex=pmrem.fromScene(s,0.04).texture;
+    sky.geometry.dispose();sky.material.dispose();
+    b1.geometry.dispose();b1.material.dispose();b2.geometry.dispose();b2.material.dispose();
+    return tex;
+  }
 
-    // Core: ultra-slow rotation (suspended in time)
-    if(cCore){cCore.rotation.y=t*0.04;cCore.rotation.x=Math.sin(t*0.07)*0.15;}
-    if(cOuter){cOuter.rotation.y=-t*0.028;cOuter.rotation.z=t*0.018;}
+  function initObjects(){
+    if(oRunning)return;
+    const cv=document.getElementById('bg-gpu');
+    oRenderer=new THREE.WebGLRenderer({canvas:cv,antialias:!mobile,alpha:true,powerPreference:'high-performance'});
+    oRenderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.5:2));
+    oRenderer.setSize(innerWidth,innerHeight);
+    oRenderer.setClearAlpha(0);
+    oRenderer.outputEncoding=THREE.sRGBEncoding;
+    oRenderer.toneMapping=THREE.ACESFilmicToneMapping;
+    oRenderer.toneMappingExposure=1.05;
+    pmrem=new THREE.PMREMGenerator(oRenderer);
+    pmrem.compileEquirectangularShader();
+    envWarm=buildEnv(0x3a0a02,0x0a0206,0xff6a1e);   // ignited / plasma studio
+    envCold=buildEnv(0x0a2030,0x010810,0x9fe8ff);   // glacial studio
 
-    // Inner crystal frost heartbeat
-    if(cInner){
-      const p=0.7+0.5*Math.sin(t*0.6);
-      cInner.material.emissiveIntensity=p;
-      cInner.scale.setScalar(0.96+0.08*Math.sin(t*0.6));
+    oScene=new THREE.Scene();
+    oCam=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.1,500);
+    oCam.position.set(0,6,48);
+    oClock=new THREE.Clock();
+
+    oLights=new THREE.Group();oScene.add(oLights);
+    oLights.add(new THREE.AmbientLight(0x223344,0.6));
+    const key=new THREE.PointLight(0xffffff,2.0,400);key.position.set(40,50,40);oLights.add(key);
+    const fill=new THREE.PointLight(0x6688ff,1.0,400);fill.position.set(-50,-20,30);oLights.add(fill);
+    oLights.userData={key};
+
+    /* ── SUPERNOVA object set ── */
+    gSuper=new THREE.Group();oScene.add(gSuper);
+    // polished chrome monolith — mirrors the ignited sky
+    const mono=new THREE.Mesh(new THREE.BoxGeometry(4.4,15,4.4),
+      new THREE.MeshStandardMaterial({color:0xffffff,metalness:1.0,roughness:0.045,
+        envMap:envWarm,envMapIntensity:1.25}));
+    mono.position.set(-15,0,-6);mono.userData={reveal:-0.12,spin:0.05,base:1};
+    gSuper.add(mono);
+    // reflective shards
+    for(let i=0;i<6;i++){
+      const s=new THREE.Mesh(new THREE.OctahedronGeometry(1.4+Math.random()*1.0,0),
+        new THREE.MeshStandardMaterial({color:0xffffff,metalness:1.0,roughness:0.08,
+          envMap:envWarm,envMapIntensity:1.1}));
+      const a=Math.random()*6.28,rr=18+Math.random()*16,yy=(Math.random()-0.5)*26;
+      s.position.set(Math.cos(a)*rr,yy,Math.sin(a)*rr);
+      s.userData={reveal:-0.1+Math.random()*0.85,spin:(Math.random()-0.5)*0.5,base:1,
+                  a,rr,orb:(0.03+Math.random()*0.05)*(Math.random()<0.5?1:-1)};
+      gSuper.add(s);
     }
-    if(cMid)cMid.material.emissiveIntensity=0.25+0.2*Math.sin(t*0.4+1.0);
+    // molten debris — dark rock with glowing embers, reflecting heat
+    const rockN=mobile?7:13;
+    for(let i=0;i<rockN;i++){
+      const mat=new THREE.MeshStandardMaterial({color:0x1a0d07,metalness:0.25,roughness:0.72,
+        emissive:new THREE.Color(0xff4a12),emissiveIntensity:0.5,
+        envMap:envWarm,envMapIntensity:0.55,flatShading:true});
+      const m=new THREE.Mesh(chunk(1.3+Math.random()*2.0,1,0.34),mat);
+      const a=Math.random()*6.28,rr=12+Math.random()*22,yy=(Math.random()-0.5)*30;
+      m.position.set(Math.cos(a)*rr,yy,Math.sin(a)*rr);
+      m.userData={reveal:-0.12+Math.random()*0.95,spin:(Math.random()-0.5)*0.4,base:1,
+                  a,rr,orb:(0.02+Math.random()*0.04)*(Math.random()<0.5?1:-1),
+                  phase:Math.random()*6.28,molten:true};
+      gSuper.add(m);
+    }
 
-    // Spires: staggered cold pulse
-    cSpires.forEach((s,i)=>{s.material.emissiveIntensity=0.3+0.4*Math.sin(t*0.8+i*1.04);});
+    /* ── CRYO object set ── */
+    gCryo=new THREE.Group();gCryo.visible=false;oScene.add(gCryo);
+    // chrome-ice core cluster
+    const core=new THREE.Mesh(new THREE.IcosahedronGeometry(6,1),
+      new THREE.MeshStandardMaterial({color:0xdff4ff,metalness:0.95,roughness:0.03,
+        envMap:envCold,envMapIntensity:1.6,flatShading:true}));
+    core.userData={reveal:-0.12,spin:0.06,base:1};gCryo.add(core);
+    // faceted glass-ice crystals (translucent + reflective)
+    const iceN=mobile?8:16;
+    for(let i=0;i<iceN;i++){
+      const mat=new THREE.MeshPhysicalMaterial({color:0xbfe8ff,metalness:0.1,roughness:0.04,
+        envMap:envCold,envMapIntensity:2.0,transparent:true,opacity:0.74,
+        clearcoat:1.0,clearcoatRoughness:0.04,flatShading:true,
+        emissive:new THREE.Color(0x123a55),emissiveIntensity:0.25});
+      const m=new THREE.Mesh(chunk(1.1+Math.random()*2.2,0,0.4),mat);
+      const a=Math.random()*6.28,rr=12+Math.random()*22,yy=(Math.random()-0.5)*30;
+      m.position.set(Math.cos(a)*rr,yy,Math.sin(a)*rr);
+      m.userData={reveal:-0.1+Math.random()*0.9,spin:(Math.random()-0.5)*0.3,base:1,
+                  a,rr,orb:(0.015+Math.random()*0.03)*(Math.random()<0.5?1:-1)};
+      gCryo.add(m);
+    }
 
-    // Frost particles drifting outward — very slowly
-    if(cFrost){
-      const arr=cFrost.geometry.attributes.position.array;
-      for(let i=0;i<cFrostData.length;i++){
-        const d=cFrostData[i];
-        d.r+=d.speed*0.016;
-        if(d.r>d.maxR)d.r=0.5+Math.random()*1.5;
-        arr[i*3]  =Math.cos(d.theta)*Math.sin(d.phi)*d.r;
-        arr[i*3+1]=Math.cos(d.phi)*d.r;
-        arr[i*3+2]=Math.sin(d.theta)*Math.sin(d.phi)*d.r;
+    setThemeObjects(current);
+    oRunning=true;oLoop();
+    addEventListener('resize',()=>{if(!oRenderer)return;
+      oCam.aspect=innerWidth/innerHeight;oCam.updateProjectionMatrix();
+      oRenderer.setSize(innerWidth,innerHeight);});
+  }
+
+  function setThemeObjects(theme){
+    if(!gSuper)return;
+    gSuper.visible=(theme==='cosmic');
+    gCryo.visible=(theme==='gpu');
+  }
+
+  function oLoop(){
+    requestAnimationFrame(oLoop);
+    if(!oRunning)return;
+    const t=oClock.getElapsedTime();
+    oMx+=(oTmx-oMx)*0.05;oMy+=(oTmy-oMy)*0.05;
+    oDocH=Math.max(1,document.body.scrollHeight-innerHeight);
+    const prog=Math.min(1,Math.max(0,oScY/oDocH));
+    const grp=(current==='cosmic')?gSuper:gCryo;
+
+    grp.children.forEach(o=>{
+      const d=o.userData;
+      // reveal as you scroll
+      const r=sm(d.reveal,d.reveal+0.14,prog);
+      o.scale.setScalar(Math.max(0.0001,d.base*r));
+      o.visible=r>0.01;
+      o.rotation.x+=d.spin*0.004;o.rotation.y+=d.spin*0.006;
+      if(d.orb!==undefined){
+        d.a+=d.orb*0.01;
+        o.position.x=Math.cos(d.a)*d.rr;
+        o.position.z=Math.sin(d.a)*d.rr;
       }
-      cFrost.geometry.attributes.position.needsUpdate=true;
-      cFrost.material.opacity=0.7+0.2*Math.sin(t*0.3);
-    }
-
-    // Crystal fragments orbit very slowly
-    cFragments.forEach(f=>{
-      f.userData.a+=f.userData.sp*0.016;
-      const {a,el,rr}=f.userData;
-      f.position.set(Math.cos(a)*Math.cos(el)*rr,Math.sin(el)*rr,Math.sin(a)*Math.cos(el)*rr);
-      f.rotation.x+=f.userData.rx;f.rotation.y+=f.userData.ry;
+      if(d.molten){
+        o.material.emissiveIntensity=0.35+0.45*(0.5+0.5*Math.sin(t*1.3+d.phase));
+      }
     });
 
-    // Key light slowly circles
-    if(cKeyLight){cKeyLight.position.x=Math.cos(t*0.12)*38;cKeyLight.position.z=Math.sin(t*0.12)*38;}
-
-    // Camera barely moves — frozen
-    cCam.position.x=cMx*4;
-    cCam.position.y=cMy*4+Math.sin(t*0.12)*0.5;
-    cCam.position.z=42-cSY*0.012;
-    cCam.lookAt(0,0,0);
-    cRenderer.render(cScene,cCam);
+    // cinematic camera — orbit + descend with scroll, gentle mouse parallax
+    const az=0.5+prog*Math.PI*1.5+oMx*0.4;
+    const rad=50-prog*16;
+    oCam.position.set(Math.sin(az)*rad, 8-prog*20+oMy*5+Math.sin(t*0.2)*0.6, Math.cos(az)*rad);
+    oCam.lookAt(0,-prog*5,0);
+    if(oLights.userData.key){
+      oLights.userData.key.position.set(Math.cos(t*0.15)*45,50,Math.sin(t*0.15)*45);
+    }
+    oRenderer.render(oScene,oCam);
   }
 
   if(!reduce){
-    addEventListener('pointermove',e=>{cTmx=(e.clientX/innerWidth-0.5);cTmy=(e.clientY/innerHeight-0.5);});
-    addEventListener('scroll',()=>{cSY=window.scrollY;});
+    addEventListener('pointermove',e=>{oTmx=(e.clientX/innerWidth-0.5);oTmy=(e.clientY/innerHeight-0.5);});
+    addEventListener('scroll',()=>{oScY=window.scrollY;},{passive:true});
   }
 
   window.toggleTheme=function(){
@@ -2261,10 +2270,15 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
       current=going;
       document.getElementById('tt-cosmic').classList.toggle('active',going==='cosmic');
       document.getElementById('tt-gpu').classList.toggle('active',going==='gpu');
-      if(going==='gpu'&&!cRunning&&window.THREE)initCryo();
+      setThemeObjects(going);
     },200);
     setTimeout(()=>flash.classList.remove('flash'),500);
   };
+
+  // boot the realistic layer once Three is ready (kept off the critical paint path)
+  function bootObjects(){if(window.THREE&&!oRunning)initObjects();}
+  if(document.readyState==='complete')setTimeout(bootObjects,400);
+  else addEventListener('load',()=>setTimeout(bootObjects,400));
 })();
 </script>
 
