@@ -327,6 +327,8 @@ footer{border-top:1px solid var(--line);padding:24px 8vw;display:flex;justify-co
 
 /* ── Realistic object canvas: transparent, visible in BOTH worlds ── */
 #bg-gpu{position:fixed;inset:0;z-index:0;opacity:1;transition:opacity .8s ease;pointer-events:none;}
+/* ── Photoreal canvas (modern Three, bundled): sits above, transparent ── */
+#bg-photoreal{position:fixed;inset:0;z-index:0;opacity:1;pointer-events:none;}
 #bg-cosmic{position:fixed;inset:0;z-index:0;opacity:1;transition:opacity .8s ease;}
 [data-theme="gpu"] #bg-cosmic{opacity:0;pointer-events:none;}
 [data-theme="gpu"] #bg-gpu{opacity:1;}
@@ -991,6 +993,7 @@ nav{
 
 <canvas id="bg-cosmic"></canvas>
 <canvas id="bg-gpu"></canvas>
+<canvas id="bg-photoreal"></canvas>
 <div id="scan"></div>
 <div id="theme-flash"></div>
 <div id="vignette"></div>
@@ -2222,7 +2225,7 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
 
   function oLoop(){
     requestAnimationFrame(oLoop);
-    if(!oRunning)return;
+    if(!oRunning||window.__photorealActive)return;   // modern photoreal layer has taken over
     const t=oClock.getElapsedTime();
     oMx+=(oTmx-oMx)*0.05;oMy+=(oTmy-oMy)*0.05;
     oDocH=Math.max(1,document.body.scrollHeight-innerHeight);
@@ -2374,5 +2377,6 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
   }
 })();
 </script>
+<script type="module" src="/src/photoreal/main.js"></script>
 </body>
 </html>

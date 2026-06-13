@@ -9,10 +9,35 @@ Visit the live portfolio: [Your Vercel URL will be here]
 ## 🛠 Technologies Used
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **3D Graphics**: Three.js for space-themed background animations
+- **3D Graphics**: Three.js — ray-marched gravitational-lensing black hole (Supernova world) + a modern photoreal object layer
+- **Photoreal layer**: modern Three.js (bundled by Vite) with RoomEnvironment image-based lighting, ACES tone-mapping, PBR metals, real transmission glass, and UnrealBloom post-processing
+- **Motion**: GSAP + ScrollTrigger and Lenis smooth-scroll
 - **Styling**: Custom CSS with CSS Grid and Flexbox
-- **Icons**: Font Awesome 6.0
-- **Fonts**: Inter & JetBrains Mono from Google Fonts
+- **Fonts**: Instrument Serif, Space Grotesk & JetBrains Mono from Google Fonts
+
+## 🌗 Dual worlds (theme toggle)
+
+- **✦ Supernova** — a blazing stellar core with orbiting chrome + molten debris that ignite into view as you scroll.
+- **❄ Cryo** — an absolute-zero scene of faceted, refractive glass-ice crystals with bloom.
+
+## 💻 Develop & build
+
+```bash
+npm install        # install three + vite
+npm run dev        # local dev server with the photoreal layer
+npm run build      # production build → dist/
+npm run preview    # preview the production build
+```
+
+> The base experience (black hole + procedural object layer) works from the raw
+> `index.html` with no build. The **photoreal layer** requires the Vite build —
+> deploy the contents of `dist/`. If served unbuilt, the site gracefully falls
+> back to the procedural layer.
+
+### Optional real assets
+Drop files into `public/assets/` to upgrade to real models / HDRI (auto-loaded
+with a procedural fallback): `env.hdr`, `supernova.glb`, `cryo.glb`. See
+`public/assets/README.md`.
 
 ## 📋 Features
 
@@ -55,11 +80,11 @@ Visit the live portfolio: [Your Vercel URL will be here]
 
 ## 🚀 Deployment
 
-This portfolio is optimized for deployment on Vercel:
+Build first, then deploy the `dist/` output:
 
-1. Push to GitHub repository
-2. Connect repository to Vercel
-3. Deploy with zero configuration
+1. `npm install && npm run build`
+2. Deploy the `dist/` folder (Vercel: set build command `npm run build`, output dir `dist`; GitHub Pages: publish `dist/`).
+3. `base: './'` in `vite.config.js` keeps asset paths relative, so it works on any host/subpath.
 
 ## 📄 License
 
