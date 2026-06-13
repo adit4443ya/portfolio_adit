@@ -12,9 +12,9 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#06010f;--ink:#fff5e8;--dim:#8a6a75;--muted:#c4a0b0;
-  --amber:#ff7a22;--rose:#d93fff;--cyan:#7dd3e8;--violet:#d93fff;
-  --line:rgba(255,122,34,0.10);
+  --bg:#04070e;--ink:#eef4ff;--dim:#5d7390;--muted:#a6bcd6;
+  --amber:#37c8ff;--rose:#8a7bff;--cyan:#ffcf7a;--violet:#8a7bff;
+  --line:rgba(55,200,255,0.10);
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --serif:'Instrument Serif',Georgia,serif;
   --sans:'Space Grotesk',system-ui,sans-serif;
@@ -24,6 +24,23 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:3
 #bg{position:fixed;inset:0;z-index:0}
 #vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 90% 70% at 50% 50%,transparent 40%,rgba(5,5,10,0.55) 100%)}
 #particles{position:fixed;inset:0;z-index:3;pointer-events:none}
+/* ── Silicon Cathedral blueprint grid overlay ── */
+#blueprint{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.5;
+  background-image:
+    linear-gradient(rgba(55,200,255,0.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(55,200,255,0.045) 1px,transparent 1px),
+    linear-gradient(rgba(55,200,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(55,200,255,0.025) 1px,transparent 1px);
+  background-size:120px 120px,120px 120px,24px 24px,24px 24px;
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,#000 30%,transparent 85%);
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,#000 30%,transparent 85%);}
+/* ── corner HUD telemetry frame ── */
+#hud-frame{position:fixed;inset:0;z-index:150;pointer-events:none;font-family:var(--mono);
+  font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(55,200,255,0.5);}
+#hud-frame .hud-c{position:absolute;padding:18px 24px;text-shadow:0 0 10px rgba(55,200,255,0.4);}
+#hud-frame .tl{top:54px;left:0}#hud-frame .tr{top:54px;right:0}
+#hud-frame .bl{bottom:0;left:0}#hud-frame .br{bottom:0;right:0;color:rgba(138,123,255,0.55)}
+@media(max-width:880px){#hud-frame{display:none}}
 .app{position:relative;z-index:10}
 nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 6vw;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,rgba(5,5,10,0.85),rgba(5,5,10,0));backdrop-filter:blur(20px);transition:background .4s}
 nav.scrolled{background:rgba(5,5,10,0.9);border-bottom:1px solid var(--line)}
@@ -177,9 +194,9 @@ footer{border-top:1px solid var(--line);padding:24px 8vw;display:flex;justify-co
    UNIFIED THEME SYSTEM — Cosmic (default) vs GPU Grid
    ═══════════════════════════════════════════════ */
 :root{
-  --bg:#06010f;--ink:#fff5e8;--dim:#8a6a75;--muted:#c4a0b0;
-  --amber:#ff7a22;--rose:#d93fff;--cyan:#7dd3e8;--violet:#d93fff;
-  --line:rgba(255,122,34,0.10);
+  --bg:#04070e;--ink:#eef4ff;--dim:#5d7390;--muted:#a6bcd6;
+  --amber:#37c8ff;--rose:#8a7bff;--cyan:#ffcf7a;--violet:#8a7bff;
+  --line:rgba(55,200,255,0.10);
   --accent:var(--amber);
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --serif:'Instrument Serif',Georgia,serif;
@@ -992,12 +1009,15 @@ nav{
 <body>
 
 <canvas id="bg-cosmic"></canvas>
-<canvas id="bg-gpu"></canvas>
-<canvas id="bg-photoreal"></canvas>
-<div id="scan"></div>
-<div id="theme-flash"></div>
+<div id="blueprint"></div>
 <div id="vignette"></div>
 <canvas id="particles"></canvas>
+<div id="hud-frame">
+  <span class="hud-c tl">◷ SILICON CATHEDRAL</span>
+  <span class="hud-c tr">RENDER · WEBGL</span>
+  <span class="hud-c bl" id="hud-depth">DEPTH 0000 m</span>
+  <span class="hud-c br">▲ ASCENDING</span>
+</div>
 
 <div class="app">
 
@@ -1011,20 +1031,7 @@ nav{
     <li><a href="#stack">Stack</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <div style="display:flex;gap:10px;align-items:center"><div id="theme-toggle-wrap">
-  <div id="theme-toggle" role="button" onclick="toggleTheme()" aria-label="Switch theme" tabindex="0">
-    <span id="tt-slider"></span>
-    <span class="tt-opt active" id="tt-cosmic">
-      <span class="tt-dot"></span>
-      <span class="tt-ico">✦</span>
-      <span class="tt-txt">Supernova</span>
-    </span>
-    <span class="tt-opt" id="tt-gpu">
-      <span class="tt-ico">❄</span>
-      <span class="tt-txt">Cryo</span>
-    </span>
-  </div>
-</div><a href="https://drive.google.com/file/u/0/d/1rebI8SXe8pjzczuKqacmOeyYnYRHAf_g/view" target="_blank" class="cta">Résumé ↗</a></div>
+  <div style="display:flex;gap:10px;align-items:center"><a href="https://drive.google.com/file/u/0/d/1rebI8SXe8pjzczuKqacmOeyYnYRHAf_g/view" target="_blank" class="cta">Résumé ↗</a></div>
 </nav>
 
 <section id="hero">
@@ -1043,7 +1050,7 @@ nav{
     <a href="https://www.linkedin.com/in/adit4443ya/" target="_blank" class="hl">LinkedIn</a>
     <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="hl">GSoC Blog</a>
   </div>
-  <div class="scroll-tag">WITNESS THE IGNITION · SCROLL TO DESCEND</div>
+  <div class="scroll-tag">ENTER THE CATHEDRAL · SCROLL TO ASCEND</div>
 </section>
 
 <style>
@@ -1636,7 +1643,7 @@ nav{
 </section>
 
 <footer>
-  <div class="ft">© 2026 <span>ADITYA TRIVEDI</span> · Compiler Engineer · Supernova ⇄ Cryo · WebGL + Three.js</div>
+  <div class="ft">© 2026 <span>ADITYA TRIVEDI</span> · Compiler Engineer · Silicon Cathedral · WebGL + Three.js</div>
   
 </footer>
 
@@ -1994,7 +2001,210 @@ function animate(){
   compMat.uniforms.tScene.value=rtScene.texture; compMat.uniforms.tBloom.value=rtH1.texture;
   pass(compMat,null);
 }
-if(window.THREE){initThree();}else{addEventListener('load',()=>window.THREE&&initThree());}
+/* ════════════════════════════════════════════════════════════════
+   ◷ SILICON CATHEDRAL  ·  procedural megastructure (Three.js r128)
+   A nave of towering circuit-pillars marching toward a glowing core
+   spire. Camera flies deeper + rises as you scroll; data-sparks ascend.
+   No external assets — all geometry + glow generated at runtime.
+   (The ray-marched black-hole code above remains defined but unused.)
+   ════════════════════════════════════════════════════════════════ */
+(function(){
+  const cv=document.getElementById('bg-cosmic');
+  if(!window.THREE||!cv)return;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mob=innerWidth<760;
+  const CY=0x37c8ff, VI=0x8a7bff, GO=0xffcf7a;
+
+  const ren=new THREE.WebGLRenderer({canvas:cv,antialias:!mob,alpha:false,powerPreference:'high-performance'});
+  ren.setPixelRatio(Math.min(devicePixelRatio,mob?1.5:2));
+  ren.setSize(innerWidth,innerHeight);
+  ren.outputEncoding=THREE.sRGBEncoding;
+  ren.toneMapping=THREE.ACESFilmicToneMapping;
+  ren.toneMappingExposure=1.18;
+
+  const sc=new THREE.Scene();
+  sc.background=new THREE.Color(0x04070e);
+  sc.fog=new THREE.FogExp2(0x04070e,0.0085);
+  const cam=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,0.1,800);
+  cam.position.set(0,7,46);
+  const clk=new THREE.Clock();
+
+  // ── lighting ──
+  sc.add(new THREE.AmbientLight(0x16314a,0.7));
+  const keyL=new THREE.PointLight(CY,2.4,300);keyL.position.set(0,40,-120);sc.add(keyL);
+  const fillL=new THREE.PointLight(VI,1.4,260);fillL.position.set(-40,10,20);sc.add(fillL);
+  const warmL=new THREE.PointLight(GO,1.0,220);warmL.position.set(40,18,-40);sc.add(warmL);
+
+  // ── radial glow sprite texture ──
+  function glowTex(hex){
+    const c=document.createElement('canvas');c.width=c.height=128;
+    const g=c.getContext('2d');const col=new THREE.Color(hex);
+    const r=Math.round(col.r*255),gg=Math.round(col.g*255),b=Math.round(col.b*255);
+    const grd=g.createRadialGradient(64,64,0,64,64,64);
+    grd.addColorStop(0,`rgba(${r},${gg},${b},1)`);
+    grd.addColorStop(0.25,`rgba(${r},${gg},${b},0.55)`);
+    grd.addColorStop(1,`rgba(${r},${gg},${b},0)`);
+    g.fillStyle=grd;g.fillRect(0,0,128,128);
+    const t=new THREE.Texture(c);t.needsUpdate=true;return t;
+  }
+  const gTexCy=glowTex(CY),gTexGo=glowTex(GO);
+  function sprite(tex,size,op){
+    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:op}));
+    s.scale.set(size,size,1);return s;
+  }
+
+  // ── a single circuit-pillar: dark slab + glowing edges + horizontal data-bands ──
+  const bands=[];   // {mat, phase, y}
+  function pillar(x,z,w,h,col){
+    const grp=new THREE.Group();grp.position.set(x,0,z);
+    const geo=new THREE.BoxGeometry(w,h,w);
+    const body=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({
+      color:0x0a1320,metalness:0.85,roughness:0.35,emissive:new THREE.Color(col),emissiveIntensity:0.04}));
+    body.position.y=h/2;grp.add(body);
+    // neon edge wireframe
+    const edges=new THREE.LineSegments(new THREE.EdgesGeometry(geo),
+      new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending}));
+    edges.position.y=h/2;grp.add(edges);
+    // horizontal glowing circuit-bands climbing the pillar
+    const nB=Math.floor(h/9);
+    for(let i=1;i<nB;i++){
+      const by=i*(h/nB);
+      const bmat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.0,blending:THREE.AdditiveBlending});
+      const band=new THREE.Mesh(new THREE.BoxGeometry(w*1.06,0.16,w*1.06),bmat);
+      band.position.set(0,by,0);grp.add(band);
+      bands.push({mat:bmat,phase:by*0.18,base:0.18+Math.random()*0.25});
+    }
+    sc.add(grp);return grp;
+  }
+
+  // ── build the nave: two colonnades receding into fog ──
+  const colSet=[CY,VI,GO];
+  const startZ=24, endZ=-200, step=mob?20:15, halfW=16;
+  let ci=0;
+  for(let z=startZ; z>endZ; z-=step){
+    const h=34+Math.abs(Math.sin(z*0.21))*30+Math.random()*16;
+    const c=colSet[ci%3];
+    pillar(-halfW,z,4.2,h,c);
+    pillar( halfW,z,4.2,h+ (Math.random()*10-5),c);
+    ci++;
+  }
+
+  // ── floor grid (neon) ──
+  (function(){
+    const gpts=[],span=120,gz0=40,gz1=-220,gx=halfW+6,div=26;
+    for(let i=0;i<=div;i++){const z=gz0+(gz1-gz0)*i/div;gpts.push(-gx,0,z, gx,0,z);}
+    for(let i=0;i<=12;i++){const x=-gx+(gx*2)*i/12;gpts.push(x,0,gz0, x,0,gz1);}
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(gpts,3));
+    const grid=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:CY,transparent:true,opacity:0.12,blending:THREE.AdditiveBlending}));
+    grid.position.y=-0.2;sc.add(grid);
+  })();
+
+  // ── the CORE SPIRE — the altar of the cathedral ──
+  const spire=new THREE.Group();spire.position.set(0,0,-205);sc.add(spire);
+  const shaft=new THREE.Mesh(new THREE.CylinderGeometry(1.1,2.6,120,6,1,true),
+    new THREE.MeshStandardMaterial({color:CY,emissive:new THREE.Color(CY),emissiveIntensity:1.4,
+      metalness:0.6,roughness:0.2,side:THREE.DoubleSide,transparent:true,opacity:0.85}));
+  shaft.position.y=60;spire.add(shaft);
+  const coreGlow=sprite(gTexCy,150,0.9);coreGlow.position.set(0,60,2);spire.add(coreGlow);
+  const topGlow=sprite(gTexGo,70,0.95);topGlow.position.set(0,122,2);spire.add(topGlow);
+  // halo rings around the spire
+  const rings=[];
+  for(let i=0;i<5;i++){
+    const r=10+i*5;
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(r,0.18,8,64),
+      new THREE.MeshBasicMaterial({color:i%2?VI:CY,transparent:true,opacity:0.4,blending:THREE.AdditiveBlending}));
+    ring.position.y=30+i*16;ring.rotation.x=Math.PI/2;spire.add(ring);
+    rings.push({m:ring,sp:(0.2+i*0.12)*(i%2?-1:1)});
+  }
+
+  // ── floating data-cubes drifting upward ──
+  const cubes=[];
+  const cubeN=mob?14:30;
+  for(let i=0;i<cubeN;i++){
+    const s=0.8+Math.random()*2.2;
+    const c=colSet[i%3];
+    const cube=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(s,s,s)),
+      new THREE.LineBasicMaterial({color:c,transparent:true,opacity:0.55,blending:THREE.AdditiveBlending}));
+    cube.position.set((Math.random()-0.5)*60,Math.random()*70,startZ-Math.random()*(startZ-endZ));
+    cube.userData={ry:(Math.random()-0.5)*0.01,rx:(Math.random()-0.5)*0.01,vy:0.04+Math.random()*0.08,top:60+Math.random()*30};
+    sc.add(cube);cubes.push(cube);
+  }
+
+  // ── ascending data-sparks (Points) ──
+  let sparks;
+  (function(){
+    const N=mob?500:1400,pos=new Float32Array(N*3),col=new Float32Array(N*3),vel=new Float32Array(N);
+    const ca=new THREE.Color(CY),cb=new THREE.Color(GO);
+    for(let i=0;i<N;i++){
+      pos[i*3]=(Math.random()-0.5)*80;
+      pos[i*3+1]=Math.random()*90;
+      pos[i*3+2]=startZ-Math.random()*(startZ-endZ);
+      const c=Math.random()<0.7?ca:cb;
+      col[i*3]=c.r;col[i*3+1]=c.g;col[i*3+2]=c.b;
+      vel[i]=0.05+Math.random()*0.18;
+    }
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    g.setAttribute('color',new THREE.BufferAttribute(col,3));
+    g.userData.vel=vel;
+    sparks=new THREE.Points(g,new THREE.PointsMaterial({size:mob?0.5:0.6,vertexColors:true,
+      transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false}));
+    sc.add(sparks);
+  })();
+
+  // ── interaction state ──
+  let scY=0,prog=0,pmx=0,pmy=0,tpmx=0,tpmy=0;
+  addEventListener('scroll',()=>{scY=window.scrollY;},{passive:true});
+  if(!reduce)addEventListener('pointermove',e=>{tpmx=(e.clientX/innerWidth-0.5);tpmy=(e.clientY/innerHeight-0.5);});
+  addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();ren.setSize(innerWidth,innerHeight);});
+  const hudDepth=document.getElementById('hud-depth');
+
+  function frame(){
+    requestAnimationFrame(frame);
+    const t=clk.getElapsedTime();
+    const docH=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+    prog+=(Math.min(1,Math.max(0,scY/docH))-prog)*0.06;
+    pmx+=(tpmx-pmx)*0.05;pmy+=(tpmy-pmy)*0.05;
+
+    // camera flies down the nave toward the spire and rises
+    cam.position.z=46-prog*230;
+    cam.position.y=7+prog*30+Math.sin(t*0.3)*0.5;
+    cam.position.x=pmx*14;
+    cam.lookAt(pmx*6, cam.position.y-2+pmy*8, cam.position.z-60);
+
+    // circuit-bands pulse as a wave travelling up the pillars
+    for(let i=0;i<bands.length;i++){
+      const b=bands[i];
+      b.mat.opacity=b.base*(0.4+0.6*(0.5+0.5*Math.sin(t*1.6 - b.phase)));
+    }
+    // spire breathing + spinning halo rings
+    shaft.material.emissiveIntensity=1.1+0.5*Math.sin(t*1.2);
+    coreGlow.scale.setScalar(150+Math.sin(t*1.5)*16);
+    for(const r of rings)r.m.rotation.z=t*r.sp;
+    spire.rotation.y=t*0.05;
+    keyL.intensity=2.0+0.6*Math.sin(t*1.3);
+
+    // floating cubes rise + rotate, wrap to bottom
+    for(const c of cubes){
+      c.rotation.x+=c.userData.rx;c.rotation.y+=c.userData.ry;
+      c.position.y+=c.userData.vy;
+      if(c.position.y>c.userData.top)c.position.y=-4;
+    }
+    // sparks ascend
+    if(sparks){
+      const p=sparks.geometry.attributes.position,vel=sparks.geometry.userData.vel;
+      for(let i=0;i<vel.length;i++){
+        p.array[i*3+1]+=vel[i];
+        if(p.array[i*3+1]>92)p.array[i*3+1]=-2;
+      }
+      p.needsUpdate=true;
+      sparks.rotation.y=Math.sin(t*0.05)*0.05;
+    }
+    if(hudDepth)hudDepth.textContent='DEPTH '+String(Math.round(prog*8400)).padStart(4,'0')+' m';
+    ren.render(sc,cam);
+  }
+  frame();
+})();
 
 /* ───────────── PARTICLE CURSOR ───────────── */
 (()=>{
@@ -2003,7 +2213,7 @@ if(window.THREE){initThree();}else{addEventListener('load',()=>window.THREE&&ini
   function size(){W=innerWidth;H=innerHeight;c.width=W*DPR;c.height=H*DPR;c.style.width=W+'px';c.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);}
   size();addEventListener('resize',size);
   const P=[],MAX=260;let lx=W/2,ly=H/2,cmx=W/2,cmy=H/2;
-  const cols=['rgba(255,122,34,','rgba(217,63,255,','rgba(125,211,232,','rgba(255,240,216,'];
+  const cols=['rgba(55,200,255,','rgba(138,123,255,','rgba(255,207,122,','rgba(220,240,255,'];
   addEventListener('pointermove',e=>{
     const dx=e.clientX-lx,dy=e.clientY-ly,sp=Math.hypot(dx,dy);
     cmx=e.clientX;cmy=e.clientY;
@@ -2131,6 +2341,7 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
   function initObjects(){
     if(oRunning)return;
     const cv=document.getElementById('bg-gpu');
+    if(!cv)return;   // legacy dual-world layer retired — Silicon Cathedral owns the scene
     oRenderer=new THREE.WebGLRenderer({canvas:cv,antialias:!mobile,alpha:true,powerPreference:'high-performance'});
     oRenderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.5:2));
     oRenderer.setSize(innerWidth,innerHeight);
@@ -2377,6 +2588,5 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
   }
 })();
 </script>
-<script type="module" src="/src/photoreal/main.js"></script>
 </body>
 </html>

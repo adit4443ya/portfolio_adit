@@ -9,35 +9,28 @@ Visit the live portfolio: [Your Vercel URL will be here]
 ## 🛠 Technologies Used
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **3D Graphics**: Three.js — ray-marched gravitational-lensing black hole (Supernova world) + a modern photoreal object layer
-- **Photoreal layer**: modern Three.js (bundled by Vite) with RoomEnvironment image-based lighting, ACES tone-mapping, PBR metals, real transmission glass, and UnrealBloom post-processing
+- **3D Graphics**: Three.js — the **Silicon Cathedral**, a procedural megastructure generated entirely at runtime (no external assets)
 - **Motion**: GSAP + ScrollTrigger and Lenis smooth-scroll
-- **Styling**: Custom CSS with CSS Grid and Flexbox
+- **Styling**: Custom CSS with CSS Grid and Flexbox, blueprint-HUD overlay
 - **Fonts**: Instrument Serif, Space Grotesk & JetBrains Mono from Google Fonts
 
-## 🌗 Dual worlds (theme toggle)
+## ◷ The Silicon Cathedral
 
-- **✦ Supernova** — a blazing stellar core with orbiting chrome + molten debris that ignite into view as you scroll.
-- **❄ Cryo** — an absolute-zero scene of faceted, refractive glass-ice crystals with bloom.
+A single, cohesive theme inspired by high-end gaming worlds. You enter a vast
+nave of towering **circuit-pillars** marching toward a glowing **core spire** —
+neon edge-lighting, climbing data-bands, drifting wireframe data-cubes, and
+ascending sparks. The camera flies deeper down the aisle and rises as you
+scroll, while a corner HUD tracks your descent depth. ACES filmic tone-mapping,
+additive neon glow, and volumetric fog give it a monumental, technical feel.
 
-## 💻 Develop & build
+Palette: silicon-cyan `#37c8ff` · violet `#8a7bff` · warm gold `#ffcf7a` on a
+near-black `#04070e` void.
 
-```bash
-npm install        # install three + vite
-npm run dev        # local dev server with the photoreal layer
-npm run build      # production build → dist/
-npm run preview    # preview the production build
-```
+## 💻 Run
 
-> The base experience (black hole + procedural object layer) works from the raw
-> `index.html` with no build. The **photoreal layer** requires the Vite build —
-> deploy the contents of `dist/`. If served unbuilt, the site gracefully falls
-> back to the procedural layer.
-
-### Optional real assets
-Drop files into `public/assets/` to upgrade to real models / HDRI (auto-loaded
-with a procedural fallback): `env.hdr`, `supernova.glb`, `cryo.glb`. See
-`public/assets/README.md`.
+No build step required — the entire experience runs from the raw `index.html`
+(Three.js, GSAP and Lenis load from CDNs). Just open `index.html` or serve the
+folder statically.
 
 ## 📋 Features
 
