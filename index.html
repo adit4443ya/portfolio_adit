@@ -6,6 +6,9 @@
 <title>Aditya Trivedi — Compiler Engineer</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -183,7 +186,7 @@ footer{border-top:1px solid var(--line);padding:24px 8vw;display:flex;justify-co
   --sans:'Space Grotesk',system-ui,sans-serif;
 }
 [data-theme="gpu"]{
-  --bg:#04070a;--ink:#e8f6fa;--dim:#5e7480;--muted:#9bb4be;
+  --bg:#020812;--ink:#e8f6fa;--dim:#5e7480;--muted:#9bb4be;
   --amber:#41e8ff;--rose:#a8ff60;--cyan:#41e8ff;--violet:#41e8ff;
   --line:rgba(65,232,255,0.12);
   --accent:var(--amber);
@@ -1010,12 +1013,12 @@ nav{
     <span id="tt-slider"></span>
     <span class="tt-opt active" id="tt-cosmic">
       <span class="tt-dot"></span>
-      <span class="tt-ico">✦</span>
-      <span class="tt-txt">Cosmic</span>
+      <span class="tt-ico">♨</span>
+      <span class="tt-txt">Forge</span>
     </span>
     <span class="tt-opt" id="tt-gpu">
-      <span class="tt-ico">⊞</span>
-      <span class="tt-txt">GPU Grid</span>
+      <span class="tt-ico">◈</span>
+      <span class="tt-txt">Lattice</span>
     </span>
   </div>
 </div><a href="https://drive.google.com/file/u/0/d/1rebI8SXe8pjzczuKqacmOeyYnYRHAf_g/view" target="_blank" class="cta">Résumé ↗</a></div>
@@ -1630,7 +1633,7 @@ nav{
 </section>
 
 <footer>
-  <div class="ft">© 2026 <span>ADITYA TRIVEDI</span> · Compiler Engineer · Built with Three.js</div>
+  <div class="ft">© 2026 <span>ADITYA TRIVEDI</span> · Compiler Engineer · Forge ⇄ Lattice · WebGL + Three.js</div>
   
 </footer>
 
@@ -1643,7 +1646,7 @@ nav{
 let TW = { intensity: 1, palette: 'amber', vantage: 'free' };
 // per-palette colours: disk(outer), hot(inner), star, nebula  — as 0..1 vec3
 const PAL = {
-  amber:  { disk:[1.00,0.62,0.30], hot:[1.00,0.93,0.78], star:[1.00,0.94,0.86], neb:[0.91,0.64,0.42] },
+  amber:  { disk:[1.00,0.42,0.10], hot:[1.00,0.86,0.52], star:[1.00,0.80,0.55], neb:[0.86,0.34,0.12] },
   cyan:   { disk:[0.45,0.82,1.00], hot:[0.90,0.99,1.00], star:[0.92,1.00,1.00], neb:[0.36,0.95,1.00] },
   violet: { disk:[0.78,0.62,1.00], hot:[1.00,0.94,1.00], star:[0.95,0.92,1.00], neb:[0.72,0.58,1.00] },
 };
@@ -2061,160 +2064,158 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
 </script>
 
 <script>
-/* ── UNIFIED THEME TOGGLE ── */
+/* ════════════════════════════════════════════════════════════════
+   DUAL-WORLD THEME ENGINE  ·  FORGE (molten core) ⇄ LATTICE (crystal)
+   FORGE   = the ray-marched molten accretion core (#bg-cosmic)
+   LATTICE = a living crystalline lattice rendered below (#bg-gpu)
+   ════════════════════════════════════════════════════════════════ */
 (function(){
   const root=document.documentElement;
   const flash=document.getElementById('theme-flash');
-  let current='cosmic';
-  // Keyboard support for toggle
+  let current='cosmic';                       // 'cosmic'=Forge · 'gpu'=Lattice (internal keys kept)
   const tgl=document.getElementById('theme-toggle');
   if(tgl)tgl.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleTheme();}});
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mobile=innerWidth<760;
 
-  // GPU Three.js state
-  let gpuScene,gpuCamera,gpuRenderer,gpuGrid,gpuClock,gpuCubes=[],gpuFloor,
-      gpuRaycaster,gpuNdc,gpuHovered=null,gpuTip,gpuStreams,gpuStreamData=[],
-      gpuDispatch,gpuBlockTX=6,gpuBlockTZ=6,gpuBlockCX=6,gpuBlockCZ=6,
-      gpuBlockTimer=0,gpuLastT=0,gpuRunning=false,gpuFrame=null;
-  const GX=16,GZ=16,SPC=3.2,BLK=4;
+  /* ───────── CRYSTALLINE LATTICE WORLD ───────── */
+  let lScene,lCam,lRenderer,lClock,lGroup,lNodes=[],lEdgeMat,lShards,lShardData=[],
+      lRunning=false,lLastT=0,lMx=0,lMy=0,lTmx=0,lTmy=0,lSY=0;
+  const N=mobile?5:7;                          // lattice resolution per axis (BCC-style)
+  const STEP=5.4, ICE=new THREE.Color(0x41e8ff), DIAMOND=new THREE.Color(0xeaffff),
+        DEEP=new THREE.Color(0x1466ff);
 
-  function initGPU(){
-    if(gpuRunning)return;
+  function initLattice(){
+    if(lRunning)return;
     const cv=document.getElementById('bg-gpu');
-    gpuRenderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
-    gpuRenderer.setPixelRatio(Math.min(devicePixelRatio,2));
-    gpuRenderer.setSize(innerWidth,innerHeight);
-    gpuScene=new THREE.Scene();
-    gpuScene.fog=new THREE.FogExp2(0x04070a,0.016);
-    gpuCamera=new THREE.PerspectiveCamera(56,innerWidth/innerHeight,0.1,400);
-    gpuCamera.position.set(0,15,42);
-    gpuClock=new THREE.Clock();
-    gpuRaycaster=new THREE.Raycaster();
-    gpuNdc=new THREE.Vector2(-2,-2);
-    const cA=new THREE.Color(0x41e8ff),cB=new THREE.Color(0xa8ff60);
-    gpuScene.add(new THREE.AmbientLight(0x1a2630,0.7));
-    const l1=new THREE.PointLight(0x41e8ff,1.5,260);l1.position.set(0,40,10);gpuScene.add(l1);
-    const l2=new THREE.PointLight(0xa8ff60,1.1,260);l2.position.set(-40,18,30);gpuScene.add(l2);
-    gpuFloor=new THREE.Mesh(new THREE.PlaneGeometry(GX*SPC*1.6,GZ*SPC*1.6),
-      new THREE.MeshStandardMaterial({color:0x070d12,metalness:0.85,roughness:0.35}));
-    gpuFloor.rotation.x=-Math.PI/2;gpuFloor.position.y=-2.0;gpuScene.add(gpuFloor);
-    const gh=new THREE.GridHelper(GX*SPC*1.5,GX,0x41e8ff,0x41e8ff);
-    gh.material.transparent=true;gh.material.opacity=0.10;gh.position.y=-1.98;gpuScene.add(gh);
-    gpuGrid=new THREE.Group();gpuScene.add(gpuGrid);
-    gpuCubes=[];
-    for(let x=0;x<GX;x++)for(let z=0;z<GZ;z++){
-      const g=new THREE.BoxGeometry(1.5,1.5,1.5);
-      const m=new THREE.MeshStandardMaterial({color:0x0c1822,emissive:cA.clone(),emissiveIntensity:0.15,metalness:0.4,roughness:0.35,transparent:true,opacity:0.32});
-      const c=new THREE.Mesh(g,m);
-      c.position.set((x-GX/2+0.5)*SPC,0,(z-GZ/2+0.5)*SPC);
-      const eg=new THREE.LineSegments(new THREE.EdgesGeometry(g),new THREE.LineBasicMaterial({color:0x41e8ff,transparent:true,opacity:0.3}));
-      c.add(eg);
-      const lin=x*GZ+z;
-      c.userData={x,z,lin,warp:Math.floor(lin/32),lane:lin%32,phase:(x+z)*0.34,base:cA.clone(),hot:cB.clone(),edge:eg.material,active:0};
-      gpuGrid.add(c);gpuCubes.push(c);
+    lRenderer=new THREE.WebGLRenderer({canvas:cv,antialias:!mobile,alpha:true,powerPreference:'high-performance'});
+    lRenderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.5:2));
+    lRenderer.setSize(innerWidth,innerHeight);
+    lScene=new THREE.Scene();
+    lScene.fog=new THREE.FogExp2(0x020812,0.018);
+    lCam=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,0.1,500);
+    lCam.position.set(0,2,44);
+    lClock=new THREE.Clock();
+
+    lScene.add(new THREE.AmbientLight(0x16263a,0.8));
+    const key=new THREE.PointLight(0x41e8ff,2.2,300);key.position.set(20,30,40);lScene.add(key);
+    const fill=new THREE.PointLight(0x1466ff,1.4,300);fill.position.set(-36,-10,20);lScene.add(fill);
+    const rim=new THREE.PointLight(0xeaffff,1.0,260);rim.position.set(0,-30,-30);lScene.add(rim);
+
+    lGroup=new THREE.Group();lScene.add(lGroup);
+    const off=(N-1)/2;
+
+    // ── refractive-looking icosahedral NODES on the lattice points ──
+    const nodeGeo=new THREE.IcosahedronGeometry(0.62,0);
+    for(let x=0;x<N;x++)for(let y=0;y<N;y++)for(let z=0;z<N;z++){
+      const mat=new THREE.MeshPhysicalMaterial({
+        color:0x0a1a2e,emissive:ICE.clone(),emissiveIntensity:0.4,
+        metalness:0.1,roughness:0.05,
+        transparent:true,opacity:0.92,flatShading:true,
+        clearcoat:1.0,clearcoatRoughness:0.05,reflectivity:1.0
+      });
+      const m=new THREE.Mesh(nodeGeo,mat);
+      const px=(x-off)*STEP, py=(y-off)*STEP, pz=(z-off)*STEP;
+      m.position.set(px,py,pz);
+      const dist=Math.sqrt(px*px+py*py+pz*pz);
+      m.userData={base:new THREE.Vector3(px,py,pz),dist,phase:dist*0.12,
+                  rot:(Math.random()-0.5)*0.4};
+      lGroup.add(m);lNodes.push(m);
     }
-    const SN=240,spos=new Float32Array(SN*3),scol=new Float32Array(SN*3);
-    gpuStreamData=[];
+
+    // ── glowing EDGES connecting nearest neighbours (single LineSegments) ──
+    const idx=(x,y,z)=>x*N*N+y*N+z;
+    const verts=[],cols=[];
+    for(let x=0;x<N;x++)for(let y=0;y<N;y++)for(let z=0;z<N;z++){
+      const a=lNodes[idx(x,y,z)].position;
+      [[1,0,0],[0,1,0],[0,0,1]].forEach(([dx,dy,dz])=>{
+        const nx=x+dx,ny=y+dy,nz=z+dz;
+        if(nx<N&&ny<N&&nz<N){
+          const b=lNodes[idx(nx,ny,nz)].position;
+          verts.push(a.x,a.y,a.z,b.x,b.y,b.z);
+          cols.push(ICE.r,ICE.g,ICE.b,DEEP.r,DEEP.g,DEEP.b);
+        }
+      });
+    }
+    const eg=new THREE.BufferGeometry();
+    eg.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
+    eg.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));
+    lEdgeMat=new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:0.26,
+              blending:THREE.AdditiveBlending,depthWrite:false});
+    lGroup.add(new THREE.LineSegments(eg,lEdgeMat));
+
+    // ── orbiting crystal SHARDS catching the light ──
+    const SN=mobile?260:600,sp=new Float32Array(SN*3),sc=new Float32Array(SN*3);
+    lShardData=[];
     for(let i=0;i<SN;i++){
-      const fixed=(Math.floor(Math.random()*GX)-GX/2+0.5)*SPC;
-      const axis=Math.random()<0.5,hot=Math.random()<0.5;
-      gpuStreamData.push({axis,fixed,t:Math.random(),speed:0.05+Math.random()*0.16,y:0.4+Math.random()*1.3,hot});
-      const col=hot?cB:cA;
-      scol[i*3]=col.r;scol[i*3+1]=col.g;scol[i*3+2]=col.b;
+      const r=22+Math.random()*26, a=Math.random()*Math.PI*2, e=(Math.random()-0.5)*Math.PI;
+      lShardData.push({r,a,e,sp:(0.04+Math.random()*0.14)*(Math.random()<0.5?1:-1),tw:Math.random()*Math.PI*2});
+      const c=Math.random()<0.5?ICE:DIAMOND;
+      sc[i*3]=c.r;sc[i*3+1]=c.g;sc[i*3+2]=c.b;
     }
     const sg=new THREE.BufferGeometry();
-    sg.setAttribute('position',new THREE.BufferAttribute(spos,3));
-    sg.setAttribute('color',new THREE.BufferAttribute(scol,3));
-    gpuStreams=new THREE.Points(sg,new THREE.PointsMaterial({size:0.5,vertexColors:true,transparent:true,opacity:0.95,blending:THREE.AdditiveBlending,depthWrite:false}));
-    gpuScene.add(gpuStreams);
-    const bs=BLK*SPC;
-    gpuDispatch=new THREE.Group();
-    const dGlow=new THREE.Mesh(new THREE.PlaneGeometry(bs*1.05,bs*1.05),
-      new THREE.MeshBasicMaterial({color:0xa8ff60,transparent:true,opacity:0.12,blending:THREE.AdditiveBlending,depthWrite:false}));
-    dGlow.rotation.x=-Math.PI/2;dGlow.position.y=-1.92;
-    const dFrame=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(bs,5.2,bs)),
-      new THREE.LineBasicMaterial({color:0xa8ff60,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending}));
-    dFrame.position.y=1.4;
-    const corners=new THREE.Group();
-    const cm=new THREE.LineBasicMaterial({color:0x41e8ff,transparent:true,opacity:0.8,blending:THREE.AdditiveBlending});
-    const h=bs/2,arm=SPC*0.6;
-    [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([sx,sz])=>{
-      const gg=new THREE.BufferGeometry();
-      gg.setAttribute('position',new THREE.BufferAttribute(new Float32Array([
-        sx*h,0,sz*h, sx*h-sx*arm,0,sz*h, sx*h,0,sz*h, sx*h,0,sz*h-sz*arm]),3));
-      corners.add(new THREE.LineSegments(gg,cm));
-    });
-    corners.position.y=-1.9;
-    gpuDispatch.add(dGlow);gpuDispatch.add(dFrame);gpuDispatch.add(corners);
-    gpuGrid.add(gpuDispatch);
-    gpuDispatch.userData={glow:dGlow,frame:dFrame,corners};
-    gpuRunning=true;
-    gpuLoop();
-    addEventListener('resize',()=>{gpuCamera.aspect=innerWidth/innerHeight;gpuCamera.updateProjectionMatrix();gpuRenderer.setSize(innerWidth,innerHeight);});
+    sg.setAttribute('position',new THREE.BufferAttribute(sp,3));
+    sg.setAttribute('color',new THREE.BufferAttribute(sc,3));
+    lShards=new THREE.Points(sg,new THREE.PointsMaterial({size:0.42,vertexColors:true,
+            transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false}));
+    lScene.add(lShards);
+
+    lRunning=true;lLoop();
+    addEventListener('resize',()=>{if(!lRenderer)return;lCam.aspect=innerWidth/innerHeight;
+      lCam.updateProjectionMatrix();lRenderer.setSize(innerWidth,innerHeight);});
   }
 
-  let gpuMx=0,gpuMy=0,gpuTmx=0,gpuTmy=0,gpuSY=0;
-  function gpuLoop(){
-    gpuFrame=requestAnimationFrame(gpuLoop);
-    const t=gpuClock.getElapsedTime();
-    const dt=Math.min(0.05,t-gpuLastT);gpuLastT=t;
-    gpuMx+=(gpuTmx-gpuMx)*0.04;gpuMy+=(gpuTmy-gpuMy)*0.04;
-    gpuBlockTimer-=dt;
-    if(gpuBlockTimer<=0){
-      gpuBlockTimer=1.3+Math.random()*0.7;
-      const nb=GX/BLK;
-      gpuBlockTX=Math.floor(Math.random()*nb)*BLK+(BLK-1)/2;
-      gpuBlockTZ=Math.floor(Math.random()*nb)*BLK+(BLK-1)/2;
+  function lLoop(){
+    requestAnimationFrame(lLoop);
+    if(current!=='gpu')return;               // pause render work while in Forge
+    const t=lClock.getElapsedTime();
+    lLastT=t;
+    lMx+=(lTmx-lMx)*0.045;lMy+=(lTmy-lMy)*0.045;
+
+    // crystallisation pulse radiating outward from the core
+    for(const m of lNodes){
+      const d=m.userData;
+      const wave=Math.sin(t*1.4-d.phase);
+      const pulse=Math.max(0,wave);
+      m.material.emissiveIntensity=0.3+pulse*1.8;
+      m.material.opacity=0.55+pulse*0.4;
+      const col=ICE.clone().lerp(DIAMOND,pulse);
+      m.material.emissive.copy(col);
+      const s=0.8+pulse*0.5;
+      m.scale.setScalar(s);
+      m.rotation.x+=d.rot*0.01;m.rotation.y+=d.rot*0.013;
+      // gentle breathing of the whole lattice
+      const br=1+Math.sin(t*0.4+d.dist*0.05)*0.04;
+      m.position.set(d.base.x*br,d.base.y*br,d.base.z*br);
     }
-    gpuBlockCX+=(gpuBlockTX-gpuBlockCX)*Math.min(1,dt*7);
-    gpuBlockCZ+=(gpuBlockTZ-gpuBlockCZ)*Math.min(1,dt*7);
-    const blkPulse=0.55+0.45*Math.sin(t*4.0);
-    const half=(BLK-1)/2;
-    for(const c of gpuCubes){
-      const d=c.userData;
-      const w1=Math.sin(t*1.5-d.phase),w2=Math.sin(t*1.05-(d.x-d.z)*0.3+2.1);
-      let active=Math.max(Math.max(0,w1),Math.max(0,w2)*0.75);
-      const fx=Math.max(0,1-Math.max(0,Math.abs(d.x-gpuBlockCX)-half)/1.0);
-      const fz=Math.max(0,1-Math.max(0,Math.abs(d.z-gpuBlockCZ)-half)/1.0);
-      const inBlk=fx*fz;d.inBlk=inBlk;
-      if(inBlk>0)active=Math.max(active,inBlk*(0.7+blkPulse*0.3));
-      d.active=active;
-      c.position.y=active*active*2.6+inBlk*1.1;
-      c.material.opacity=0.22+active*0.55;
-      c.material.emissiveIntensity=0.12+active*1.6+inBlk*0.6;
-      d.edge.opacity=0.22+active*0.75;
-      const col=d.base.clone().lerp(d.hot,Math.max(active,inBlk));
-      c.material.emissive.copy(col);d.edge.color.copy(col);
-      c.scale.setScalar(0.82+active*0.42+inBlk*0.12);
-    }
-    if(gpuStreams){
-      const ext=GX*SPC*0.5,arr=gpuStreams.geometry.attributes.position.array;
-      for(let i=0;i<gpuStreamData.length;i++){
-        const s=gpuStreamData[i];s.t+=s.speed*0.016*3.0;if(s.t>1)s.t-=1;
-        const u=(s.t*2-1)*ext;
-        if(s.axis){arr[i*3]=u;arr[i*3+1]=s.y;arr[i*3+2]=s.fixed;}
-        else{arr[i*3]=s.fixed;arr[i*3+1]=s.y;arr[i*3+2]=u;}
+    if(lEdgeMat)lEdgeMat.opacity=0.18+0.14*(0.5+0.5*Math.sin(t*1.1));
+
+    if(lShards){
+      const arr=lShards.geometry.attributes.position.array;
+      for(let i=0;i<lShardData.length;i++){
+        const s=lShardData[i];s.a+=s.sp*0.01;
+        arr[i*3]=Math.cos(s.a)*Math.cos(s.e)*s.r;
+        arr[i*3+1]=Math.sin(s.e)*s.r;
+        arr[i*3+2]=Math.sin(s.a)*Math.cos(s.e)*s.r;
       }
-      gpuStreams.geometry.attributes.position.needsUpdate=true;
-      gpuStreams.rotation.y=gpuGrid.rotation.y;
+      lShards.geometry.attributes.position.needsUpdate=true;
+      lShards.material.opacity=0.6+0.3*Math.sin(t*2.0);
+      lShards.rotation.y=t*0.02;
     }
-    if(gpuDispatch){
-      gpuDispatch.position.x=(gpuBlockCX-GX/2+0.5)*SPC;
-      gpuDispatch.position.z=(gpuBlockCZ-GZ/2+0.5)*SPC;
-      const ud=gpuDispatch.userData;
-      ud.frame.material.opacity=0.32+blkPulse*0.4;
-      ud.glow.material.opacity=0.08+blkPulse*0.14;
-      ud.corners.children.forEach(l=>l.material.opacity=0.5+blkPulse*0.45);
-    }
-    gpuGrid.rotation.y=t*0.022+gpuMx*0.35;
-    gpuCamera.position.x=gpuMx*9;
-    gpuCamera.position.y=15-gpuMy*5+Math.sin(t*0.2)*0.8;
-    gpuCamera.position.z=42-gpuSY*0.018;
-    gpuCamera.lookAt(0,0,0);
-    gpuRenderer.render(gpuScene,gpuCamera);
+
+    lGroup.rotation.y=t*0.05+lMx*0.5;
+    lGroup.rotation.x=Math.sin(t*0.15)*0.12-lMy*0.35;
+    lCam.position.x=lMx*10;
+    lCam.position.y=2-lMy*6+Math.sin(t*0.25)*0.9;
+    lCam.position.z=44-lSY*0.014;
+    lCam.lookAt(0,0,0);
+    lRenderer.render(lScene,lCam);
   }
 
-  addEventListener('pointermove',e=>{gpuTmx=(e.clientX/innerWidth-0.5);gpuTmy=(e.clientY/innerHeight-0.5);});
-  addEventListener('scroll',()=>{gpuSY=window.scrollY;});
+  if(!reduce){
+    addEventListener('pointermove',e=>{lTmx=(e.clientX/innerWidth-0.5);lTmy=(e.clientY/innerHeight-0.5);});
+    addEventListener('scroll',()=>{lSY=window.scrollY;});
+  }
 
   window.toggleTheme=function(){
     const going=current==='cosmic'?'gpu':'cosmic';
@@ -2222,18 +2223,105 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
     setTimeout(()=>{
       root.setAttribute('data-theme',going);
       current=going;
-      // Update dual-pill active states
       document.getElementById('tt-cosmic').classList.toggle('active',going==='cosmic');
       document.getElementById('tt-gpu').classList.toggle('active',going==='gpu');
-      // Init GPU renderer on first switch
-      if(going==='gpu'&&!gpuRunning&&window.THREE)initGPU();
+      if(going==='gpu'&&!lRunning&&window.THREE)initLattice();
     },200);
     setTimeout(()=>flash.classList.remove('flash'),500);
-    // keyboard support
-    document.getElementById('theme-toggle').addEventListener('keydown',e=>{
-      if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleTheme();}
-    });
   };
+})();
+</script>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   CINEMATIC LAYER  ·  Lenis smooth-scroll + GSAP choreography + tilt
+   Fully additive — degrades gracefully if a CDN fails or motion is reduced.
+   ════════════════════════════════════════════════════════════════ */
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const touch=matchMedia('(hover: none)').matches;
+  if(reduce)return;
+
+  /* ── Lenis buttery smooth-scroll, wired into GSAP's ticker ── */
+  if(window.Lenis){
+    document.documentElement.style.scrollBehavior='auto';
+    const lenis=new Lenis({duration:1.15,smoothWheel:true,
+      easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
+    function raf(time){lenis.raf(time);requestAnimationFrame(raf);}
+    requestAnimationFrame(raf);
+    if(window.ScrollTrigger){lenis.on('scroll',ScrollTrigger.update);}
+    // keep anchor nav working with smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const t=document.querySelector(a.getAttribute('href'));
+        if(t){e.preventDefault();lenis.scrollTo(t,{offset:-20});}
+      });
+    });
+  }
+
+  /* ── GSAP scroll-reveal choreography (skips elements already animated by .fu) ── */
+  if(window.gsap&&window.ScrollTrigger){
+    gsap.registerPlugin(ScrollTrigger);
+
+    // hero parallax — content drifts up & fades as you fall into the world
+    gsap.to('#hero .h-name, #hero .h-tag, #hero .h-meta, #hero .h-links',{
+      yPercent:-26,opacity:.18,ease:'none',
+      scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}
+    });
+
+    // section eyebrows + titles slide in with a crystalline/forge stamp
+    gsap.utils.toArray('.s-head, .s-eyebrow, .s-title, .traj-head').forEach(el=>{
+      gsap.from(el,{y:34,opacity:0,duration:.9,ease:'power3.out',
+        scrollTrigger:{trigger:el,start:'top 88%'}});
+    });
+
+    // staggered reveal for the content cards in each section
+    document.querySelectorAll('.metrics, .traj-grid, .pubs, .pub-stack, .proj-grid, .sk-grid, .clinks').forEach(group=>{
+      const kids=group.children;
+      if(!kids.length)return;
+      gsap.from(kids,{y:46,opacity:0,duration:.8,ease:'power3.out',stagger:.08,
+        scrollTrigger:{trigger:group,start:'top 85%'}});
+    });
+
+    // timeline rows cascade in
+    gsap.utils.toArray('.tl-row, .tl-item').forEach((row,i)=>{
+      gsap.from(row,{x:-30,opacity:0,duration:.8,ease:'power3.out',
+        scrollTrigger:{trigger:row,start:'top 88%'}});
+    });
+  }
+
+  /* ── Magnetic 3D tilt on cards (desktop only) ── */
+  if(!touch){
+    const tiltSel='.panel,.console,.traj-card,.proj,.sk-box,.metric';
+    document.querySelectorAll(tiltSel).forEach(card=>{
+      card.style.transformStyle='preserve-3d';
+      card.style.willChange='transform';
+      let raf=null;
+      function move(e){
+        const r=card.getBoundingClientRect();
+        const px=(e.clientX-r.left)/r.width-0.5;
+        const py=(e.clientY-r.top)/r.height-0.5;
+        if(raf)cancelAnimationFrame(raf);
+        raf=requestAnimationFrame(()=>{
+          card.style.transform=`perspective(900px) rotateX(${(-py*5).toFixed(2)}deg) rotateY(${(px*5).toFixed(2)}deg) translateZ(6px)`;
+        });
+      }
+      card.addEventListener('pointermove',move);
+      card.addEventListener('pointerleave',()=>{
+        if(raf)cancelAnimationFrame(raf);
+        card.style.transform='';
+      });
+    });
+
+    // magnetic pull on nav links + hero buttons
+    document.querySelectorAll('.hl, .cta, .nav-mid a, .chip').forEach(btn=>{
+      btn.addEventListener('pointermove',e=>{
+        const r=btn.getBoundingClientRect();
+        btn.style.transform=`translate(${((e.clientX-r.left)/r.width-0.5)*8}px, ${((e.clientY-r.top)/r.height-0.5)*8}px)`;
+      });
+      btn.addEventListener('pointerleave',()=>{btn.style.transform='';});
+    });
+  }
 })();
 </script>
 </body>
