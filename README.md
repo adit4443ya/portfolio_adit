@@ -9,10 +9,28 @@ Visit the live portfolio: [Your Vercel URL will be here]
 ## 🛠 Technologies Used
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **3D Graphics**: Three.js for space-themed background animations
-- **Styling**: Custom CSS with CSS Grid and Flexbox
-- **Icons**: Font Awesome 6.0
-- **Fonts**: Inter & JetBrains Mono from Google Fonts
+- **3D Graphics**: Three.js — the **Silicon Cathedral**, a procedural megastructure generated entirely at runtime (no external assets)
+- **Motion**: GSAP + ScrollTrigger and Lenis smooth-scroll
+- **Styling**: Custom CSS with CSS Grid and Flexbox, blueprint-HUD overlay
+- **Fonts**: Instrument Serif, Space Grotesk & JetBrains Mono from Google Fonts
+
+## ◷ The Silicon Cathedral
+
+A single, cohesive theme inspired by high-end gaming worlds. You enter a vast
+nave of towering **circuit-pillars** marching toward a glowing **core spire** —
+neon edge-lighting, climbing data-bands, drifting wireframe data-cubes, and
+ascending sparks. The camera flies deeper down the aisle and rises as you
+scroll, while a corner HUD tracks your descent depth. ACES filmic tone-mapping,
+additive neon glow, and volumetric fog give it a monumental, technical feel.
+
+Palette: silicon-cyan `#37c8ff` · violet `#8a7bff` · warm gold `#ffcf7a` on a
+near-black `#04070e` void.
+
+## 💻 Run
+
+No build step required — the entire experience runs from the raw `index.html`
+(Three.js, GSAP and Lenis load from CDNs). Just open `index.html` or serve the
+folder statically.
 
 ## 📋 Features
 
@@ -55,11 +73,11 @@ Visit the live portfolio: [Your Vercel URL will be here]
 
 ## 🚀 Deployment
 
-This portfolio is optimized for deployment on Vercel:
+Build first, then deploy the `dist/` output:
 
-1. Push to GitHub repository
-2. Connect repository to Vercel
-3. Deploy with zero configuration
+1. `npm install && npm run build`
+2. Deploy the `dist/` folder (Vercel: set build command `npm run build`, output dir `dist`; GitHub Pages: publish `dist/`).
+3. `base: './'` in `vite.config.js` keeps asset paths relative, so it works on any host/subpath.
 
 ## 📄 License
 
