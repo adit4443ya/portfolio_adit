@@ -12,9 +12,9 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0a0604;--ink:#fbece0;--dim:#8a6a58;--muted:#c7a892;
-  --amber:#ff6a1a;--rose:#e8492f;--cyan:#7fb4cc;--violet:#e8492f;
-  --line:rgba(255,106,26,0.10);
+  --bg:#060a16;--ink:#eaf2ff;--dim:#5a6b8c;--muted:#9fb3d4;
+  --amber:#5fe6c4;--rose:#b08cff;--cyan:#7ec8ff;--violet:#b08cff;
+  --line:rgba(95,230,196,0.10);
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --serif:'Instrument Serif',Georgia,serif;
   --sans:'Space Grotesk',system-ui,sans-serif;
@@ -24,16 +24,17 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:3
 #bg{position:fixed;inset:0;z-index:0}
 #vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 90% 70% at 50% 50%,transparent 40%,rgba(5,5,10,0.55) 100%)}
 #particles{position:fixed;inset:0;z-index:3;pointer-events:none}
-/* ── Forge heat-shimmer vignette ── */
-#forge-heat{position:fixed;inset:0;z-index:2;pointer-events:none;
-  background:radial-gradient(ellipse 70% 55% at 50% 100%,rgba(255,80,10,0.13) 0%,transparent 70%),
-             radial-gradient(ellipse 100% 30% at 50% 100%,rgba(255,40,0,0.08) 0%,transparent 60%);}
-/* ── Forge HUD telemetry frame ── */
+/* ── Aurora ground-glow vignette ── */
+#aurora-glow{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse 90% 50% at 50% 8%,rgba(95,230,196,0.10) 0%,transparent 60%),
+             radial-gradient(ellipse 70% 40% at 30% 0%,rgba(176,140,255,0.10) 0%,transparent 55%),
+             radial-gradient(ellipse 100% 35% at 50% 100%,rgba(126,200,255,0.06) 0%,transparent 60%);}
+/* ── Aurora HUD coordinate frame ── */
 #hud-frame{position:fixed;inset:0;z-index:150;pointer-events:none;font-family:var(--mono);
-  font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,106,26,0.5);}
-#hud-frame .hud-c{position:absolute;padding:18px 24px;text-shadow:0 0 10px rgba(255,80,10,0.5);}
+  font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(95,230,196,0.5);}
+#hud-frame .hud-c{position:absolute;padding:18px 24px;text-shadow:0 0 10px rgba(95,230,196,0.4);}
 #hud-frame .tl{top:54px;left:0}#hud-frame .tr{top:54px;right:0}
-#hud-frame .bl{bottom:0;left:0}#hud-frame .br{bottom:0;right:0;color:rgba(255,106,26,0.4)}
+#hud-frame .bl{bottom:0;left:0}#hud-frame .br{bottom:0;right:0;color:rgba(176,140,255,0.5)}
 @media(max-width:880px){#hud-frame{display:none}}
 .app{position:relative;z-index:10}
 nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 6vw;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,rgba(5,5,10,0.85),rgba(5,5,10,0));backdrop-filter:blur(20px);transition:background .4s}
@@ -78,7 +79,7 @@ nav.scrolled{background:rgba(5,5,10,0.9);border-bottom:1px solid var(--line)}
 .hl.prim{background:rgba(255,122,34,0.15);color:var(--amber);border-color:var(--amber);box-shadow:inset 0 0 12px rgba(255,122,34,0.15);}
 .hl.prim::after{content:'→'}
 .hl.prim:hover{background:var(--amber);color:#05050a;box-shadow:0 0 24px rgba(255,122,34,0.6);}
-.scroll-tag{position:absolute;bottom:36px;right:8vw;writing-mode:vertical-rl;font-family:var(--mono);font-size:9px;letter-spacing:4px;color:rgba(255,122,34,0.5);text-transform:uppercase;display:flex;align-items:center;gap:10px;text-shadow:0 0 10px rgba(255,122,34,0.2);}
+.scroll-tag{position:absolute;bottom:36px;right:8vw;writing-mode:vertical-rl;font-family:var(--mono);font-size:9px;letter-spacing:4px;color:rgba(95,230,196,0.55);text-transform:uppercase;display:flex;align-items:center;gap:10px;text-shadow:0 0 10px rgba(95,230,196,0.25);}
 .scroll-tag::before{content:'';width:1px;height:42px;background:linear-gradient(to bottom,transparent,var(--amber));box-shadow:0 0 8px var(--amber);}
 section{padding:120px 8vw;position:relative}
 .s-eyebrow{font-family:var(--mono);font-size:10px;color:rgba(255,122,34,0.8);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px;text-shadow:0 0 10px rgba(255,122,34,0.4);}
@@ -188,9 +189,9 @@ footer{border-top:1px solid var(--line);padding:24px 8vw;display:flex;justify-co
    UNIFIED THEME SYSTEM — Cosmic (default) vs GPU Grid
    ═══════════════════════════════════════════════ */
 :root{
-  --bg:#04070e;--ink:#eef4ff;--dim:#5d7390;--muted:#a6bcd6;
-  --amber:#37c8ff;--rose:#8a7bff;--cyan:#ffcf7a;--violet:#8a7bff;
-  --line:rgba(55,200,255,0.10);
+  --bg:#060a16;--ink:#eaf2ff;--dim:#5a6b8c;--muted:#9fb3d4;
+  --amber:#5fe6c4;--rose:#b08cff;--cyan:#7ec8ff;--violet:#b08cff;
+  --line:rgba(95,230,196,0.10);
   --accent:var(--amber);
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --serif:'Instrument Serif',Georgia,serif;
@@ -1003,14 +1004,14 @@ nav{
 <body>
 
 <canvas id="bg-cosmic"></canvas>
-<div id="forge-heat"></div>
+<div id="aurora-glow"></div>
 <div id="vignette"></div>
 <canvas id="particles"></canvas>
 <div id="hud-frame">
-  <span class="hud-c tl">⚒ THE FORGE · ADITYA TRIVEDI</span>
-  <span class="hud-c tr">RENDER · WEBGL</span>
-  <span class="hud-c bl" id="hud-temp">CORE TEMP ████ K</span>
-  <span class="hud-c br" id="hud-depth">CHAMBER 01</span>
+  <span class="hud-c tl">✦ AURORA BOREALIS · 68°N</span>
+  <span class="hud-c tr">LAT 68.4° · LON 18.2°</span>
+  <span class="hud-c bl" id="hud-temp">Kp INDEX 5.0 · ACTIVE</span>
+  <span class="hud-c br" id="hud-depth">ALTITUDE 0 km</span>
 </div>
 
 <div class="app">
@@ -1044,7 +1045,7 @@ nav{
     <a href="https://www.linkedin.com/in/adit4443ya/" target="_blank" class="hl">LinkedIn</a>
     <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="hl">GSoC Blog</a>
   </div>
-  <div class="scroll-tag">ENTER THE FORGE · SCROLL TO DESCEND</div>
+  <div class="scroll-tag">CHASE THE LIGHTS · SCROLL TO DRIFT</div>
 </section>
 
 <style>
@@ -1637,7 +1638,7 @@ nav{
 </section>
 
 <footer>
-  <div class="ft">© 2026 <span>ADITYA TRIVEDI</span> · Compiler Engineer · The Forge · WebGL + Three.js</div>
+  <div class="ft">© 2026 <span>ADITYA TRIVEDI</span> · Compiler Engineer · Aurora Borealis · WebGL + Three.js</div>
   
 </footer>
 
@@ -1996,11 +1997,12 @@ function animate(){
   pass(compMat,null);
 }
 /* ════════════════════════════════════════════════════════════════
-   ⚒  THE FORGE  ·  dark weapon-foundry (Three.js r128)
-   Deep underground forge: iron-monolith artifact at centre, hexagonal
-   pillars, hanging chains, ember sparks rising, molten crucible below.
-   Camera orbits the artifact at rest; descends into the pit on scroll.
-   All geometry procedural — zero external assets.
+   ✦  AURORA BOREALIS  ·  living northern-lights sky (Three.js r128)
+   A full-screen WebGL aurora: rippling curtains of teal → violet light
+   over a star-field, with layered mountain silhouettes and drifting
+   snow. Curtains shift and brighten as you scroll; mouse parallax pans
+   the sky. All procedural — no external assets.
+   (The ray-marched black-hole shader above remains defined but unused.)
    ════════════════════════════════════════════════════════════════ */
 (function(){
   const cv=document.getElementById('bg-cosmic');
@@ -2008,334 +2010,138 @@ function animate(){
   const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const mob=innerWidth<760;
 
-  /* colours */
-  const EMBER=0xff5a0e, MOLTEN=0xff9a28, STEEL=0x7fb4cc, HOT=0xffe080;
-
-  /* renderer */
-  const ren=new THREE.WebGLRenderer({canvas:cv,antialias:!mob,alpha:false,powerPreference:'high-performance'});
+  const ren=new THREE.WebGLRenderer({canvas:cv,antialias:false,alpha:false,powerPreference:'high-performance'});
   ren.setPixelRatio(Math.min(devicePixelRatio,mob?1.5:2));
   ren.setSize(innerWidth,innerHeight);
-  ren.outputEncoding=THREE.sRGBEncoding;
-  ren.toneMapping=THREE.ACESFilmicToneMapping;
-  ren.toneMappingExposure=1.08;
+  ren.autoClear=false;
 
-  const sc=new THREE.Scene();
-  sc.background=new THREE.Color(0x080302);
-  sc.fog=new THREE.FogExp2(0x0c0604,0.028);
+  /* ── fullscreen aurora shader pass ── */
+  const auScene=new THREE.Scene();
+  const auCam=new THREE.Camera();
+  const VERT='varying vec2 vUv; void main(){ vUv=position.xy*0.5+0.5; gl_Position=vec4(position,1.0); }';
+  const FRAG=[
+  'precision highp float;',
+  'varying vec2 vUv;',
+  'uniform vec2 iRes; uniform float iTime; uniform float scroll; uniform vec2 mouse;',
+  'float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }',
+  'float noise(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f);',
+  '  float a=hash(i),b=hash(i+vec2(1,0)),c=hash(i+vec2(0,1)),d=hash(i+vec2(1,1));',
+  '  return mix(mix(a,b,f.x),mix(c,d,f.x),f.y); }',
+  'float fbm(vec2 p){ float s=0.0,a=0.5; for(int i=0;i<5;i++){ s+=a*noise(p); p*=2.02; a*=0.5; } return s; }',
+  'float stars(vec2 uv){ vec2 g=uv*vec2(iRes.x/iRes.y,1.0)*130.0; vec2 id=floor(g),f=fract(g)-0.5;',
+  '  float h=hash(id); float st=step(0.986,h); float tw=0.5+0.5*sin(iTime*2.0+h*100.0);',
+  '  return st*smoothstep(0.16,0.0,length(f))*tw; }',
+  'void main(){',
+  '  vec2 uv=vUv; float aspect=iRes.x/iRes.y;',
+  '  uv.x += mouse.x*0.04;',
+  '  vec3 col=mix(vec3(0.015,0.03,0.07), vec3(0.02,0.05,0.13), uv.y);',
+  '  col=mix(col, vec3(0.04,0.07,0.16), smoothstep(0.45,1.0,uv.y)*0.5);',
+  '  col+=vec3(0.8,0.9,1.0)*stars(uv)*smoothstep(0.32,0.7,uv.y);',
+  '  float t=iTime*0.08 + scroll*0.7;',
+  '  float aur=0.0; vec3 acol=vec3(0.0);',
+  '  for(int i=0;i<4;i++){',
+  '    float fi=float(i);',
+  '    float wave=fbm(vec2(uv.x*2.0+fi*7.3, t*0.7+fi))*0.6;',
+  '    float xpos=uv.x*3.0+fi*2.1+sin(uv.y*3.0+t+fi)*0.25;',
+  '    float ray=fbm(vec2(xpos*1.6, uv.y*1.2 - t*0.5 + fi*3.0));',
+  '    ray=pow(ray,2.4);',
+  '    float band=smoothstep(0.26,0.55,uv.y)*(1.0-smoothstep(0.62,1.06,uv.y));',
+  '    float v=ray*band*(0.72-fi*0.12);',
+  '    vec3 lc=mix(vec3(0.15,0.95,0.6), vec3(0.5,0.35,1.0), uv.y*0.9+fi*0.05);',
+  '    lc=mix(lc, vec3(0.92,0.4,0.85), smoothstep(0.7,1.02,uv.y)*0.6);',
+  '    acol+=lc*v; aur+=v;',
+  '  }',
+  '  acol+=vec3(0.7,1.0,0.9)*pow(aur,2.0)*0.5;',
+  '  col+=acol*1.5;',
+  '  float ridge=0.17+fbm(vec2(uv.x*3.0+10.0,0.0))*0.10+fbm(vec2(uv.x*8.0,5.0))*0.03;',
+  '  float ridge2=0.10+fbm(vec2(uv.x*2.0-4.0,2.0))*0.055;',
+  '  col+=vec3(0.1,0.45,0.32)*smoothstep(ridge+0.07,ridge,uv.y)*smoothstep(ridge-0.03,ridge+0.03,uv.y)*aur*0.5;',
+  '  float mtn=smoothstep(ridge+0.004,ridge-0.004,uv.y);',
+  '  col=mix(col, vec3(0.012,0.018,0.04), mtn);',
+  '  float mtn2=smoothstep(ridge2+0.004,ridge2-0.004,uv.y);',
+  '  col=mix(col, vec3(0.0,0.002,0.01), mtn2);',
+  '  float vig=smoothstep(1.35,0.35,length((vUv-0.5)*vec2(aspect,1.0)));',
+  '  col*=mix(0.55,1.0,vig);',
+  '  col=vec3(1.0)-exp(-col*1.5);',
+  '  col=pow(col, vec3(1.0/2.2));',
+  '  float gr=fract(sin(dot(vUv*iRes,vec2(12.9898,78.233)))*43758.5453);',
+  '  col+=(gr-0.5)*0.015;',
+  '  gl_FragColor=vec4(col,1.0);',
+  '}'].join('\n');
+  const auMat=new THREE.ShaderMaterial({vertexShader:VERT,fragmentShader:FRAG,depthTest:false,depthWrite:false,
+    uniforms:{ iRes:{value:new THREE.Vector2(innerWidth,innerHeight)}, iTime:{value:0},
+      scroll:{value:0}, mouse:{value:new THREE.Vector2(0,0)} }});
+  auScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),auMat));
 
-  const cam=new THREE.PerspectiveCamera(56,innerWidth/innerHeight,0.1,500);
-  cam.position.set(0,10,34);
-  const clk=new THREE.Clock();
-
-  /* ── lighting: dramatic foundry ── */
-  sc.add(new THREE.AmbientLight(0x1c0e06,1.4));
-  // below-floor pit glow — key warm light
-  const pitL=new THREE.PointLight(EMBER,5.0,90);
-  pitL.position.set(0,-6,0);sc.add(pitL);
-  // steel-blue vent shaft from above-right
-  const ventL=new THREE.PointLight(STEEL,1.6,140);
-  ventL.position.set(-24,38,12);sc.add(ventL);
-  // roving secondary ember that orbits the artifact
-  const roveL=new THREE.PointLight(MOLTEN,4.0,55);
-  roveL.position.set(16,6,-4);sc.add(roveL);
-  // back-rim light — silhouettes the pillars
-  const rimL=new THREE.PointLight(HOT,2.2,100);
-  rimL.position.set(0,20,-30);sc.add(rimL);
-  // deep crucible light, grows on scroll
-  const deepL=new THREE.PointLight(EMBER,0,120);
-  deepL.position.set(0,-55,0);sc.add(deepL);
-
-  /* ── glow sprite helper ── */
-  function makeGlowTex(hex){
-    const c=document.createElement('canvas');c.width=c.height=128;
-    const ctx=c.getContext('2d');
-    const col=new THREE.Color(hex);
-    const R=Math.round(col.r*255),G=Math.round(col.g*255),B=Math.round(col.b*255);
-    const g=ctx.createRadialGradient(64,64,0,64,64,64);
-    g.addColorStop(0,`rgba(${R},${G},${B},1)`);
-    g.addColorStop(0.35,`rgba(${R},${G},${B},0.5)`);
-    g.addColorStop(1,`rgba(${R},${G},${B},0)`);
-    ctx.fillStyle=g;ctx.fillRect(0,0,128,128);
-    const t=new THREE.Texture(c);t.needsUpdate=true;return t;
+  /* ── drifting snow particles (perspective, on top) ── */
+  const snowScene=new THREE.Scene();
+  const snowCam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,120);
+  snowCam.position.z=14;
+  // soft round flake texture
+  const fc=document.createElement('canvas');fc.width=fc.height=32;
+  const fx=fc.getContext('2d');
+  const fg=fx.createRadialGradient(16,16,0,16,16,16);
+  fg.addColorStop(0,'rgba(255,255,255,1)');fg.addColorStop(0.4,'rgba(220,240,255,0.6)');fg.addColorStop(1,'rgba(220,240,255,0)');
+  fx.fillStyle=fg;fx.fillRect(0,0,32,32);
+  const flakeTex=new THREE.Texture(fc);flakeTex.needsUpdate=true;
+  const SN=mob?260:650;
+  const sPos=new Float32Array(SN*3), sSpd=new Float32Array(SN*2);
+  for(let i=0;i<SN;i++){
+    sPos[i*3]=(Math.random()-0.5)*56;
+    sPos[i*3+1]=(Math.random()-0.5)*44;
+    sPos[i*3+2]=(Math.random()-0.5)*24;
+    sSpd[i*2]=0.012+Math.random()*0.04;     // fall speed
+    sSpd[i*2+1]=Math.random()*Math.PI*2;    // sway phase
   }
-  function mkSprite(tex,sz,op){
-    const s=new THREE.Sprite(new THREE.SpriteMaterial({
-      map:tex,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:op}));
-    s.scale.set(sz,sz,1);return s;
-  }
-  const gE=makeGlowTex(EMBER), gM=makeGlowTex(MOLTEN), gS=makeGlowTex(STEEL), gH=makeGlowTex(HOT);
-
-  /* ── forge floor ── */
-  const floorMat=new THREE.MeshStandardMaterial({color:0x0d0906,metalness:0.88,roughness:0.72});
-  const floorMesh=new THREE.Mesh(new THREE.CircleGeometry(60,48),floorMat);
-  floorMesh.rotation.x=-Math.PI/2;floorMesh.position.y=-0.05;sc.add(floorMesh);
-  // floor grate lines
-  (function(){
-    const pts=[],S=46,step=3.2;
-    for(let x=-S;x<=S;x+=step){pts.push(x,0,-S,x,0,S);}
-    for(let z=-S;z<=S;z+=step){pts.push(-S,0,z,S,0,z);}
-    const g=new THREE.BufferGeometry();
-    g.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
-    sc.add(new THREE.LineSegments(g,new THREE.LineBasicMaterial({
-      color:0x3a1a08,transparent:true,opacity:0.55})));
-  })();
-
-  /* ── iron pillars in a ring ── */
-  const pillarN=mob?5:8;
-  for(let i=0;i<pillarN;i++){
-    const a=(Math.PI*2/pillarN)*i+(Math.PI/pillarN);
-    const R=23+Math.random()*4;
-    const h=26+Math.random()*16;
-    const grp=new THREE.Group();
-    grp.position.set(Math.cos(a)*R,0,Math.sin(a)*R);
-    // main shaft — hex
-    const shaft=new THREE.Mesh(
-      new THREE.CylinderGeometry(0.85,1.15,h,6,1),
-      new THREE.MeshStandardMaterial({color:0x1a100a,metalness:0.96,roughness:0.45,
-        emissive:new THREE.Color(EMBER),emissiveIntensity:0.06}));
-    shaft.position.y=h/2;grp.add(shaft);
-    // iron collar rings
-    for(let j=0;j<3;j++){
-      const ry=(h*0.18)+(h*0.65/2)*j;
-      const collar=new THREE.Mesh(
-        new THREE.TorusGeometry(1.05,0.14,6,20),
-        new THREE.MeshStandardMaterial({color:0x251510,metalness:0.92,roughness:0.38,
-          emissive:new THREE.Color(EMBER),emissiveIntensity:0.12}));
-      collar.rotation.x=Math.PI/2;collar.position.y=ry;grp.add(collar);
-    }
-    // ember haze at base
-    const bg=mkSprite(gE,7,0.22);bg.position.set(0,0.4,0);grp.add(bg);
-    sc.add(grp);
-  }
-
-  /* ── four close sentinel pillars framing the artifact ── */
-  [[-9,-6],[9,-6],[-9,6],[9,6]].forEach(([px,pz])=>{
-    const h=20;
-    const grp=new THREE.Group();grp.position.set(px,0,pz);
-    const shaft=new THREE.Mesh(
-      new THREE.CylinderGeometry(0.65,0.85,h,6,1),
-      new THREE.MeshStandardMaterial({color:0x140c07,metalness:0.96,roughness:0.42,
-        emissive:new THREE.Color(EMBER),emissiveIntensity:0.08}));
-    shaft.position.y=h/2;grp.add(shaft);
-    // cap
-    const cap=new THREE.Mesh(
-      new THREE.ConeGeometry(1.1,2.2,6),
-      new THREE.MeshStandardMaterial({color:0x2a1508,metalness:0.9,roughness:0.4,
-        emissive:new THREE.Color(MOLTEN),emissiveIntensity:0.35}));
-    cap.position.y=h+1.1;grp.add(cap);
-    const cg=mkSprite(gM,5,0.5);cg.position.set(0,h+2.5,0);grp.add(cg);
-    sc.add(grp);
-  });
-
-  /* ── hanging chains ── */
-  const chains=[];
-  const chainMat=new THREE.MeshStandardMaterial({color:0x1a1008,metalness:0.95,roughness:0.38});
-  [[-9,0],[9,0],[0,-7],[0,7],[-6,-5],[6,-5],[-6,5],[6,5]].forEach(([cx,cz])=>{
-    const grp=new THREE.Group();
-    const startY=24+Math.random()*4;
-    grp.position.set(cx,startY,cz);
-    const len=10+Math.random()*8;
-    const nL=Math.floor(len/1.5);
-    for(let i=0;i<nL;i++){
-      const link=new THREE.Mesh(
-        new THREE.TorusGeometry(0.28,0.09,5,10),chainMat);
-      link.rotation.x=i%2===0?0:Math.PI/2;
-      link.position.y=-i*1.5;
-      grp.add(link);
-    }
-    sc.add(grp);chains.push(grp);
-  });
-
-  /* ═══ THE ARTIFACT — iron monolith with pulsing rune-slots ═══ */
-  const artifact=new THREE.Group();sc.add(artifact);
-  artifact.position.set(0,1.2,0);
-
-  // plinth — stepped base
-  [
-    {w:7.5,h:0.5,y:0.25},
-    {w:6.0,h:0.6,y:0.8},
-    {w:4.6,h:0.5,y:1.35},
-  ].forEach(({w,h,y})=>{
-    const m=new THREE.Mesh(
-      new THREE.BoxGeometry(w,h,w),
-      new THREE.MeshStandardMaterial({color:0x110c08,metalness:0.96,roughness:0.38}));
-    m.position.y=y;artifact.add(m);
-  });
-
-  // main body — tall dark iron monolith, slightly tapered
-  const bodyMat=new THREE.MeshStandardMaterial({
-    color:0x0d0a07,metalness:0.99,roughness:0.14});
-  const body=new THREE.Mesh(new THREE.BoxGeometry(3.6,13,3.6),bodyMat);
-  body.position.y=8.2;artifact.add(body);
-
-  // edge trim lines (gives it that forged-panel look)
-  const trimGeo=new THREE.EdgesGeometry(new THREE.BoxGeometry(3.62,13.02,3.62));
-  const trim=new THREE.LineSegments(trimGeo,
-    new THREE.LineBasicMaterial({color:EMBER,transparent:true,opacity:0.22,
-      blending:THREE.AdditiveBlending}));
-  trim.position.y=8.2;artifact.add(trim);
-
-  // rune slots — glowing horizontal channels
-  const runeMats=[];
-  const runeY=[3.5,5.4,7.2,9.0,10.8,12.5];
-  const runeC=[EMBER,MOLTEN,EMBER,HOT,EMBER,MOLTEN];
-  runeY.forEach((ry,i)=>{
-    const rm=new THREE.MeshBasicMaterial({
-      color:runeC[i],transparent:true,opacity:0.0,
-      blending:THREE.AdditiveBlending,depthWrite:false});
-    // front + back faces
-    [-1,1].forEach(side=>{
-      const r=new THREE.Mesh(new THREE.PlaneGeometry(3.0,0.18),rm.clone());
-      r.position.set(0,ry,side*1.82);
-      if(side===-1)r.rotation.y=Math.PI;
-      artifact.add(r);
-    });
-    // left + right faces
-    [-1,1].forEach(side=>{
-      const r=new THREE.Mesh(new THREE.PlaneGeometry(3.0,0.18),rm.clone());
-      r.rotation.y=Math.PI/2;r.position.set(side*1.82,ry,0);
-      artifact.add(r);
-    });
-    runeMats.push(rm);
-  });
-
-  // apex — dual interlocked octahedra (the forged gem)
-  const apexMat=new THREE.MeshStandardMaterial({
-    color:0xffe8a0,metalness:0.55,roughness:0.04,
-    emissive:new THREE.Color(MOLTEN),emissiveIntensity:2.0});
-  const apex1=new THREE.Mesh(new THREE.OctahedronGeometry(1.5,0),apexMat);
-  apex1.position.y=15.2;artifact.add(apex1);
-  const apex2=new THREE.Mesh(new THREE.OctahedronGeometry(1.0,0),apexMat);
-  apex2.position.y=15.2;apex2.rotation.y=Math.PI/4;apex2.rotation.x=Math.PI/6;artifact.add(apex2);
-  // apex glow halo
-  const apexGlow1=mkSprite(gH,18,1.0);apexGlow1.position.set(0,15.2,0);artifact.add(apexGlow1);
-  const apexGlow2=mkSprite(gM,9,0.8);apexGlow2.position.set(0,15.2,0);artifact.add(apexGlow2);
-  // body ambient glow
-  const bodyGlow=mkSprite(gE,28,0.55);bodyGlow.position.set(0,8,0);artifact.add(bodyGlow);
-
-  /* ═══ EMBER SPARKS ═══ */
-  const N=mob?700:1800;
-  const spkPos=new Float32Array(N*3);
-  const spkCol=new Float32Array(N*3);
-  const spkVel=new Float32Array(N*2); // [upSpeed, driftPhase]
-  const cA=new THREE.Color(EMBER),cB=new THREE.Color(MOLTEN),cC=new THREE.Color(HOT);
-  for(let i=0;i<N;i++){
-    const a=Math.random()*Math.PI*2,r=0.5+Math.random()*20;
-    spkPos[i*3]=Math.cos(a)*r;
-    spkPos[i*3+1]=-1+Math.random()*6;
-    spkPos[i*3+2]=Math.sin(a)*r;
-    const cc=[cA,cB,cC][Math.floor(Math.random()*3)];
-    spkCol[i*3]=cc.r;spkCol[i*3+1]=cc.g;spkCol[i*3+2]=cc.b;
-    spkVel[i*2]=0.03+Math.random()*0.14;
-    spkVel[i*2+1]=Math.random()*Math.PI*2;
-  }
-  const spkGeo=new THREE.BufferGeometry();
-  spkGeo.setAttribute('position',new THREE.BufferAttribute(spkPos,3));
-  spkGeo.setAttribute('color',new THREE.BufferAttribute(spkCol,3));
-  const sparks=new THREE.Points(spkGeo,new THREE.PointsMaterial({
-    size:mob?0.38:0.52,vertexColors:true,transparent:true,opacity:0.9,
-    blending:THREE.AdditiveBlending,depthWrite:false}));
-  sc.add(sparks);
-
-  /* ═══ DEEP CRUCIBLE CHAMBER ═══ */
-  const deep=new THREE.Group();deep.position.set(0,-48,0);sc.add(deep);
-  // crucible walls
-  const cWall=new THREE.Mesh(
-    new THREE.CylinderGeometry(14,9,10,20,1,true),
-    new THREE.MeshStandardMaterial({color:0x1a0c06,metalness:0.88,roughness:0.65,
-      side:THREE.BackSide}));
-  cWall.position.y=5;deep.add(cWall);
-  // molten pool — bright disc
-  const poolMat=new THREE.MeshBasicMaterial({
-    color:MOLTEN,transparent:true,opacity:0.0,
-    blending:THREE.AdditiveBlending,depthWrite:false});
-  const pool=new THREE.Mesh(new THREE.CircleGeometry(11,36),poolMat);
-  pool.rotation.x=-Math.PI/2;pool.position.y=0.1;deep.add(pool);
-  const poolGlow=mkSprite(gM,90,0.0);poolGlow.position.set(0,2,0);deep.add(poolGlow);
-  const poolGlow2=mkSprite(gE,50,0.0);poolGlow2.position.set(0,2,0);deep.add(poolGlow2);
+  const sGeo=new THREE.BufferGeometry();
+  sGeo.setAttribute('position',new THREE.BufferAttribute(sPos,3));
+  const snow=new THREE.Points(sGeo,new THREE.PointsMaterial({
+    map:flakeTex,size:mob?0.5:0.42,transparent:true,opacity:0.7,depthWrite:false,
+    blending:THREE.AdditiveBlending,color:0xdfeeff}));
+  snowScene.add(snow);
 
   /* ── interaction ── */
-  let scY=0,prog=0,tPmx=0,tPmy=0,pmx=0,pmy=0,orbitA=0.8;
+  let scY=0,prog=0,tmx=0,tmy=0,mx=0,my=0;
+  const clk=new THREE.Clock();
   addEventListener('scroll',()=>{scY=window.scrollY;},{passive:true});
-  if(!reduce)addEventListener('pointermove',e=>{
-    tPmx=(e.clientX/innerWidth-0.5)*2;
-    tPmy=(e.clientY/innerHeight-0.5)*2;
-  });
+  if(!reduce)addEventListener('pointermove',e=>{tmx=(e.clientX/innerWidth-0.5)*2;tmy=(e.clientY/innerHeight-0.5)*2;});
   addEventListener('resize',()=>{
-    cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();
     ren.setSize(innerWidth,innerHeight);
+    auMat.uniforms.iRes.value.set(innerWidth,innerHeight);
+    snowCam.aspect=innerWidth/innerHeight;snowCam.updateProjectionMatrix();
   });
-  const hudTemp=document.getElementById('hud-temp');
-  const hudDep=document.getElementById('hud-depth');
-  const chambers=['CHAMBER 01 · UPPER FORGE','CHAMBER 02 · ANVIL HALL','CHAMBER 03 · CRUCIBLE PIT','CHAMBER 04 · CORE MELT'];
+  const hudAlt=document.getElementById('hud-depth');
 
   function frame(){
     requestAnimationFrame(frame);
     const t=clk.getElapsedTime();
     const docH=Math.max(1,document.documentElement.scrollHeight-innerHeight);
-    const rawProg=Math.min(1,Math.max(0,scY/docH));
-    prog+=(rawProg-prog)*0.055;
-    pmx+=(tPmx-pmx)*0.04;pmy+=(tPmy-pmy)*0.04;
+    const raw=Math.min(1,Math.max(0,scY/docH));
+    prog+=(raw-prog)*0.05;
+    mx+=(tmx-mx)*0.04;my+=(tmy-my)*0.04;
 
-    /* camera: orbit at hero, descend into crucible on scroll */
-    if(!reduce)orbitA+=0.0024;
-    const orbitR=28-prog*14;
-    cam.position.x=Math.sin(orbitA)*orbitR+pmx*5;
-    cam.position.z=Math.cos(orbitA)*orbitR;
-    cam.position.y=10+Math.sin(t*0.22)*0.7 - prog*54 + pmy*2;
-    cam.lookAt(pmx*3, 8-prog*48, 0);
+    auMat.uniforms.iTime.value=t;
+    auMat.uniforms.scroll.value=prog;
+    auMat.uniforms.mouse.value.set(mx,my);
 
-    /* artifact: slow counter-spin, rune pulse wave */
-    artifact.rotation.y=t*0.08;
-    apex1.rotation.y=t*0.5;apex2.rotation.y=-t*0.7;
-    apexMat.emissiveIntensity=1.7+0.8*Math.sin(t*2.2);
-    apexGlow1.scale.setScalar(16+5*Math.sin(t*2.2));
-    apexGlow2.scale.setScalar(8+3*Math.sin(t*2.5+1));
-    bodyGlow.scale.setScalar(26+4*Math.sin(t*0.9));
-    // rune pulse: travelling wave up the monolith
-    runeMats.forEach((rm,i)=>{
-      const op=0.55+0.45*Math.sin(t*1.6-i*0.52);
-      // update all clones of this material's color channel
-      artifact.children.forEach(ch=>{
-        if(ch.material&&ch.material.color&&ch.material.color.getHex()===runeC[i]){
-          ch.material.opacity=Math.max(0.02,op);
-        }
-      });
-    });
-
-    /* lights */
-    pitL.intensity=4.0+1.5*Math.sin(t*0.9);
-    roveL.position.set(Math.cos(t*0.45)*16,5+Math.sin(t*0.3)*3,Math.sin(t*0.45)*16);
-    roveL.intensity=3.0+1.4*Math.sin(t*1.8);
-    rimL.intensity=1.8+0.6*Math.sin(t*0.6);
-    deepL.intensity=prog*6.5;
-
-    /* chains sway */
-    chains.forEach((c,i)=>{
-      c.rotation.z=Math.sin(t*0.35+i*0.8)*0.07;
-      c.rotation.x=Math.sin(t*0.28+i*0.6)*0.05;
-    });
-
-    /* sparks rise, drift, wrap */
-    const pa=spkGeo.attributes.position;
-    for(let i=0;i<N;i++){
-      pa.array[i*3+1]+=spkVel[i*2];
-      pa.array[i*3]+=Math.sin(t*0.7+spkVel[i*2+1])*0.008;
-      pa.array[i*3+2]+=Math.cos(t*0.5+spkVel[i*2+1])*0.008;
-      if(pa.array[i*3+1]>26) pa.array[i*3+1]=-1+Math.random()*3;
+    // snow falls + sways, gentle camera parallax
+    const pa=sGeo.attributes.position;
+    for(let i=0;i<SN;i++){
+      pa.array[i*3+1]-=sSpd[i*2];
+      pa.array[i*3]+=Math.sin(t*0.6+sSpd[i*2+1])*0.01;
+      if(pa.array[i*3+1]<-22) pa.array[i*3+1]=22;
     }
     pa.needsUpdate=true;
+    snowCam.position.x=mx*2.2;
+    snowCam.position.y=-my*1.4 - prog*4;
+    snowCam.lookAt(0,-prog*4,0);
 
-    /* deep chamber reveals on scroll */
-    poolMat.opacity=Math.min(0.75,prog*2.2);
-    poolGlow.material.opacity=prog*0.9;
-    poolGlow2.material.opacity=prog*0.7;
+    if(hudAlt)hudAlt.textContent='ALTITUDE '+Math.round(prog*420)+' km';
 
-    /* HUD */
-    if(hudTemp)hudTemp.textContent='CORE TEMP '+(Math.round(2400+rawProg*4600+Math.sin(t)*80))+' K';
-    if(hudDep)hudDep.textContent=chambers[Math.min(3,Math.floor(rawProg*4))];
-
-    ren.render(sc,cam);
+    ren.clear();
+    ren.render(auScene,auCam);
+    ren.clearDepth();
+    ren.render(snowScene,snowCam);
   }
   frame();
 })();
@@ -2347,7 +2153,7 @@ function animate(){
   function size(){W=innerWidth;H=innerHeight;c.width=W*DPR;c.height=H*DPR;c.style.width=W+'px';c.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);}
   size();addEventListener('resize',size);
   const P=[],MAX=260;let lx=W/2,ly=H/2,cmx=W/2,cmy=H/2;
-  const cols=['rgba(255,106,26,','rgba(255,60,10,','rgba(255,200,80,','rgba(255,160,60,'];
+  const cols=['rgba(95,230,196,','rgba(176,140,255,','rgba(126,200,255,','rgba(230,245,255,'];
   addEventListener('pointermove',e=>{
     const dx=e.clientX-lx,dy=e.clientY-ly,sp=Math.hypot(dx,dy);
     cmx=e.clientX;cmy=e.clientY;
