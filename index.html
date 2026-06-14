@@ -12,12 +12,13 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#060a16;--ink:#eaf2ff;--dim:#5a6b8c;--muted:#9fb3d4;
-  --amber:#5fe6c4;--rose:#b08cff;--cyan:#7ec8ff;--violet:#b08cff;
-  --line:rgba(95,230,196,0.10);
+  --bg:#06010f;--ink:#fff5e8;--dim:#8a6a75;--muted:#c4a0b0;
+  --amber:#ff7a22;--rose:#d93fff;--cyan:#7dd3e8;--violet:#d93fff;
+  --line:rgba(255,122,34,0.10);
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --serif:'Instrument Serif',Georgia,serif;
   --sans:'Space Grotesk',system-ui,sans-serif;
+  font-feature-settings:'ss01','kern';
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;overflow-x:hidden}
@@ -189,19 +190,14 @@ footer{border-top:1px solid var(--line);padding:24px 8vw;display:flex;justify-co
    UNIFIED THEME SYSTEM — Cosmic (default) vs GPU Grid
    ═══════════════════════════════════════════════ */
 :root{
-  --bg:#060a16;--ink:#eaf2ff;--dim:#5a6b8c;--muted:#9fb3d4;
-  --amber:#5fe6c4;--rose:#b08cff;--cyan:#7ec8ff;--violet:#b08cff;
-  --line:rgba(95,230,196,0.10);
-  --accent:var(--amber);
-  --mono:'JetBrains Mono',ui-monospace,monospace;
-  --serif:'Instrument Serif',Georgia,serif;
-  --sans:'Space Grotesk',system-ui,sans-serif;
+  --bg:#06010f;--ink:#fff5e8;--dim:#8a6a75;--muted:#c4a0b0;
+  --amber:#ff7a22;--rose:#d93fff;--cyan:#7dd3e8;--violet:#d93fff;
+  --line:rgba(255,122,34,0.10);--accent:var(--amber);
 }
 [data-theme="gpu"]{
   --bg:#010a14;--ink:#e8f8ff;--dim:#4a7a9b;--muted:#8ab4cc;
   --amber:#7edfff;--rose:#c8f0ff;--cyan:#7edfff;--violet:#7edfff;
-  --line:rgba(126,223,255,0.12);
-  --accent:var(--amber);
+  --line:rgba(126,223,255,0.12);--accent:var(--amber);
 }
 
 /* ══════════════════════════════════
@@ -1004,14 +1000,17 @@ nav{
 <body>
 
 <canvas id="bg-cosmic"></canvas>
-<div id="aurora-glow"></div>
+<canvas id="bg-gpu"></canvas>
+<canvas id="bg-photoreal"></canvas>
+<div id="scan"></div>
+<div id="theme-flash"></div>
 <div id="vignette"></div>
 <canvas id="particles"></canvas>
 <div id="hud-frame">
-  <span class="hud-c tl">✦ AURORA BOREALIS · 68°N</span>
-  <span class="hud-c tr">LAT 68.4° · LON 18.2°</span>
-  <span class="hud-c bl" id="hud-temp">Kp INDEX 5.0 · ACTIVE</span>
-  <span class="hud-c br" id="hud-depth">ALTITUDE 0 km</span>
+  <span class="hud-c tl">✦ SUPERNOVA · SN 1987A</span>
+  <span class="hud-c tr">RA 05h 35m · DEC −05°</span>
+  <span class="hud-c bl" id="hud-temp">LUMINOSITY 1.0 · ACTIVE</span>
+  <span class="hud-c br" id="hud-depth">DEPTH 0 kpc</span>
 </div>
 
 <div class="app">
@@ -1026,7 +1025,7 @@ nav{
     <li><a href="#stack">Stack</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <div style="display:flex;gap:10px;align-items:center"><a href="https://drive.google.com/file/u/0/d/1rebI8SXe8pjzczuKqacmOeyYnYRHAf_g/view" target="_blank" class="cta">Résumé ↗</a></div>
+  <div style="display:flex;gap:10px;align-items:center"><div id="theme-toggle-wrap"><div id="theme-toggle" role="button" onclick="toggleTheme()" title="Switch theme" aria-label="Switch theme"><span id="tt-slider"></span><span class="tt-opt active" id="tt-cosmic"><span class="tt-dot"></span><span class="tt-ico">✦</span><span class="tt-txt">Supernova</span></span><span class="tt-opt" id="tt-gpu"><span class="tt-ico">❄</span><span class="tt-txt">Cryo</span></span></div></div><a href="https://drive.google.com/file/u/0/d/1rebI8SXe8pjzczuKqacmOeyYnYRHAf_g/view" target="_blank" class="cta">Résumé ↗</a></div>
 </nav>
 
 <section id="hero">
@@ -1045,7 +1044,7 @@ nav{
     <a href="https://www.linkedin.com/in/adit4443ya/" target="_blank" class="hl">LinkedIn</a>
     <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="hl">GSoC Blog</a>
   </div>
-  <div class="scroll-tag">CHASE THE LIGHTS · SCROLL TO DRIFT</div>
+  <div class="scroll-tag">WITNESS THE IGNITION · SCROLL TO DESCEND</div>
 </section>
 
 <style>
@@ -1638,7 +1637,7 @@ nav{
 </section>
 
 <footer>
-  <div class="ft">© 2026 <span>ADITYA TRIVEDI</span> · Compiler Engineer · Aurora Borealis · WebGL + Three.js</div>
+  <div class="ft">© 2026 <span>ADITYA TRIVEDI</span> · Compiler Engineer · Supernova ⇄ Cryo · WebGL + Three.js</div>
   
 </footer>
 
@@ -1996,155 +1995,7 @@ function animate(){
   compMat.uniforms.tScene.value=rtScene.texture; compMat.uniforms.tBloom.value=rtH1.texture;
   pass(compMat,null);
 }
-/* ════════════════════════════════════════════════════════════════
-   ✦  AURORA BOREALIS  ·  living northern-lights sky (Three.js r128)
-   A full-screen WebGL aurora: rippling curtains of teal → violet light
-   over a star-field, with layered mountain silhouettes and drifting
-   snow. Curtains shift and brighten as you scroll; mouse parallax pans
-   the sky. All procedural — no external assets.
-   (The ray-marched black-hole shader above remains defined but unused.)
-   ════════════════════════════════════════════════════════════════ */
-(function(){
-  const cv=document.getElementById('bg-cosmic');
-  if(!window.THREE||!cv)return;
-  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const mob=innerWidth<760;
-
-  const ren=new THREE.WebGLRenderer({canvas:cv,antialias:false,alpha:false,powerPreference:'high-performance'});
-  ren.setPixelRatio(Math.min(devicePixelRatio,mob?1.5:2));
-  ren.setSize(innerWidth,innerHeight);
-  ren.autoClear=false;
-
-  /* ── fullscreen aurora shader pass ── */
-  const auScene=new THREE.Scene();
-  const auCam=new THREE.Camera();
-  const VERT='varying vec2 vUv; void main(){ vUv=position.xy*0.5+0.5; gl_Position=vec4(position,1.0); }';
-  const FRAG=[
-  'precision highp float;',
-  'varying vec2 vUv;',
-  'uniform vec2 iRes; uniform float iTime; uniform float scroll; uniform vec2 mouse;',
-  'float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }',
-  'float noise(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f);',
-  '  float a=hash(i),b=hash(i+vec2(1,0)),c=hash(i+vec2(0,1)),d=hash(i+vec2(1,1));',
-  '  return mix(mix(a,b,f.x),mix(c,d,f.x),f.y); }',
-  'float fbm(vec2 p){ float s=0.0,a=0.5; for(int i=0;i<5;i++){ s+=a*noise(p); p*=2.02; a*=0.5; } return s; }',
-  'float stars(vec2 uv){ vec2 g=uv*vec2(iRes.x/iRes.y,1.0)*130.0; vec2 id=floor(g),f=fract(g)-0.5;',
-  '  float h=hash(id); float st=step(0.986,h); float tw=0.5+0.5*sin(iTime*2.0+h*100.0);',
-  '  return st*smoothstep(0.16,0.0,length(f))*tw; }',
-  'void main(){',
-  '  vec2 uv=vUv; float aspect=iRes.x/iRes.y;',
-  '  uv.x += mouse.x*0.04;',
-  '  vec3 col=mix(vec3(0.015,0.03,0.07), vec3(0.02,0.05,0.13), uv.y);',
-  '  col=mix(col, vec3(0.04,0.07,0.16), smoothstep(0.45,1.0,uv.y)*0.5);',
-  '  col+=vec3(0.8,0.9,1.0)*stars(uv)*smoothstep(0.32,0.7,uv.y);',
-  '  float t=iTime*0.08 + scroll*0.7;',
-  '  float aur=0.0; vec3 acol=vec3(0.0);',
-  '  for(int i=0;i<4;i++){',
-  '    float fi=float(i);',
-  '    float wave=fbm(vec2(uv.x*2.0+fi*7.3, t*0.7+fi))*0.6;',
-  '    float xpos=uv.x*3.0+fi*2.1+sin(uv.y*3.0+t+fi)*0.25;',
-  '    float ray=fbm(vec2(xpos*1.6, uv.y*1.2 - t*0.5 + fi*3.0));',
-  '    ray=pow(ray,2.4);',
-  '    float band=smoothstep(0.26,0.55,uv.y)*(1.0-smoothstep(0.62,1.06,uv.y));',
-  '    float v=ray*band*(0.72-fi*0.12);',
-  '    vec3 lc=mix(vec3(0.15,0.95,0.6), vec3(0.5,0.35,1.0), uv.y*0.9+fi*0.05);',
-  '    lc=mix(lc, vec3(0.92,0.4,0.85), smoothstep(0.7,1.02,uv.y)*0.6);',
-  '    acol+=lc*v; aur+=v;',
-  '  }',
-  '  acol+=vec3(0.7,1.0,0.9)*pow(aur,2.0)*0.5;',
-  '  col+=acol*1.5;',
-  '  float ridge=0.17+fbm(vec2(uv.x*3.0+10.0,0.0))*0.10+fbm(vec2(uv.x*8.0,5.0))*0.03;',
-  '  float ridge2=0.10+fbm(vec2(uv.x*2.0-4.0,2.0))*0.055;',
-  '  col+=vec3(0.1,0.45,0.32)*smoothstep(ridge+0.07,ridge,uv.y)*smoothstep(ridge-0.03,ridge+0.03,uv.y)*aur*0.5;',
-  '  float mtn=smoothstep(ridge+0.004,ridge-0.004,uv.y);',
-  '  col=mix(col, vec3(0.012,0.018,0.04), mtn);',
-  '  float mtn2=smoothstep(ridge2+0.004,ridge2-0.004,uv.y);',
-  '  col=mix(col, vec3(0.0,0.002,0.01), mtn2);',
-  '  float vig=smoothstep(1.35,0.35,length((vUv-0.5)*vec2(aspect,1.0)));',
-  '  col*=mix(0.55,1.0,vig);',
-  '  col=vec3(1.0)-exp(-col*1.5);',
-  '  col=pow(col, vec3(1.0/2.2));',
-  '  float gr=fract(sin(dot(vUv*iRes,vec2(12.9898,78.233)))*43758.5453);',
-  '  col+=(gr-0.5)*0.015;',
-  '  gl_FragColor=vec4(col,1.0);',
-  '}'].join('\n');
-  const auMat=new THREE.ShaderMaterial({vertexShader:VERT,fragmentShader:FRAG,depthTest:false,depthWrite:false,
-    uniforms:{ iRes:{value:new THREE.Vector2(innerWidth,innerHeight)}, iTime:{value:0},
-      scroll:{value:0}, mouse:{value:new THREE.Vector2(0,0)} }});
-  auScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),auMat));
-
-  /* ── drifting snow particles (perspective, on top) ── */
-  const snowScene=new THREE.Scene();
-  const snowCam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,120);
-  snowCam.position.z=14;
-  // soft round flake texture
-  const fc=document.createElement('canvas');fc.width=fc.height=32;
-  const fx=fc.getContext('2d');
-  const fg=fx.createRadialGradient(16,16,0,16,16,16);
-  fg.addColorStop(0,'rgba(255,255,255,1)');fg.addColorStop(0.4,'rgba(220,240,255,0.6)');fg.addColorStop(1,'rgba(220,240,255,0)');
-  fx.fillStyle=fg;fx.fillRect(0,0,32,32);
-  const flakeTex=new THREE.Texture(fc);flakeTex.needsUpdate=true;
-  const SN=mob?260:650;
-  const sPos=new Float32Array(SN*3), sSpd=new Float32Array(SN*2);
-  for(let i=0;i<SN;i++){
-    sPos[i*3]=(Math.random()-0.5)*56;
-    sPos[i*3+1]=(Math.random()-0.5)*44;
-    sPos[i*3+2]=(Math.random()-0.5)*24;
-    sSpd[i*2]=0.012+Math.random()*0.04;     // fall speed
-    sSpd[i*2+1]=Math.random()*Math.PI*2;    // sway phase
-  }
-  const sGeo=new THREE.BufferGeometry();
-  sGeo.setAttribute('position',new THREE.BufferAttribute(sPos,3));
-  const snow=new THREE.Points(sGeo,new THREE.PointsMaterial({
-    map:flakeTex,size:mob?0.5:0.42,transparent:true,opacity:0.7,depthWrite:false,
-    blending:THREE.AdditiveBlending,color:0xdfeeff}));
-  snowScene.add(snow);
-
-  /* ── interaction ── */
-  let scY=0,prog=0,tmx=0,tmy=0,mx=0,my=0;
-  const clk=new THREE.Clock();
-  addEventListener('scroll',()=>{scY=window.scrollY;},{passive:true});
-  if(!reduce)addEventListener('pointermove',e=>{tmx=(e.clientX/innerWidth-0.5)*2;tmy=(e.clientY/innerHeight-0.5)*2;});
-  addEventListener('resize',()=>{
-    ren.setSize(innerWidth,innerHeight);
-    auMat.uniforms.iRes.value.set(innerWidth,innerHeight);
-    snowCam.aspect=innerWidth/innerHeight;snowCam.updateProjectionMatrix();
-  });
-  const hudAlt=document.getElementById('hud-depth');
-
-  function frame(){
-    requestAnimationFrame(frame);
-    const t=clk.getElapsedTime();
-    const docH=Math.max(1,document.documentElement.scrollHeight-innerHeight);
-    const raw=Math.min(1,Math.max(0,scY/docH));
-    prog+=(raw-prog)*0.05;
-    mx+=(tmx-mx)*0.04;my+=(tmy-my)*0.04;
-
-    auMat.uniforms.iTime.value=t;
-    auMat.uniforms.scroll.value=prog;
-    auMat.uniforms.mouse.value.set(mx,my);
-
-    // snow falls + sways, gentle camera parallax
-    const pa=sGeo.attributes.position;
-    for(let i=0;i<SN;i++){
-      pa.array[i*3+1]-=sSpd[i*2];
-      pa.array[i*3]+=Math.sin(t*0.6+sSpd[i*2+1])*0.01;
-      if(pa.array[i*3+1]<-22) pa.array[i*3+1]=22;
-    }
-    pa.needsUpdate=true;
-    snowCam.position.x=mx*2.2;
-    snowCam.position.y=-my*1.4 - prog*4;
-    snowCam.lookAt(0,-prog*4,0);
-
-    if(hudAlt)hudAlt.textContent='ALTITUDE '+Math.round(prog*420)+' km';
-
-    ren.clear();
-    ren.render(auScene,auCam);
-    ren.clearDepth();
-    ren.render(snowScene,snowCam);
-  }
-  frame();
-})();
+if(window.THREE){initThree();}else{addEventListener('load',()=>window.THREE&&initThree());}
 
 /* ───────────── PARTICLE CURSOR ───────────── */
 (()=>{
@@ -2153,7 +2004,7 @@ function animate(){
   function size(){W=innerWidth;H=innerHeight;c.width=W*DPR;c.height=H*DPR;c.style.width=W+'px';c.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);}
   size();addEventListener('resize',size);
   const P=[],MAX=260;let lx=W/2,ly=H/2,cmx=W/2,cmy=H/2;
-  const cols=['rgba(95,230,196,','rgba(176,140,255,','rgba(126,200,255,','rgba(230,245,255,'];
+  const cols=['rgba(255,122,34,','rgba(217,63,255,','rgba(125,211,232,','rgba(255,240,216,'];
   addEventListener('pointermove',e=>{
     const dx=e.clientX-lx,dy=e.clientY-ly,sp=Math.hypot(dx,dy);
     cmx=e.clientX;cmy=e.clientY;
