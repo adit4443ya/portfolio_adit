@@ -14,28 +14,22 @@ export default function FollowCamera() {
   const curLook = useRef(new THREE.Vector3(0, 0, -16));
 
   useFrame((state, delta) => {
-    // Position: 9 units behind the heading, 5.5 up.
-    desired
-      .copy(carState.forward)
-      .multiplyScalar(-9)
-      .add(carState.position);
-    desired.y = carState.position.y + 5.5;
+    // Position: trail behind the heading, up and back (tuned for higher speed).
+    desired.copy(carState.forward).multiplyScalar(-12).add(carState.position);
+    desired.y = carState.position.y + 6.5;
 
-    // Aim a little ahead of the rover.
-    lookTarget
-      .copy(carState.forward)
-      .multiplyScalar(3)
-      .add(carState.position);
-    lookTarget.y += 0.6;
+    // Aim ahead of the rover.
+    lookTarget.copy(carState.forward).multiplyScalar(5).add(carState.position);
+    lookTarget.y += 0.8;
 
-    easing.damp3(state.camera.position, desired, 0.28, delta);
-    easing.damp3(curLook.current, lookTarget, 0.22, delta);
+    easing.damp3(state.camera.position, desired, 0.18, delta);
+    easing.damp3(curLook.current, lookTarget, 0.18, delta);
     state.camera.lookAt(curLook.current);
 
     // Subtle FOV kick while boosting for a sense of speed.
     const cam = state.camera as THREE.PerspectiveCamera;
     if (cam.isPerspectiveCamera) {
-      const targetFov = carState.boosting ? 58 : 50;
+      const targetFov = carState.boosting ? 60 : 50;
       cam.fov = THREE.MathUtils.damp(cam.fov, targetFov, 6, delta);
       cam.updateProjectionMatrix();
     }

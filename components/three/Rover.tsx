@@ -9,9 +9,9 @@ import { carState, SPAWN } from "@/lib/carState";
 import { useStore } from "@/lib/store";
 
 // ── Arcade tuning (all freely tweakable for "feel") ───────────────────────
-const ENGINE = 30; // forward impulse strength
-const MAX_SPEED = 17; // m/s cap
-const TURN = 2.7; // steering rad/s
+const ENGINE = 78; // forward impulse strength
+const MAX_SPEED = 34; // m/s cap
+const TURN = 3.2; // steering rad/s
 const BOOST = 1.7; // shift multiplier
 const ACCENT = "#e8a26b";
 
@@ -24,11 +24,10 @@ const impulse = new THREE.Vector3();
 export default function Rover() {
   const body = useRef<RapierRigidBody>(null);
   const visual = useRef<THREE.Group>(null);
-  const wheels = useRef<THREE.Group>(null);
   const brakeMat = useRef<THREE.MeshStandardMaterial>(null);
   const [, getKeys] = useKeyboardControls();
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const rb = body.current;
     if (!rb) return;
     const dt = Math.min(delta, 1 / 30); // clamp to keep physics stable on lag
@@ -67,10 +66,11 @@ export default function Rover() {
       rb.applyImpulse({ x: impulse.x, y: 0, z: impulse.z }, true);
     }
 
-    // Steer — scale by speed so it can't pivot in place, invert in reverse.
+    // Steer — positive yaw turns the (-Z facing) car left, so press-left = left.
+    // Direction-consistent (no reverse inversion) to keep controls predictable.
     let steerScale = THREE.MathUtils.clamp(speed / 2.5, 0, 1);
-    if (throttle !== 0) steerScale = Math.max(steerScale, 0.4);
-    rb.setAngvel({ x: 0, y: -steer * TURN * steerScale * heading, z: 0 }, true);
+    if (throttle !== 0) steerScale = Math.max(steerScale, 0.5);
+    rb.setAngvel({ x: 0, y: steer * TURN * steerScale, z: 0 }, true);
 
     // Brake / hold still while reading.
     if (braking || activeId) {
@@ -96,25 +96,20 @@ export default function Rover() {
     carState.forward.copy(forward);
     carState.speed = speed * heading;
 
-    // Visual body lean into turns + slight pitch under throttle.
+    // Visual hover bob + body lean into turns + slight pitch under throttle.
     if (visual.current) {
       const av = rb.angvel().y;
-      const leanZ = THREE.MathUtils.clamp(-av * 0.06, -0.22, 0.22);
-      const pitchX = THREE.MathUtils.clamp(-throttle * 0.05, -0.06, 0.06);
+      const leanZ = THREE.MathUtils.clamp(-av * 0.05, -0.22, 0.22);
+      const pitchX = THREE.MathUtils.clamp(-throttle * 0.04, -0.05, 0.05);
       visual.current.rotation.z = THREE.MathUtils.damp(visual.current.rotation.z, leanZ, 8, dt);
       visual.current.rotation.x = THREE.MathUtils.damp(visual.current.rotation.x, pitchX, 8, dt);
+      visual.current.position.y = Math.sin(state.clock.elapsedTime * 3) * 0.05;
     }
 
-    // Brake lights glow when braking or reversing.
+    // Thruster glow brightens when braking or reversing.
     if (brakeMat.current) {
-      const lit = braking || throttle < 0 ? 6 : 0.5;
+      const lit = braking || throttle < 0 ? 6 : 1.4;
       brakeMat.current.emissiveIntensity = THREE.MathUtils.damp(brakeMat.current.emissiveIntensity, lit, 10, dt);
-    }
-
-    // Spin wheels for a touch of life.
-    if (wheels.current) {
-      const spin = carState.speed * dt * 1.6;
-      for (const w of wheels.current.children) w.rotation.x -= spin;
     }
   });
 
@@ -124,74 +119,100 @@ export default function Rover() {
       colliders={false}
       position={SPAWN}
       enabledRotations={[false, true, false]}
-      linearDamping={0.8}
-      angularDamping={4}
+      linearDamping={0.55}
+      angularDamping={5}
       canSleep={false}
       ccd
     >
-      <CuboidCollider args={[1, 0.45, 2]} mass={1.6} />
+      <CuboidCollider args={[0.95, 0.45, 1.9]} mass={1.1} />
 
       <group ref={visual}>
-        {/* chassis */}
-        <mesh castShadow position={[0, 0.15, 0]}>
-          <boxGeometry args={[1.9, 0.55, 3.7]} />
-          <meshStandardMaterial color="#14181f" metalness={0.7} roughness={0.35} />
-        </mesh>
-        {/* cabin */}
-        <mesh castShadow position={[0, 0.62, -0.15]}>
-          <boxGeometry args={[1.35, 0.5, 1.7]} />
-          <meshStandardMaterial color="#0c0f14" metalness={0.5} roughness={0.3} />
-        </mesh>
-        {/* glowing accent strip */}
-        <mesh position={[0, 0.46, 0]}>
-          <boxGeometry args={[1.94, 0.06, 3.74]} />
-          <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={2.4} toneMapped={false} />
-        </mesh>
-        {/* headlight bar */}
-        <mesh position={[0, 0.2, -1.9]}>
-          <boxGeometry args={[1.4, 0.18, 0.1]} />
-          <meshStandardMaterial color="#fff4e6" emissive="#fff0d8" emissiveIntensity={3} toneMapped={false} />
-        </mesh>
-        {/* brake lights */}
-        <mesh position={[0, 0.2, 1.9]}>
-          <boxGeometry args={[1.4, 0.16, 0.1]} />
-          <meshStandardMaterial ref={brakeMat} color="#ff5a5a" emissive="#ff2d2d" emissiveIntensity={0.5} toneMapped={false} />
+        {/* underglow */}
+        <mesh position={[0, 0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[2, 4]} />
+          <meshBasicMaterial
+            color={ACCENT}
+            transparent
+            opacity={0.45}
+            toneMapped={false}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
         </mesh>
 
-        {/* wheels */}
-        <group ref={wheels}>
-          {(
-            [
-              [-1.0, -0.15, 1.25],
-              [1.0, -0.15, 1.25],
-              [-1.0, -0.15, -1.25],
-              [1.0, -0.15, -1.25],
-            ] as const
-          ).map((pos, i) => (
-            <group key={i} position={pos} rotation={[0, 0, Math.PI / 2]}>
-              <mesh castShadow>
-                <cylinderGeometry args={[0.45, 0.45, 0.35, 18]} />
-                <meshStandardMaterial color="#05070a" metalness={0.4} roughness={0.6} />
-              </mesh>
-              <mesh position={[0, 0, 0]}>
-                <cylinderGeometry args={[0.2, 0.2, 0.37, 12]} />
-                <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={1.2} toneMapped={false} />
-              </mesh>
-            </group>
-          ))}
-        </group>
+        {/* lower hull */}
+        <mesh castShadow position={[0, 0.34, 0]}>
+          <boxGeometry args={[1.7, 0.34, 3.5]} />
+          <meshStandardMaterial color="#0e1219" metalness={0.92} roughness={0.22} />
+        </mesh>
+        {/* bevelled deck */}
+        <mesh castShadow position={[0, 0.57, 0.15]}>
+          <boxGeometry args={[1.42, 0.22, 2.7]} />
+          <meshStandardMaterial color="#0b0e15" metalness={0.85} roughness={0.26} />
+        </mesh>
+        {/* nose splitter */}
+        <mesh castShadow position={[0, 0.24, -1.95]}>
+          <boxGeometry args={[1.55, 0.14, 0.55]} />
+          <meshStandardMaterial color="#0b0e15" metalness={0.8} roughness={0.3} />
+        </mesh>
 
-        {/* glowing motion trail emitted from the rear */}
-        <Trail width={2.2} length={5} color={ACCENT} attenuation={(w) => w * w} local>
-          <mesh position={[0, 0.25, 2]}>
-            <sphereGeometry args={[0.06, 8, 8]} />
-            <meshBasicMaterial color={ACCENT} toneMapped={false} />
+        {/* tinted canopy */}
+        <mesh castShadow position={[0, 0.78, -0.4]} scale={[1, 0.62, 1.25]}>
+          <sphereGeometry args={[0.62, 24, 18]} />
+          <meshStandardMaterial
+            color="#0a1320"
+            metalness={0.5}
+            roughness={0.06}
+            transparent
+            opacity={0.86}
+            emissive={ACCENT}
+            emissiveIntensity={0.25}
+          />
+        </mesh>
+
+        {/* neon side rails */}
+        {[-1, 1].map((s) => (
+          <mesh key={s} position={[s * 0.87, 0.42, 0]}>
+            <boxGeometry args={[0.06, 0.1, 3.2]} />
+            <meshStandardMaterial color={ACCENT} emissive={ACCENT} emissiveIntensity={2.8} toneMapped={false} />
           </mesh>
-        </Trail>
+        ))}
+
+        {/* headlights */}
+        {[-1, 1].map((s) => (
+          <mesh key={s} position={[s * 0.55, 0.36, -1.82]}>
+            <boxGeometry args={[0.42, 0.1, 0.12]} />
+            <meshStandardMaterial color="#eaf6ff" emissive="#dff0ff" emissiveIntensity={3.5} toneMapped={false} />
+          </mesh>
+        ))}
+
+        {/* rear engine pods */}
+        {[-1, 1].map((s) => (
+          <mesh key={s} castShadow position={[s * 0.55, 0.45, 1.85]} rotation={[Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[0.27, 0.31, 0.55, 16]} />
+            <meshStandardMaterial color="#0c1018" metalness={0.9} roughness={0.3} />
+          </mesh>
+        ))}
+        {/* thruster light bar (also the brake/reverse indicator) */}
+        <mesh position={[0, 0.45, 2.12]}>
+          <boxGeometry args={[1.4, 0.16, 0.08]} />
+          <meshStandardMaterial ref={brakeMat} color={ACCENT} emissive={ACCENT} emissiveIntensity={1.4} toneMapped={false} />
+        </mesh>
+
+        {/* twin glowing motion trails from the thrusters */}
+        {[-1, 1].map((s) => (
+          <Trail key={s} width={2.6} length={6} color={ACCENT} attenuation={(w) => w * w} local>
+            <mesh position={[s * 0.55, 0.45, 2.1]}>
+              <sphereGeometry args={[0.06, 8, 8]} />
+              <meshBasicMaterial color={ACCENT} toneMapped={false} />
+            </mesh>
+          </Trail>
+        ))}
       </group>
 
-      {/* moving underglow */}
-      <pointLight position={[0, 0.2, 0]} color={ACCENT} intensity={6} distance={9} decay={2} />
+      {/* moving lights */}
+      <pointLight position={[0, 0.2, 0]} color={ACCENT} intensity={7} distance={10} decay={2} />
+      <pointLight position={[0, 0.4, 2.2]} color={ACCENT} intensity={5} distance={7} decay={2} />
     </RigidBody>
   );
 }
