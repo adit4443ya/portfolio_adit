@@ -14,6 +14,11 @@ import ProximityManager from "./three/ProximityManager";
 import FollowCamera from "./three/FollowCamera";
 import Decor from "./three/Decor";
 import WorldExtras from "./three/WorldExtras";
+import City from "./three/City";
+import Rain from "./three/Rain";
+import PushableProps from "./three/PushableProps";
+import BoostPads from "./three/BoostPads";
+import JumpRamps from "./three/JumpRamps";
 import Effects from "./three/Effects";
 
 const keyMap = [
@@ -37,18 +42,23 @@ export default function Experience() {
         camera={{ position: [0, 7, 22], fov: 50, near: 0.1, far: 320 }}
       >
         <color attach="background" args={[BG]} />
-        <fog attach="fog" args={[BG, 38, 120]} />
+        <fog attach="fog" args={[BG, 30, 170]} />
 
         <Suspense fallback={null}>
           <Lights />
           <Physics gravity={[0, -26, 0]}>
             <Ground />
+            <City />
             <Rover />
             <Stations />
             <ProximityManager />
+            <PushableProps />
+            <BoostPads />
+            <JumpRamps />
           </Physics>
           <Decor />
           <WorldExtras />
+          <Rain />
           <Effects />
           <Preload all />
         </Suspense>

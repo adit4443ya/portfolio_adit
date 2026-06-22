@@ -3,18 +3,18 @@
 import { EffectComposer, Bloom, Vignette, ChromaticAberration, SMAA } from "@react-three/postprocessing";
 import * as THREE from "three";
 
-// Cinematic post stack: bloom drives the glow, a touch of chromatic aberration
-// + vignette frames it, SMAA keeps edges crisp.
+// Cyberpunk post stack: heavy bloom for neon, chromatic aberration for the
+// lens-y look, vignette + SMAA to finish.
 export default function Effects() {
   return (
     <EffectComposer multisampling={0}>
-      <Bloom mipmapBlur intensity={1.15} luminanceThreshold={0.55} luminanceSmoothing={0.3} radius={0.85} />
+      <Bloom mipmapBlur intensity={1.35} luminanceThreshold={0.45} luminanceSmoothing={0.3} radius={0.88} />
       <ChromaticAberration
-        offset={new THREE.Vector2(0.0007, 0.0007)}
+        offset={new THREE.Vector2(0.0011, 0.0011)}
         radialModulation={false}
         modulationOffset={0}
       />
-      <Vignette eskil={false} offset={0.2} darkness={0.95} />
+      <Vignette eskil={false} offset={0.18} darkness={1.0} />
       <SMAA />
     </EffectComposer>
   );

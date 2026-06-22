@@ -14,9 +14,9 @@ export default function FollowCamera() {
   const curLook = useRef(new THREE.Vector3(0, 0, -16));
 
   useFrame((state, delta) => {
-    // Position: trail behind the heading, up and back (tuned for higher speed).
-    desired.copy(carState.forward).multiplyScalar(-12).add(carState.position);
-    desired.y = carState.position.y + 6.5;
+    // Position: trail behind the heading, low and back for a dramatic chase.
+    desired.copy(carState.forward).multiplyScalar(-11).add(carState.position);
+    desired.y = carState.position.y + 5.2;
 
     // Aim ahead of the rover.
     lookTarget.copy(carState.forward).multiplyScalar(5).add(carState.position);

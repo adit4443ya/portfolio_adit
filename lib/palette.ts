@@ -1,11 +1,11 @@
 import type { Accent } from "./data";
 
-// Accent colours carried over from the original "cosmic observatory" theme.
+// Neon Night City palette — magenta / cyan / electric-purple / amber on black.
 export const ACCENT: Record<Accent, string> = {
-  amber: "#e8a26b",
-  rose: "#e87b9b",
-  cyan: "#76d4e0",
-  violet: "#a98be8",
+  amber: "#ff9e2c",
+  rose: "#ff2e88",
+  cyan: "#00e5ff",
+  violet: "#b14bff",
 };
 
-export const BG = "#06070b";
+export const BG = "#05060f";

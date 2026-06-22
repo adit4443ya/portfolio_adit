@@ -1,14 +1,14 @@
 :root {
-  --bg: #06070b;
-  --bg2: #0a0c12;
-  --ink: #f3ede2;
-  --muted: #b7b1a4;
-  --dim: #6e6a60;
-  --amber: #e8a26b;
-  --rose: #e87b9b;
-  --cyan: #76d4e0;
-  --violet: #a98be8;
-  --line: rgba(232, 162, 107, 0.14);
+  --bg: #05060f;
+  --bg2: #0a0c18;
+  --ink: #eaf2ff;
+  --muted: #aab4c8;
+  --dim: #6b7488;
+  --amber: #ff9e2c;
+  --rose: #ff2e88;
+  --cyan: #00e5ff;
+  --violet: #b14bff;
+  --line: rgba(0, 229, 255, 0.16);
 
   --serif: "Instrument Serif", Georgia, serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
@@ -57,7 +57,7 @@ a {
   font-size: 10px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--amber);
+  color: var(--cyan);
 }
 
 /* ───────── Loading screen ───────── */
@@ -84,14 +84,14 @@ a {
 .loader-bar {
   height: 2px;
   width: 100%;
-  background: rgba(232, 162, 107, 0.16);
+  background: rgba(0, 229, 255, 0.16);
   overflow: hidden;
 }
 .loader-fill {
   height: 100%;
   width: 0%;
-  background: var(--amber);
-  box-shadow: 0 0 14px var(--amber);
+  background: var(--cyan);
+  box-shadow: 0 0 14px var(--cyan);
 }
 .loader-status {
   margin-top: 16px;
@@ -151,17 +151,17 @@ a {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--bg);
-  background: var(--amber);
+  background: var(--cyan);
   border: none;
   padding: 16px 34px;
   cursor: pointer;
   border-radius: 2px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 0 0 rgba(232, 162, 107, 0);
+  box-shadow: 0 0 0 rgba(0, 229, 255, 0);
 }
 .intro-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 40px rgba(232, 162, 107, 0.35);
+  box-shadow: 0 10px 40px rgba(0, 229, 255, 0.35);
 }
 
 /* ───────── HUD ───────── */
@@ -186,7 +186,7 @@ a {
   font-size: 9px;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--amber);
+  color: var(--cyan);
 }
 .hud-legend {
   position: fixed;
@@ -633,12 +633,12 @@ a.paper-title:hover {
   user-select: none;
 }
 .mc-btn:active {
-  background: rgba(232, 162, 107, 0.2);
+  background: rgba(0, 229, 255, 0.2);
   color: var(--ink);
 }
 .mc-go {
-  border-color: color-mix(in oklab, var(--amber) 45%, transparent);
-  color: var(--amber);
+  border-color: color-mix(in oklab, var(--cyan) 45%, transparent);
+  color: var(--cyan);
 }
 
 /* ───────── Minimap radar ───────── */
@@ -657,11 +657,11 @@ a.paper-title:hover {
 }
 .mm-ring {
   fill: none;
-  stroke: rgba(232, 162, 107, 0.22);
+  stroke: rgba(0, 229, 255, 0.22);
   stroke-width: 1;
 }
 .mm-cross {
-  stroke: rgba(232, 162, 107, 0.12);
+  stroke: rgba(0, 229, 255, 0.12);
   stroke-width: 1;
 }
 

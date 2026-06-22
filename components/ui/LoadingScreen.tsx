@@ -45,7 +45,7 @@ export default function LoadingScreen() {
           <div ref={bar} className="loader-fill" />
         </div>
         <p className="loader-status">
-          INITIALIZING SECTOR GRID · <span ref={pct}>000</span>%
+          BOOTING NEON GRID · <span ref={pct}>000</span>%
         </p>
       </div>
     </div>

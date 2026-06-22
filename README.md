@@ -1,8 +1,10 @@
 # Aditya Trivedi — Explorable 3D Portfolio
 
-An award-style, **drivable 3D portfolio world** (Bruno Simon–inspired). Steer a
-rover across a dark "observatory sector," roll up to glowing monoliths, and
-inspect each area of work — compilers, HPC, research, and projects.
+An award-style, **drivable 3D portfolio world** — a **Neon Night City**. Drive a
+sleek sports car through rain-slicked, reflective neon streets, weave between
+skyscrapers, and roll up to holographic kiosks to inspect each area of work —
+compilers, HPC, research, and projects. Ram pushable props, hit boost pads, and
+launch off jump ramps along the way.
 
 Built with **Next.js + React Three Fiber + Rapier physics + GSAP**.
 
@@ -37,13 +39,17 @@ npm start          # serve the production build
 
 ## ✨ Interactions & polish
 
-- **Radar minimap** (bottom-right) showing all sectors + your live heading
-- **Distinct animated emblem per sector** (graph for research, equalizer for the
-  stack, stacked cubes for projects, signal rings for contact, …)
-- **Rover feel**: body lean into turns, brake lights, a glowing motion trail,
-  and a boost FOV kick
+- **Pushable props** — ram the neon orbs and crates and watch them scatter
+- **Boost pads** — drive over a glowing pad for a forward speed burst
+- **Jump ramps** — hit a ramp with speed to launch the car into the air
+- **Holographic kiosks** with a distinct animated emblem per sector (graph for
+  research, equalizer for the stack, stacked cubes for projects, signal rings
+  for contact, …)
+- **Wet reflective streets** that mirror the neon, animated **rain**, a city
+  **skyline**, holographic billboards, and a distant megastructure
+- **Radar minimap** (bottom-right) with your live heading
+- **Sports-car feel**: body lean, brake lights, twin light trails, boost FOV kick
 - **Procedural engine sound** (Web Audio, no files) with a mute toggle (top-right)
-- **Central landmark + boundary ring** for orientation
 
 ## 🧭 How it works
 

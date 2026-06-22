@@ -20,15 +20,12 @@ export default function Station({ station }: { station: StationData }) {
     const near = useStore.getState().nearbyId === station.id;
     const t = state.clock.elapsedTime;
     const pulse = 1 + Math.sin(t * 2 + station.position[0]) * 0.18;
-
     if (ring.current) {
       const target = near ? 1.18 : 1;
       ring.current.scale.x = THREE.MathUtils.damp(ring.current.scale.x, target, 6, delta);
       ring.current.scale.y = ring.current.scale.x;
     }
-    if (glow.current) {
-      glow.current.intensity = (near ? 20 : 8) * pulse;
-    }
+    if (glow.current) glow.current.intensity = (near ? 24 : 10) * pulse;
   });
 
   return (
@@ -38,32 +35,55 @@ export default function Station({ station }: { station: StationData }) {
         <CylinderCollider args={[1.5, 1.2]} position={[0, 1.5, 0]} />
       </RigidBody>
 
-      {/* hex pillar */}
-      <mesh position={[0, 1.5, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[1.1, 1.25, 3, 6]} />
-        <meshStandardMaterial color="#0d1118" metalness={0.75} roughness={0.35} />
+      {/* base platform */}
+      <mesh position={[0, 0.12, 0]} receiveShadow>
+        <cylinderGeometry args={[2.2, 2.4, 0.24, 32]} />
+        <meshStandardMaterial color="#0a0d15" metalness={0.7} roughness={0.4} />
       </mesh>
-      {/* emissive band near the top */}
-      <mesh position={[0, 2.7, 0]}>
-        <cylinderGeometry args={[1.13, 1.13, 0.18, 6]} />
-        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2.2} toneMapped={false} />
+      <mesh position={[0, 0.25, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[2.0, 2.18, 48]} />
+        <meshBasicMaterial color={color} transparent opacity={0.7} toneMapped={false} side={THREE.DoubleSide} />
       </mesh>
 
-      {/* floating, kind-specific emblem */}
+      {/* hex projector pillar */}
+      <mesh position={[0, 1.5, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.1, 1.25, 2.7, 6]} />
+        <meshStandardMaterial color="#0c1018" metalness={0.8} roughness={0.3} />
+      </mesh>
+      <mesh position={[0, 2.6, 0]}>
+        <cylinderGeometry args={[1.13, 1.13, 0.18, 6]} />
+        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2.4} toneMapped={false} />
+      </mesh>
+
+      {/* holographic projection beam */}
+      <mesh position={[0, 3.7, 0]}>
+        <cylinderGeometry args={[1.7, 0.4, 2.4, 28, 1, true]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={0.12}
+          toneMapped={false}
+          side={THREE.DoubleSide}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* floating, kind-specific emblem (the "hologram") */}
       <Float speed={2} rotationIntensity={0.4} floatIntensity={0.8} floatingRange={[0, 0.5]}>
         <group position={[0, 4.8, 0]}>
           <Emblem kind={station.kind} color={color} />
         </group>
       </Float>
-      <pointLight ref={glow} position={[0, 4.8, 0]} color={color} intensity={8} distance={14} decay={2} />
+      <pointLight ref={glow} position={[0, 4.8, 0]} color={color} intensity={10} distance={15} decay={2} />
 
       {/* ground ring marking the zone */}
-      <mesh ref={ring} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
+      <mesh ref={ring} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.04, 0]}>
         <ringGeometry args={[3.1, 3.45, 64]} />
         <meshBasicMaterial color={color} transparent opacity={0.55} toneMapped={false} side={THREE.DoubleSide} />
       </mesh>
 
-      {/* floating name tag (non-interactive) */}
+      {/* floating neon sign (non-interactive) */}
       <Html position={[0, 6.6, 0]} center distanceFactor={16} className="station-label" zIndexRange={[20, 0]}>
         <div className={`slab ${isNear ? "slab-on" : ""}`} style={{ ["--c" as string]: color }}>
           <span className="slab-code">{station.code}</span>
