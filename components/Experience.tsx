@@ -13,6 +13,7 @@ import Stations from "./three/Stations";
 import ProximityManager from "./three/ProximityManager";
 import FollowCamera from "./three/FollowCamera";
 import Decor from "./three/Decor";
+import WorldExtras from "./three/WorldExtras";
 import Effects from "./three/Effects";
 
 const keyMap = [
@@ -47,6 +48,7 @@ export default function Experience() {
             <ProximityManager />
           </Physics>
           <Decor />
+          <WorldExtras />
           <Effects />
           <Preload all />
         </Suspense>

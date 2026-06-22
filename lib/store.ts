@@ -13,7 +13,9 @@ interface State {
   nearbyId: string | null;
   activeId: string | null;
   touch: TouchInput;
+  muted: boolean;
   setPhase: (p: Phase) => void;
+  toggleMute: () => void;
   enter: () => void;
   setNearby: (id: string | null) => void;
   open: (id: string) => void;
@@ -26,7 +28,9 @@ export const useStore = create<State>()((set) => ({
   nearbyId: null,
   activeId: null,
   touch: { forward: 0, turn: 0, brake: false },
+  muted: false,
   setPhase: (phase) => set({ phase }),
+  toggleMute: () => set((s) => ({ muted: !s.muted })),
   enter: () => set({ phase: "explore" }),
   // Only trigger a re-render when the nearby station actually changes.
   setNearby: (nearbyId) =>

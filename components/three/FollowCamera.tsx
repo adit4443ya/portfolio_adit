@@ -31,6 +31,14 @@ export default function FollowCamera() {
     easing.damp3(state.camera.position, desired, 0.28, delta);
     easing.damp3(curLook.current, lookTarget, 0.22, delta);
     state.camera.lookAt(curLook.current);
+
+    // Subtle FOV kick while boosting for a sense of speed.
+    const cam = state.camera as THREE.PerspectiveCamera;
+    if (cam.isPerspectiveCamera) {
+      const targetFov = carState.boosting ? 58 : 50;
+      cam.fov = THREE.MathUtils.damp(cam.fov, targetFov, 6, delta);
+      cam.updateProjectionMatrix();
+    }
   });
 
   return null;

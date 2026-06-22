@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import Intro from "@/components/ui/Intro";
 import Hud from "@/components/ui/Hud";
+import Minimap from "@/components/ui/Minimap";
+import Sound from "@/components/ui/Sound";
 import StationPanel from "@/components/ui/StationPanel";
 import MobileControls from "@/components/ui/MobileControls";
 
@@ -19,6 +21,8 @@ export default function Page() {
       <LoadingScreen />
       <Intro />
       <Hud />
+      <Minimap />
+      <Sound />
       <StationPanel />
       <MobileControls />
     </main>

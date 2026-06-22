@@ -8,27 +8,26 @@ import * as THREE from "three";
 import type { Station as StationData } from "@/lib/data";
 import { ACCENT } from "@/lib/palette";
 import { useStore } from "@/lib/store";
+import Emblem from "./Emblem";
 
 export default function Station({ station }: { station: StationData }) {
   const color = ACCENT[station.accent];
-  const crystal = useRef<THREE.Mesh>(null);
-  const crystalMat = useRef<THREE.MeshStandardMaterial>(null);
   const ring = useRef<THREE.Mesh>(null);
+  const glow = useRef<THREE.PointLight>(null);
   const isNear = useStore((s) => s.nearbyId === station.id);
 
   useFrame((state, delta) => {
     const near = useStore.getState().nearbyId === station.id;
     const t = state.clock.elapsedTime;
-    const pulse = 1 + Math.sin(t * 2 + station.position[0]) * 0.15;
+    const pulse = 1 + Math.sin(t * 2 + station.position[0]) * 0.18;
 
-    if (crystal.current) crystal.current.rotation.y += delta * 0.5;
-    if (crystalMat.current) {
-      crystalMat.current.emissiveIntensity = (near ? 3.4 : 1.7) * pulse;
-    }
     if (ring.current) {
       const target = near ? 1.18 : 1;
       ring.current.scale.x = THREE.MathUtils.damp(ring.current.scale.x, target, 6, delta);
       ring.current.scale.y = ring.current.scale.x;
+    }
+    if (glow.current) {
+      glow.current.intensity = (near ? 20 : 8) * pulse;
     }
   });
 
@@ -50,21 +49,13 @@ export default function Station({ station }: { station: StationData }) {
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2.2} toneMapped={false} />
       </mesh>
 
-      {/* floating crystal */}
-      <Float speed={2.2} rotationIntensity={0.6} floatIntensity={0.9} floatingRange={[0, 0.5]}>
-        <mesh ref={crystal} position={[0, 4.7, 0]} castShadow>
-          <octahedronGeometry args={[0.95, 0]} />
-          <meshStandardMaterial
-            ref={crystalMat}
-            color={color}
-            emissive={color}
-            emissiveIntensity={1.7}
-            metalness={0.3}
-            roughness={0.15}
-            toneMapped={false}
-          />
-        </mesh>
+      {/* floating, kind-specific emblem */}
+      <Float speed={2} rotationIntensity={0.4} floatIntensity={0.8} floatingRange={[0, 0.5]}>
+        <group position={[0, 4.8, 0]}>
+          <Emblem kind={station.kind} color={color} />
+        </group>
       </Float>
+      <pointLight ref={glow} position={[0, 4.8, 0]} color={color} intensity={8} distance={14} decay={2} />
 
       {/* ground ring marking the zone */}
       <mesh ref={ring} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
@@ -73,7 +64,7 @@ export default function Station({ station }: { station: StationData }) {
       </mesh>
 
       {/* floating name tag (non-interactive) */}
-      <Html position={[0, 6.4, 0]} center distanceFactor={16} className="station-label" zIndexRange={[20, 0]}>
+      <Html position={[0, 6.6, 0]} center distanceFactor={16} className="station-label" zIndexRange={[20, 0]}>
         <div className={`slab ${isNear ? "slab-on" : ""}`} style={{ ["--c" as string]: color }}>
           <span className="slab-code">{station.code}</span>
           <span className="slab-name">{station.label}</span>

@@ -35,6 +35,16 @@ npm start          # serve the production build
 - **Esc** — close a panel
 - On touch devices, on-screen drive buttons appear automatically.
 
+## ✨ Interactions & polish
+
+- **Radar minimap** (bottom-right) showing all sectors + your live heading
+- **Distinct animated emblem per sector** (graph for research, equalizer for the
+  stack, stacked cubes for projects, signal rings for contact, …)
+- **Rover feel**: body lean into turns, brake lights, a glowing motion trail,
+  and a boost FOV kick
+- **Procedural engine sound** (Web Audio, no files) with a mute toggle (top-right)
+- **Central landmark + boundary ring** for orientation
+
 ## 🧭 How it works
 
 You spawn in the world and drive between **stations** (the glowing monoliths).

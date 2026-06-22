@@ -641,11 +641,63 @@ a.paper-title:hover {
   color: var(--amber);
 }
 
+/* ───────── Minimap radar ───────── */
+.minimap {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 30;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: rgba(8, 10, 16, 0.55);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+  pointer-events: none;
+}
+.mm-ring {
+  fill: none;
+  stroke: rgba(232, 162, 107, 0.22);
+  stroke-width: 1;
+}
+.mm-cross {
+  stroke: rgba(232, 162, 107, 0.12);
+  stroke-width: 1;
+}
+
+/* ───────── Sound toggle ───────── */
+.sound-btn {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  z-index: 31;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(10, 12, 18, 0.6);
+  backdrop-filter: blur(6px);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 15px;
+  transition: color 0.25s;
+}
+.sound-btn:hover {
+  color: var(--ink);
+}
+
 @media (max-width: 880px) {
   .hud-legend {
     display: none;
   }
   .panel {
     padding: 56px 26px 120px;
+  }
+  .minimap {
+    top: 74px;
+    bottom: auto;
+    right: 16px;
+    width: 104px;
+    height: 104px;
   }
 }
