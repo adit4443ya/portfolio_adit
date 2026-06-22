@@ -1,70 +1,107 @@
-# Aditya Trivedi - Professional Portfolio
+# Aditya Trivedi — Explorable 3D Portfolio
 
-A modern, interactive portfolio website showcasing my work in High-Performance Computing, Machine Learning, Systems Engineering, and Research.
+An award-style, **drivable 3D portfolio world** — a **Neon Night City**. Drive a
+sleek sports car through rain-slicked, reflective neon streets, weave between
+skyscrapers, and roll up to holographic kiosks to inspect each area of work —
+compilers, HPC, research, and projects. Ram pushable props, hit boost pads, and
+launch off jump ramps along the way.
 
-## 🚀 Live Demo
+Built with **Next.js + React Three Fiber + Rapier physics + GSAP**.
 
-Visit the live portfolio: [Your Vercel URL will be here]
+## 🛠 Tech stack
 
-## 🛠 Technologies Used
+| Layer | Tech |
+|---|---|
+| Framework | **Next.js 16** (App Router) + React 19 + TypeScript |
+| 3D engine | **Three.js** + **@react-three/fiber** + **@react-three/drei** |
+| Physics | **@react-three/rapier** (arcade rover + collisions) |
+| Post-processing | **@react-three/postprocessing** (Bloom + Vignette) |
+| Animation | **GSAP** (UI transitions) + **maath** (camera damping) |
+| State | **Zustand** |
+| Smooth scroll | **Lenis** (available for future scroll UI) |
 
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **3D Graphics**: Three.js for space-themed background animations
-- **Styling**: Custom CSS with CSS Grid and Flexbox
-- **Icons**: Font Awesome 6.0
-- **Fonts**: Inter & JetBrains Mono from Google Fonts
+## 🚀 Getting started
 
-## 📋 Features
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build (also type-checks)
+npm start          # serve the production build
+```
 
-- **Interactive Space Background**: Dynamic 3D star field with mouse interaction
-- **Smooth Page Transitions**: Seamless navigation between sections
-- **Responsive Design**: Optimized for all device sizes
-- **Loading Animation**: Professional loading screen with progress indicators
-- **Project Showcases**: Detailed project cards with metrics and achievements
-- **Research Publications**: Academic papers with abstracts and metrics
-- **Professional Timeline**: Career progression and achievements
+## 🎮 Controls
 
-## 🎯 Sections
+- **W A S D** / arrow keys — drive
+- **Shift** — boost
+- **E** / Enter — inspect the nearest sector (or click the on-screen prompt)
+- **Esc** — close a panel
+- On touch devices, on-screen drive buttons appear automatically.
 
-1. **Home**: Introduction and domain navigation
-2. **HPC & Parallel Computing**: Compiler development, OpenMP, GPU computing
-3. **Machine Learning**: Distributed learning, federated systems, AI applications
-4. **Systems & Infrastructure**: Enterprise platforms, web crawlers, system programming
-5. **Research & Publications**: Academic research in graph algorithms and parallel computing
-6. **About**: Professional background, education, and technical expertise
+## ✨ Interactions & polish
 
-## 🔬 Research Highlights
+- **Pushable props** — ram the neon orbs and crates and watch them scatter
+- **Boost pads** — drive over a glowing pad for a forward speed burst
+- **Jump ramps** — hit a ramp with speed to launch the car into the air
+- **Holographic kiosks** with a distinct animated emblem per sector (graph for
+  research, equalizer for the stack, stacked cubes for projects, signal rings
+  for contact, …)
+- **Wet reflective streets** that mirror the neon, animated **rain**, a city
+  **skyline**, holographic billboards, and a distant megastructure
+- **Radar minimap** (bottom-right) with your live heading
+- **Sports-car feel**: body lean, brake lights, twin light trails, boost FOV kick
+- **Procedural engine sound** (Web Audio, no files) with a mute toggle (top-right)
 
-- **ParMIS Framework**: 47.27× speedup for batch MIS updates on billion-scale graphs
-- **Dynamic Graph Algorithms**: Novel data structures (TVB/TVBL) for MIS maintenance
-- **GPU Acceleration**: 4.63× speedup on GPU implementations
-- **Publications**: IEEE HiPC, under review in top-tier venues
+## 🧭 How it works
 
-## 🏆 Key Achievements
+You spawn in the world and drive between **stations** (the glowing monoliths).
+A proximity check highlights the nearest one and shows an "inspect" prompt;
+opening it slides in a panel with the full content for that sector.
 
-- Google Summer of Code 2025 Contributor
-- JEE Advanced Rank: 2989
-- IEEE HiPC'24 ₹15k Grant Receiver
-- Multiple research publications in parallel computing
+```
+app/
+  layout.tsx          # fonts + metadata
+  page.tsx            # mounts the canvas (client-only) + UI overlays
+  globals.css         # the cosmic-observatory visual theme
+components/
+  Experience.tsx      # <Canvas>, physics world, post-processing
+  three/              # Rover, FollowCamera, Ground, Lights, Station(s),
+                      # ProximityManager, Decor, Effects
+  ui/                 # LoadingScreen, Intro, Hud, StationPanel, MobileControls
+lib/
+  data.ts             # ALL portfolio content (edit this to update the site)
+  store.ts            # Zustand game/UI state
+  carState.ts         # shared rover transform (rover → camera/proximity)
+  palette.ts          # accent colours
+hooks/
+  useIsTouch.ts
+legacy/               # the previous static HTML/CSS/JS portfolio (preserved)
+```
 
-## 📱 Contact
+## ✏️ Editing content
 
-- **Email**: adit4443ya@gmail.com
-- **Phone**: +91 9510676850
-- **GitHub**: [adit4443ya](https://github.com/adit4443ya)
+All copy lives in [`lib/data.ts`](lib/data.ts). Each entry in the `stations`
+array becomes a monolith in the world:
 
-## 🚀 Deployment
+- `position: [x, y, z]` — where it sits in the world
+- `accent` — `amber | rose | cyan | violet`
+- `kind` — controls how its panel renders (`profile`, `work`, `research`,
+  `projects`, `stack`, `contact`, `trajectory`)
 
-This portfolio is optimized for deployment on Vercel:
+Add a station to the array and a new monolith appears automatically.
 
-1. Push to GitHub repository
-2. Connect repository to Vercel
-3. Deploy with zero configuration
+## 🧱 Adding real 3D assets later
 
-## 📄 License
+The world is currently built from code primitives. To drop in downloaded or
+AI-generated models (e.g. low-poly packs from Quaternius / Kenney, or Meshy),
+add a `.glb` to `public/`, load it with drei's `useGLTF`, and place it in the
+scene (Draco/Meshopt-compressed models are supported). No Blender/Spline
+required to start.
 
-This project is open source and available under the [MIT License](LICENSE).
+## ☁️ Deployment
+
+Zero-config on **Vercel** — import the repo and deploy. It's a standard Next.js
+app.
 
 ---
 
-Built with ❤️ by Aditya Trivedi
+Built by Aditya Trivedi · the previous static portfolio is preserved in `legacy/`.
