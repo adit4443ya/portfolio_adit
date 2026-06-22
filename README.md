@@ -1,70 +1,91 @@
-# Aditya Trivedi - Professional Portfolio
+# Aditya Trivedi — Explorable 3D Portfolio
 
-A modern, interactive portfolio website showcasing my work in High-Performance Computing, Machine Learning, Systems Engineering, and Research.
+An award-style, **drivable 3D portfolio world** (Bruno Simon–inspired). Steer a
+rover across a dark "observatory sector," roll up to glowing monoliths, and
+inspect each area of work — compilers, HPC, research, and projects.
 
-## 🚀 Live Demo
+Built with **Next.js + React Three Fiber + Rapier physics + GSAP**.
 
-Visit the live portfolio: [Your Vercel URL will be here]
+## 🛠 Tech stack
 
-## 🛠 Technologies Used
+| Layer | Tech |
+|---|---|
+| Framework | **Next.js 16** (App Router) + React 19 + TypeScript |
+| 3D engine | **Three.js** + **@react-three/fiber** + **@react-three/drei** |
+| Physics | **@react-three/rapier** (arcade rover + collisions) |
+| Post-processing | **@react-three/postprocessing** (Bloom + Vignette) |
+| Animation | **GSAP** (UI transitions) + **maath** (camera damping) |
+| State | **Zustand** |
+| Smooth scroll | **Lenis** (available for future scroll UI) |
 
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **3D Graphics**: Three.js for space-themed background animations
-- **Styling**: Custom CSS with CSS Grid and Flexbox
-- **Icons**: Font Awesome 6.0
-- **Fonts**: Inter & JetBrains Mono from Google Fonts
+## 🚀 Getting started
 
-## 📋 Features
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build (also type-checks)
+npm start          # serve the production build
+```
 
-- **Interactive Space Background**: Dynamic 3D star field with mouse interaction
-- **Smooth Page Transitions**: Seamless navigation between sections
-- **Responsive Design**: Optimized for all device sizes
-- **Loading Animation**: Professional loading screen with progress indicators
-- **Project Showcases**: Detailed project cards with metrics and achievements
-- **Research Publications**: Academic papers with abstracts and metrics
-- **Professional Timeline**: Career progression and achievements
+## 🎮 Controls
 
-## 🎯 Sections
+- **W A S D** / arrow keys — drive
+- **Shift** — boost
+- **E** / Enter — inspect the nearest sector (or click the on-screen prompt)
+- **Esc** — close a panel
+- On touch devices, on-screen drive buttons appear automatically.
 
-1. **Home**: Introduction and domain navigation
-2. **HPC & Parallel Computing**: Compiler development, OpenMP, GPU computing
-3. **Machine Learning**: Distributed learning, federated systems, AI applications
-4. **Systems & Infrastructure**: Enterprise platforms, web crawlers, system programming
-5. **Research & Publications**: Academic research in graph algorithms and parallel computing
-6. **About**: Professional background, education, and technical expertise
+## 🧭 How it works
 
-## 🔬 Research Highlights
+You spawn in the world and drive between **stations** (the glowing monoliths).
+A proximity check highlights the nearest one and shows an "inspect" prompt;
+opening it slides in a panel with the full content for that sector.
 
-- **ParMIS Framework**: 47.27× speedup for batch MIS updates on billion-scale graphs
-- **Dynamic Graph Algorithms**: Novel data structures (TVB/TVBL) for MIS maintenance
-- **GPU Acceleration**: 4.63× speedup on GPU implementations
-- **Publications**: IEEE HiPC, under review in top-tier venues
+```
+app/
+  layout.tsx          # fonts + metadata
+  page.tsx            # mounts the canvas (client-only) + UI overlays
+  globals.css         # the cosmic-observatory visual theme
+components/
+  Experience.tsx      # <Canvas>, physics world, post-processing
+  three/              # Rover, FollowCamera, Ground, Lights, Station(s),
+                      # ProximityManager, Decor, Effects
+  ui/                 # LoadingScreen, Intro, Hud, StationPanel, MobileControls
+lib/
+  data.ts             # ALL portfolio content (edit this to update the site)
+  store.ts            # Zustand game/UI state
+  carState.ts         # shared rover transform (rover → camera/proximity)
+  palette.ts          # accent colours
+hooks/
+  useIsTouch.ts
+legacy/               # the previous static HTML/CSS/JS portfolio (preserved)
+```
 
-## 🏆 Key Achievements
+## ✏️ Editing content
 
-- Google Summer of Code 2025 Contributor
-- JEE Advanced Rank: 2989
-- IEEE HiPC'24 ₹15k Grant Receiver
-- Multiple research publications in parallel computing
+All copy lives in [`lib/data.ts`](lib/data.ts). Each entry in the `stations`
+array becomes a monolith in the world:
 
-## 📱 Contact
+- `position: [x, y, z]` — where it sits in the world
+- `accent` — `amber | rose | cyan | violet`
+- `kind` — controls how its panel renders (`profile`, `work`, `research`,
+  `projects`, `stack`, `contact`, `trajectory`)
 
-- **Email**: adit4443ya@gmail.com
-- **Phone**: +91 9510676850
-- **GitHub**: [adit4443ya](https://github.com/adit4443ya)
+Add a station to the array and a new monolith appears automatically.
 
-## 🚀 Deployment
+## 🧱 Adding real 3D assets later
 
-This portfolio is optimized for deployment on Vercel:
+The world is currently built from code primitives. To drop in downloaded or
+AI-generated models (e.g. low-poly packs from Quaternius / Kenney, or Meshy),
+add a `.glb` to `public/`, load it with drei's `useGLTF`, and place it in the
+scene (Draco/Meshopt-compressed models are supported). No Blender/Spline
+required to start.
 
-1. Push to GitHub repository
-2. Connect repository to Vercel
-3. Deploy with zero configuration
+## ☁️ Deployment
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
+Zero-config on **Vercel** — import the repo and deploy. It's a standard Next.js
+app.
 
 ---
 
-Built with ❤️ by Aditya Trivedi
+Built by Aditya Trivedi · the previous static portfolio is preserved in `legacy/`.
