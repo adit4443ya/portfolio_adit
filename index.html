@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="gpu">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -17,6 +17,8 @@
   --sans:'Space Grotesk',system-ui,sans-serif;
 }
 html{scroll-behavior:smooth}
+::selection{background:rgba(232,162,107,0.28);color:#fff;text-shadow:0 0 8px rgba(232,162,107,0.4)}
+[data-theme="gpu"] ::selection{background:rgba(65,232,255,0.28);text-shadow:0 0 8px rgba(65,232,255,0.5)}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;overflow-x:hidden}
 #bg{position:fixed;inset:0;z-index:0}
 #vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 90% 70% at 50% 50%,transparent 40%,rgba(5,5,10,0.55) 100%)}
@@ -854,6 +856,9 @@ nav{
 [data-theme="gpu"] .lin-tag.rev{
   color:rgba(168,255,96,0.8);border-color:rgba(168,255,96,0.35);
 }
+[data-theme="gpu"] .lin-tag.acc{
+  color:rgba(168,255,96,0.95);border-color:rgba(168,255,96,0.55);background:rgba(168,255,96,0.14);box-shadow:0 0 12px rgba(168,255,96,0.25);
+}
 [data-theme="gpu"] .pub-title a,.lin .pub-title a{transition:color .3s;}
 
 /* ── TRAJECTORY CARDS ── */
@@ -1008,12 +1013,12 @@ nav{
   <div style="display:flex;gap:10px;align-items:center"><div id="theme-toggle-wrap">
   <div id="theme-toggle" role="button" onclick="toggleTheme()" aria-label="Switch theme" tabindex="0">
     <span id="tt-slider"></span>
-    <span class="tt-opt active" id="tt-cosmic">
+    <span class="tt-opt" id="tt-cosmic">
       <span class="tt-dot"></span>
       <span class="tt-ico">✦</span>
       <span class="tt-txt">Cosmic</span>
     </span>
-    <span class="tt-opt" id="tt-gpu">
+    <span class="tt-opt active" id="tt-gpu">
       <span class="tt-ico">⊞</span>
       <span class="tt-txt">GPU Grid</span>
     </span>
@@ -1024,11 +1029,11 @@ nav{
 <section id="hero">
   <p class="h-stamp"><span class="blink"></span>Compiler Engineer · Low-level systems · Class of '26</p>
   <h1 class="h-name"><span>Aditya</span><span class="last">Trivedi.</span></h1>
-  <p class="h-tag">I build the layer between language and silicon — <b>compiler IR</b>, <span class="accent">parallel runtimes</span>, and <b>GPU offloading</b>. GSoC '25 at Fortran-Lang, core LFortran contributor, four published papers, with early LLVM upstream contributions. <span class="accent">Joining Qualcomm's ARM compiler team</span> in July 2026 — chasing <span class="accent">MLIR &amp; ML compilers</span> along the way.</p>
+  <p class="h-tag">I build the layer between language and silicon — <b>compiler IR</b>, <span class="accent">parallel runtimes</span>, and <b>GPU offloading</b>. GSoC '25 at Fortran-Lang, core LFortran contributor, four papers (latest accepted at ICPP '26), and four merged LLVM / Flang upstream PRs. <span class="accent">Joining Qualcomm's ARM compiler team</span> in July 2026 — chasing <span class="accent">MLIR &amp; ML compilers</span> along the way.</p>
   <div class="h-meta">
     <span><b>↗ Focus</b><i>Compiler IR · Codegen</i></span>
     <span><b>↗ Upstream</b><i>LLVM · LFortran</i></span>
-    <span><b>↗ Papers</b><i>4 · HiPC, EuroPDP, FGCS</i></span>
+    <span><b>↗ Papers</b><i>4 · HiPC, EuroPDP, ICPP '26</i></span>
     <span><b>↗ GSoC</b><i>'25 · Fortran-Lang</i></span>
   </div>
   <div class="h-links">
@@ -1044,34 +1049,65 @@ nav{
 .trajectory{padding:64px 8vw 0;position:relative;z-index:10}
 .traj-head{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(232,162,107,0.55);margin-bottom:22px;display:flex;align-items:center;gap:12px}
 .traj-head::before{content:'';width:18px;height:1px;background:var(--amber);opacity:.5}
-.traj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
-.traj-card{background:rgba(10,9,16,0.72);backdrop-filter:blur(20px);padding:30px 32px;position:relative;overflow:hidden;transition:background .35s}
-.traj-card:hover{background:rgba(18,14,24,0.9)}
-.traj-card::before{content:'';position:absolute;top:0;left:0;width:0;height:2px;transition:width .55s ease}
+[data-theme="gpu"] .traj-head{color:rgba(65,232,255,0.6)}
+[data-theme="gpu"] .traj-head::before{background:#41e8ff}
+
+.traj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);position:relative}
+
+/* Per-card accent colour (RGB triplet → reused via rgba(var(--tc),a)) */
+.traj-card.now{--tc:124,211,232}
+.traj-card.next{--tc:232,162,107}
+.traj-card.exp{--tc:224,121,90}
+[data-theme="gpu"] .traj-card.now{--tc:65,232,255}
+[data-theme="gpu"] .traj-card.next{--tc:168,255,96}
+[data-theme="gpu"] .traj-card.exp{--tc:255,94,168}
+
+.traj-card{background:rgba(10,9,16,0.72);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);padding:32px 30px 30px;position:relative;overflow:hidden;isolation:isolate;transition:background .4s ease,transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s ease}
+.traj-card:hover{background:rgba(20,15,26,0.92);transform:translateY(-5px);box-shadow:0 22px 46px -22px rgba(var(--tc),0.55),inset 0 1px 0 rgba(255,255,255,0.05)}
+[data-theme="gpu"] .traj-card:hover{background:rgba(10,20,26,0.94)}
+
+/* Accent line that sweeps across the top on hover */
+.traj-card::before{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:rgb(var(--tc));box-shadow:0 0 16px rgba(var(--tc),0.8);transition:width .6s cubic-bezier(.22,1,.36,1);z-index:3}
 .traj-card:hover::before{width:100%}
-.traj-card.now::before{background:var(--cyan)}.traj-card.next::before{background:var(--amber)}.traj-card.exp::before{background:var(--rose)}
-.traj-k{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.traj-card.now .traj-k{color:var(--cyan)}.traj-card.next .traj-k{color:var(--amber)}.traj-card.exp .traj-k{color:var(--rose)}
+
+/* Soft colour bloom that blooms in from the corner */
+.traj-card::after{content:'';position:absolute;top:-45%;right:-30%;width:75%;height:95%;background:radial-gradient(circle at 62% 42%,rgba(var(--tc),0.20),transparent 66%);opacity:0;transition:opacity .55s ease;pointer-events:none;z-index:0}
+.traj-card:hover::after{opacity:1}
+
+/* Oversized serif index watermark */
+.traj-idx{position:absolute;top:16px;right:22px;z-index:1;font-family:var(--serif);font-style:italic;font-size:60px;line-height:1;color:rgba(var(--tc),0.11);pointer-events:none;transition:color .55s ease,transform .55s cubic-bezier(.22,1,.36,1)}
+.traj-card:hover .traj-idx{color:rgba(var(--tc),0.22);transform:translateY(-3px) scale(1.04)}
+
+.traj-k{position:relative;z-index:2;font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:rgb(var(--tc))}
 .traj-k .d{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;animation:blink 1.8s ease-in-out infinite}
-.traj-t{font-family:var(--serif);font-size:clamp(20px,2vw,27px);font-style:italic;color:var(--ink);line-height:1.18;margin-bottom:11px}
-.traj-d{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.75;letter-spacing:.2px}
+/* Distinct status glyphs per phase: Now pulses · Next is solid · Exploring is a ring */
+.traj-card.next .traj-k .d{animation:none}
+.traj-card.exp .traj-k .d{animation:none;background:transparent;border:1.5px solid currentColor;box-shadow:0 0 8px rgba(var(--tc),0.5)}
+
+.traj-t{position:relative;z-index:2;font-family:var(--serif);font-size:clamp(20px,2vw,27px);font-style:italic;color:var(--ink);line-height:1.18;margin-bottom:12px;transition:color .4s ease}
+.traj-card:hover .traj-t{color:#fff}
+.traj-d{position:relative;z-index:2;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.75;letter-spacing:.2px}
 .traj-d b{color:var(--ink);font-weight:500}
+
 @media(max-width:760px){.traj-grid{grid-template-columns:1fr}}
 </style>
 <section class="trajectory">
   <p class="traj-head">Trajectory — where I am, where I'm headed</p>
   <div class="traj-grid">
     <div class="traj-card now">
+      <span class="traj-idx">01</span>
       <div class="traj-k"><span class="d"></span>Now</div>
       <div class="traj-t">Open-source compilers</div>
       <div class="traj-d"><b>LFortran</b> core contributor · <b>LLVM / ClangIR</b> upstream · GSoC '25 with Fortran-Lang.</div>
     </div>
     <div class="traj-card next">
+      <span class="traj-idx">02</span>
       <div class="traj-k"><span class="d"></span>Next</div>
       <div class="traj-t">Qualcomm · ARM team</div>
       <div class="traj-d">Joining as a <b>Compiler Engineer</b> on the <b>ARM</b> team — July 2026. Backend codegen &amp; optimization.</div>
     </div>
     <div class="traj-card exp">
+      <span class="traj-idx">03</span>
       <div class="traj-k"><span class="d"></span>Exploring</div>
       <div class="traj-t">MLIR &amp; ML compilers</div>
       <div class="traj-d">Where I'm pointing my curiosity — <b>tensor IR</b>, accelerator codegen, the ML-compiler stack.</div>
@@ -1179,6 +1215,7 @@ nav{
 .lin-tags{display:flex;gap:7px;margin-bottom:9px;flex-wrap:wrap}
 .lin-tag{font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--amber);border:1px solid rgba(232,162,107,0.3);padding:3px 9px;text-transform:uppercase}
 .lin-tag.rev{color:var(--cyan);border-color:rgba(125,211,232,0.35)}
+.lin-tag.acc{color:#8fe6ab;border-color:rgba(143,230,171,0.5);background:rgba(143,230,171,0.12);box-shadow:0 0 10px rgba(143,230,171,0.18)}
 .lin .pub-title{margin-bottom:6px}
 @media(max-width:880px){
   .lineage::before{left:71px}
@@ -1251,7 +1288,7 @@ nav{
 
     <div class="upstream fu">
       <div class="up-tick">Also upstream</div>
-      <p class="up-text">Beyond the two flagship efforts, smaller upstream contributions: a single merged <a href="https://github.com/llvm/llvm-project/pull/180714" target="_blank">ClangIR x86 <code>rdtsc</code> / <code>rdtscp</code> builtins PR</a> (#180714) in the LLVM monorepo, plus ongoing Flang OpenMP work.</p>
+      <p class="up-text">Beyond the two flagship efforts, <a href="https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aadit4443ya+is%3Amerged" target="_blank">four merged PRs</a> in the LLVM monorepo — three <b>Flang / OpenMP</b> semantics fixes (LINEAR-clause crashes and USE-renamed array resolution) plus a <a href="https://github.com/llvm/llvm-project/pull/180714" target="_blank">ClangIR x86 <code>rdtsc</code> / <code>rdtscp</code> builtins PR</a> (#180714).</p>
     </div>
   </div>
   </div>
@@ -1287,12 +1324,12 @@ nav{
           <div class="tl-date"><b>2026</b></div>
           <div class="tl-node"></div>
           <div class="tl-body">
-            <h3 class="tl-name"><a href="https://github.com/llvm/llvm-project/pull/180714" target="_blank">LLVM / ClangIR — Upstream Contributor</a></h3>
-            <div class="tl-role">x86 builtins · IR lowering</div>
-            <div class="tl-stack">C++ · ClangIR · MLIR · LLVM</div>
+            <h3 class="tl-name"><a href="https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aadit4443ya+is%3Amerged" target="_blank">LLVM / Flang / ClangIR — Upstream Contributor</a></h3>
+            <div class="tl-role">Flang OpenMP semantics · ClangIR x86 builtins</div>
+            <div class="tl-stack">C++ · Flang · ClangIR · MLIR · LLVM</div>
             <ul class="pts">
-              <li>Merged <span class="tag-r">PR #180714</span> into the LLVM monorepo — <span class="hi-r">rdtsc / rdtscp</span> x86 timestamp-counter builtins in ClangIR.</li>
-              <li>Active Flang OpenMP contributions upstream.</li>
+              <li><span class="tag-a">4 merged PRs</span> into the LLVM monorepo — three <span class="hi-a">Flang / OpenMP</span> semantics fixes: a <a href="https://github.com/llvm/llvm-project/pull/203250" target="_blank">LINEAR-clause common-block crash</a> (#203250), <a href="https://github.com/llvm/llvm-project/pull/189215" target="_blank">USE-renamed array resolution</a> (#189215), and a <a href="https://github.com/llvm/llvm-project/pull/189170" target="_blank">false-positive common-block error</a> (#189170).</li>
+              <li>Merged <span class="tag-r">PR #180714</span> — <span class="hi-r">rdtsc / rdtscp</span> x86 timestamp-counter builtins in ClangIR.</li>
             </ul>
           </div>
         </div>
@@ -1379,10 +1416,10 @@ nav{
     </div>
     <div class="lin fu fd3">
       <div class="lin-node"></div>
-      <div class="lin-yr"><b>2025</b><span>Unifies</span></div>
+      <div class="lin-yr"><b>2026</b><span>Culminates</span></div>
       <div class="lin-body">
-        <div class="lin-tags"><span class="lin-tag">Elsevier FGCS</span><span class="lin-tag rev">Under Review</span></div>
-        <p class="pub-title">ParMIS: Fast &amp; Unified MIS Maintenance for Large-Scale Dynamic Graphs</p>
+        <div class="lin-tags"><span class="lin-tag">ICPP 2026</span><span class="lin-tag acc">✓ Accepted</span></div>
+        <p class="pub-title">DyGMIS: Fast and Scalable Fully Dynamic MIS Maintenance on Large Evolving Graphs</p>
         <div class="pub-authors">P. Nijhara, <span class="me">Aditya Trivedi</span>, A.H. Singh, N. Sharma, A. Pandey, D.S. Banerjee</div>
       </div>
     </div>
@@ -2065,7 +2102,7 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
 (function(){
   const root=document.documentElement;
   const flash=document.getElementById('theme-flash');
-  let current='cosmic';
+  let current='gpu';
   // Keyboard support for toggle
   const tgl=document.getElementById('theme-toggle');
   if(tgl)tgl.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleTheme();}});
@@ -2234,6 +2271,10 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
       if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleTheme();}
     });
   };
+
+  // GPU Grid is the default theme — boot its renderer as soon as THREE is ready
+  function bootGPU(){if(current==='gpu'&&!gpuRunning&&window.THREE)initGPU();}
+  if(window.THREE){bootGPU();}else{addEventListener('load',bootGPU);}
 })();
 </script>
 </body>
