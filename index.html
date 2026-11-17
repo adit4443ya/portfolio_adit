@@ -1010,7 +1010,6 @@ nav{
   <a href="#hero" class="logo"><span class="lo-glyph"></span>ADITYA · T</a>
   <ul class="nav-mid">
     <li><a href="#feat">Work</a></li>
-    <li><a href="#exp">Experience</a></li>
     <li><a href="#research">Research</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#stack">Stack</a></li>
@@ -1035,15 +1034,15 @@ nav{
 <section id="hero">
   <p class="h-stamp"><span class="blink"></span>Compiler Engineer · ARM LLVM @ Qualcomm · LLVM Committer</p>
   <h1 class="h-name"><span>Aditya</span><span class="last">Trivedi.</span></h1>
-  <p class="h-tag">I make <b>ML and HPC workloads fast on AArch64</b>. On Qualcomm's ARM LLVM team I write <span class="accent">MLIR/LLVM code generation and vectorization</span> for <b>SVE &amp; SME</b> — activations up to <span class="accent">20.2× faster</span>, GPT-2 transposes <span class="accent">4.84× faster</span> through the SME ZA tile. Upstream, I'm an <b>LLVM committer</b> (Flang OpenMP, MLIR, ClangIR); before that, GSoC '25 at Fortran-Lang and four papers on parallel dynamic-graph algorithms.</p>
+  <p class="h-tag">I work on <b>MLIR/LLVM code generation and vectorization</b> for AArch64 on Qualcomm's ARM LLVM team, getting ML and HPC kernels onto <span class="accent">SVE and SME</span>. Upstream I'm an <b>LLVM committer</b> across Flang OpenMP, MLIR and ClangIR. Before that: <span class="accent">GSoC '25</span> on LFortran's OpenMP and GPU offloading, and four papers on parallel dynamic-graph algorithms.</p>
   <div class="h-meta">
     <span><b>↗ Now</b><i>Qualcomm · ARM LLVM</i></span>
+    <span><b>↗ Focus</b><i>SVE · SME codegen</i></span>
     <span><b>↗ Upstream</b><i>LLVM committer</i></span>
-    <span><b>↗ Peak</b><i>20.2× on SVE</i></span>
     <span><b>↗ Papers</b><i>ICPP '26 · PDP · HiPC</i></span>
   </div>
   <div class="h-links">
-    <a href="#feat" class="hl prim">Featured Work</a>
+    <a href="#feat" class="hl prim">Work</a>
     <a href="https://github.com/adit4443ya" target="_blank" class="hl">GitHub</a>
     <a href="https://www.linkedin.com/in/adit4443ya/" target="_blank" class="hl">LinkedIn</a>
     <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank" class="hl">GSoC Blog</a>
@@ -1221,6 +1220,47 @@ nav{
 .ulog .st.rv{color:var(--dim);border-color:rgba(138,129,117,.35)}
 .ulog a{color:var(--ink);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--rc) 35%,transparent)}
 .ulog a:hover{color:var(--rc)}
+/* ───── BENCH — before/after bars, drawn to scale ───── */
+.bench{margin:30px 0 6px}
+.bench-h{display:flex;justify-content:space-between;gap:8px 20px;flex-wrap:wrap;font-family:var(--mono);font-size:9px;letter-spacing:1.3px;text-transform:uppercase;color:var(--dim);padding:0 0 12px}
+.bench-h b{color:var(--rc);font-weight:500}
+.bench-h b.lt{color:color-mix(in oklab,var(--rc) 55%,var(--dim))}
+.bn{display:grid;grid-template-columns:minmax(200px,270px) 1fr 122px;gap:24px;align-items:center;padding:14px 0;border-top:1px solid color-mix(in oklab,var(--rc) 12%,transparent)}
+.bn-l b{display:block;font-family:var(--sans);font-size:14.5px;font-weight:500;color:var(--ink);letter-spacing:.1px}
+.bn-l span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.3px;color:var(--dim);margin-top:5px;line-height:1.55}
+.bn-t{position:relative;height:14px;background:repeating-linear-gradient(135deg,color-mix(in oklab,var(--rc) 13%,transparent) 0 2px,transparent 2px 7px);border-right:1px solid color-mix(in oklab,var(--rc) 50%,transparent)}
+.bn-t i{position:absolute;left:0;top:0;bottom:0;width:0;transition:width 1.3s cubic-bezier(.2,.8,.25,1)}
+.bn-t i.rng{background:color-mix(in oklab,var(--rc) 32%,transparent)}
+.bn-t i.fill{background:var(--rc);box-shadow:0 0 12px color-mix(in oklab,var(--rc) 55%,transparent);transition-delay:.15s}
+.dos.in .bn-t i{width:var(--w)}
+.bn-v{font-family:var(--serif);font-style:italic;font-size:23px;color:var(--rc);text-align:right;white-space:nowrap;line-height:1}
+.bn-v small{display:block;font-family:var(--mono);font-style:normal;font-size:8px;letter-spacing:1.4px;text-transform:uppercase;color:var(--dim);margin-top:6px}
+[data-theme="gpu"] .bn-v{font-family:var(--mono);font-style:normal;font-weight:600;font-size:16px;letter-spacing:-.2px}
+@media(max-width:880px){
+  .bn{grid-template-columns:1fr auto;gap:10px 14px}
+  .bn-t{grid-column:1 / -1;grid-row:2}
+  .bn-v{font-size:19px}
+}
+
+/* ───── ZA TILE PLAYGROUND — interactive 3D ───── */
+.za{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:30px;align-items:center;margin-top:34px;border:1px solid color-mix(in oklab,var(--rc) 18%,transparent);background:radial-gradient(ellipse 60% 70% at 32% 46%,color-mix(in oklab,var(--rc) 9%,transparent),transparent 72%);overflow:hidden}
+.za.za-off{display:none}
+.za-stage{position:relative;aspect-ratio:4/3;min-width:0}
+.za-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y;outline:none}
+.za-stage canvas:active{cursor:grabbing}
+.za-hud{position:absolute;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:1.6px;color:var(--rc);pointer-events:none}
+.za-hint{position:absolute;bottom:12px;left:16px;right:16px;font-family:var(--mono);font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);pointer-events:none}
+.za-side{padding:28px 30px 28px 0;min-width:0}
+.za-k{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--rc);margin-bottom:12px}
+.za-t{font-family:var(--serif);font-style:italic;font-size:clamp(21px,2vw,27px);line-height:1.15;color:var(--ink);margin-bottom:12px}
+[data-theme="gpu"] .za-t{font-family:var(--sans);font-style:normal;font-weight:500;font-size:19px}
+.za-d{font-size:13.5px;line-height:1.8;color:var(--muted);margin-bottom:20px}
+.za-d b{color:var(--ink);font-weight:500}
+.za-btns{display:flex;gap:8px;flex-wrap:wrap}
+.za-btns button{font-family:var(--mono);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--rc);background:color-mix(in oklab,var(--rc) 7%,transparent);border:1px solid color-mix(in oklab,var(--rc) 38%,transparent);padding:9px 14px;cursor:pointer;transition:background .25s,box-shadow .25s}
+.za-btns button:hover,.za-btns button:focus-visible{background:color-mix(in oklab,var(--rc) 18%,transparent);box-shadow:0 0 14px color-mix(in oklab,var(--rc) 35%,transparent);outline:none}
+@media(max-width:880px){.za{grid-template-columns:minmax(0,1fr);gap:0}.za-side{padding:6px 18px 22px}}
+
 
 /* ───── RESEARCH LINEAGE — git-graph of one problem ───── */
 .res-figs{font-family:var(--mono);font-size:12px;letter-spacing:.3px;color:var(--dim);margin:0 0 6px;line-height:1.7}
@@ -1262,24 +1302,22 @@ nav{
 </style>
 <section id="feat" class="flo">
   <div class="flo-scrim"></div>
-  <div class="s-head"><p class="s-eyebrow">01 / Featured</p><div class="s-coord">SECTOR 01 · FLAGSHIP<br><b>3 transmissions</b></div></div>
-  <h2 class="s-title">Language in, <em>vectors</em><br>out.</h2>
+  <div class="s-head"><p class="s-eyebrow">01 / Work</p><div class="s-coord">SECTOR 01 · WORK<br><b>2022 → now</b></div></div>
+  <h2 class="s-title">Where I've <em>shipped.</em></h2>
   <div class="console"><span class="cbar"></span>
   <div class="dossiers">
     <div class="dos fu" data-c="amber">
       <div class="dos-rail">
         <div class="dos-num">01</div>
         <div class="dos-beam"></div>
-        <div class="dos-tick">TRANSMISSION</div>
+        <div class="dos-tick">JUL 2026 → NOW</div>
       </div>
       <div class="dos-main">
-        <p class="feat-stamp"><span class="live"></span>Qualcomm · ARM LLVM Team · Jul 2026 → Present</p>
-        <h3 class="feat-name">Making ML kernels fast on <em>SVE &amp; SME</em></h3>
-        <p class="feat-org">MLIR · Linalg · Vector · Bufferization · ArmSVE / ArmSME · Triton · torch-mlir</p>
+        <p class="feat-stamp"><span class="live"></span>Qualcomm · Compiler Engineer · ARM LLVM Team · Hyderabad</p>
+        <h3 class="feat-name">MLIR codegen for <em>SVE &amp; SME</em></h3>
+        <p class="feat-org">MLIR · Linalg · Vector · Bufferization · Triton · torch-mlir · OpenBLAS</p>
         <div class="feat-body">
-          <p>I work on <span class="hi-a">cpu-mlir</span>, Qualcomm's open-source Triton/PyTorch MLIR compiler for ARM64. I added a <span class="tag-a">vectorized math-approximation pass</span>, <span class="tag-a">Linalg elementwise fusion</span> and <span class="tag-a">buffer deallocation</span>. Activations now run <span class="hi-a">4.9–20.2× faster</span> on SVE, LayerNorm peak memory dropped <span class="hi">from 756 MB to 44 MB</span>, and <span class="hi">GPT-2 now compiles and runs end-to-end</span>.</p>
-          <p>Large inner-dimension transposes now go through the <span class="tag-c">SME ZA tile</span>. I measured where streaming-mode entry/exit stops paying off and set the size threshold from that, rather than lowering every transpose this way. GPT-2's <span class="hi-c">lm_head</span> transpose is <span class="hi-c">4.84× faster</span>, and other shapes and dtypes are <span class="hi-c">1.6–2.9×</span> faster.</p>
-          <p>I also vectorized masked-load copies and generic reductions for <span class="hi-r">Triton softmax</span>: 1.28–2.05× on device (in review). Outside the compiler, I enabled <span class="tag-r">SME MatMul via OpenBLAS</span> in Meta's <span class="hi-r">FAISS</span>, which made IndexFlat search up to 2.2× faster and RCQ training 1.45× faster.</p>
+          <p>I work on <span class="tag-a">cpu-mlir</span>, Qualcomm's open-source Triton/PyTorch MLIR compiler for ARM64. The chart below lists each change I made and what it did on device. Every number is measured against <span class="hi">the same code before that change</span> (the previous main), not against another toolchain or a tuned baseline.</p>
         </div>
         <div class="pipe" aria-label="Lowering pipeline">
           <div class="pipe-s"><b>Triton / PyTorch</b><span>Front end</span></div>
@@ -1289,11 +1327,58 @@ nav{
           <div class="pipe-s"><b>AArch64</b><span>ARMv9 device</span></div>
         </div>
         <p class="pipe-note">Highlighted stages = <i>where my passes live</i></p>
-        <div class="tele">
-          <div class="tele-c"><div class="tele-n">20.2×</div><div class="tele-l">Peak activation speedup on SVE</div></div>
-          <div class="tele-c"><div class="tele-n">756→44</div><div class="tele-l">MB · LayerNorm peak memory</div></div>
-          <div class="tele-c"><div class="tele-n">4.84×</div><div class="tele-l">GPT-2 lm_head transpose via SME</div></div>
-          <div class="tele-c"><div class="tele-n">2.2×</div><div class="tele-l">FAISS IndexFlat search on SME</div></div>
+
+        <div class="bench" role="table" aria-label="Before and after each change">
+          <div class="bench-h"><span>Cost after the change · <b>solid = best case</b> · <b class="lt">light = range</b></span><span>Full track = before (previous main)</span></div>
+          <div class="bn" role="row">
+            <div class="bn-l"><b>Activations on SVE</b><span>vectorized math-approximation pass + Linalg elementwise fusion</span></div>
+            <div class="bn-t"><i class="rng" style="--w:20.4%"></i><i class="fill" style="--w:4.95%"></i></div>
+            <div class="bn-v">4.9–20.2×<small>faster</small></div>
+          </div>
+          <div class="bn" role="row">
+            <div class="bn-l"><b>LayerNorm peak memory</b><span>buffer deallocation · GPT-2 now runs</span></div>
+            <div class="bn-t"><i class="fill" style="--w:5.8%"></i></div>
+            <div class="bn-v">756 → 44<small>MB</small></div>
+          </div>
+          <div class="bn" role="row">
+            <div class="bn-l"><b>GPT-2 lm_head transpose</b><span>lowered through an SME ZA tile, above a measured size threshold</span></div>
+            <div class="bn-t"><i class="fill" style="--w:20.7%"></i></div>
+            <div class="bn-v">4.84×<small>faster</small></div>
+          </div>
+          <div class="bn" role="row">
+            <div class="bn-l"><b>Other transposes</b><span>remaining shapes and dtypes on the same lowering</span></div>
+            <div class="bn-t"><i class="rng" style="--w:62.5%"></i><i class="fill" style="--w:34.5%"></i></div>
+            <div class="bn-v">1.6–2.9×<small>faster</small></div>
+          </div>
+          <div class="bn" role="row">
+            <div class="bn-l"><b>Triton softmax</b><span>vectorized masked-load copies and generic reductions · in review</span></div>
+            <div class="bn-t"><i class="rng" style="--w:78.1%"></i><i class="fill" style="--w:48.8%"></i></div>
+            <div class="bn-v">1.28–2.05×<small>faster</small></div>
+          </div>
+          <div class="bn" role="row">
+            <div class="bn-l"><b>FAISS IndexFlat search</b><span>SME MatMul kernels via OpenBLAS in Meta's FAISS</span></div>
+            <div class="bn-t"><i class="fill" style="--w:45.5%"></i></div>
+            <div class="bn-v">up to 2.2×<small>faster</small></div>
+          </div>
+          <div class="bn" role="row">
+            <div class="bn-l"><b>FAISS RCQ training</b><span>same SME kernels</span></div>
+            <div class="bn-t"><i class="fill" style="--w:69%"></i></div>
+            <div class="bn-v">1.45×<small>faster</small></div>
+          </div>
+        </div>
+
+        <div class="za" id="za">
+          <div class="za-stage">
+            <canvas id="za-cv" aria-label="Interactive 3D model of a ZA tile being transposed"></canvas>
+            <div class="za-hud"><span id="za-slice">ZA0H.S[··]</span><span id="za-state">A</span></div>
+            <div class="za-hint">Drag to orbit · hover a slice · click to transpose</div>
+          </div>
+          <div class="za-side">
+            <p class="za-k">Playground · ZA tile</p>
+            <p class="za-t">A transpose, the way SME sees it</p>
+            <p class="za-d">SME's ZA storage is a square tile that can be read as <b>horizontal</b> slices and written as <b>vertical</b> ones. Load rows in, store columns out, and the block is transposed without a scalar loop. That is the idea behind the transpose lowering above. This model is an illustration, not a measurement.</p>
+            <div class="za-btns"><button type="button" id="za-go">Transpose</button><button type="button" id="za-hv">Slices: horizontal</button></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1302,31 +1387,24 @@ nav{
       <div class="dos-rail">
         <div class="dos-num">02</div>
         <div class="dos-beam"></div>
-        <div class="dos-tick">TRANSMISSION</div>
+        <div class="dos-tick">FEB 2026 → NOW</div>
       </div>
       <div class="dos-main">
-        <p class="feat-stamp"><span class="live"></span>Open Source · llvm/llvm-project · Committer since Feb 2026</p>
-        <h3 class="feat-name"><a href="https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aadit4443ya" target="_blank">LLVM — <em>Commit Access</em></a></h3>
+        <p class="feat-stamp"><span class="live"></span>Open Source · llvm/llvm-project</p>
+        <h3 class="feat-name"><a href="https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aadit4443ya" target="_blank">LLVM — <em>Committer</em></a></h3>
         <p class="feat-org">C++ · Flang · MLIR OpenMP dialect · MLIR Vector · ClangIR · LIT / FileCheck</p>
         <div class="feat-body">
-          <p>I got LLVM commit access after <span class="hi-c">6 merged pull requests</span> covering Flang OpenMP semantic analysis, lowering to the <span class="tag-c">MLIR OpenMP dialect</span>, and <span class="tag-c">ClangIR</span> code generation. Most of these fixes came from crashes and wrong diagnostics that real Fortran code ran into.</p>
+          <p>Commit access came after <span class="hi-c">6 merged pull requests</span> across Flang OpenMP semantic analysis, lowering to the <span class="tag-c">MLIR OpenMP dialect</span>, and <span class="tag-c">ClangIR</span> code generation.</p>
         </div>
         <ul class="ulog">
           <li class="m"><span class="ar">[flang][openmp]</span>Fixed a <a href="https://github.com/llvm/llvm-project/pull/203250" target="_blank"><b>LINEAR</b> common-block crash</a>, a <a href="https://github.com/llvm/llvm-project/pull/189170" target="_blank">false-positive common-block error</a> and <a href="https://github.com/llvm/llvm-project/pull/189215" target="_blank">USE-renamed array resolution</a><span class="st">merged</span></li>
-          <li class="m"><span class="ar">[flang][openmp]</span>Added <b>LINEAR</b> privatization, including <b>ALLOCATABLE</b> support<span class="st">merged</span></li>
-          <li class="m"><span class="ar">[clangir]</span><a href="https://github.com/llvm/llvm-project/pull/180714" target="_blank">x86 <b>rdtsc / rdtscp</b> builtins</a> codegen<span class="st">merged</span></li>
-          <li><span class="ar">[mlir][vector]</span>FlattenMultiReduction dropped <b>scalable dims</b> from a masked multi_reduction's mask, so I fixed it<span class="st rv">in review</span></li>
+          <li class="m"><span class="ar">[flang][openmp]</span>Added <b>LINEAR</b> privatization, with <b>ALLOCATABLE</b> support<span class="st">merged</span></li>
+          <li class="m"><span class="ar">[clangir]</span>Implemented x86 <a href="https://github.com/llvm/llvm-project/pull/180714" target="_blank"><b>rdtsc / rdtscp</b> builtins</a><span class="st">merged</span></li>
+          <li><span class="ar">[mlir][vector]</span>FlattenMultiReduction dropped <b>scalable dims</b> from the mask of a masked multi_reduction; found it, wrote the fix<span class="st rv">fix in review</span></li>
           <li><span class="ar">[aarch64][lv]</span>Reported a missed loop-vectorizer optimization for sanitizer-instrumented early-exit loops<span class="st rv">reported</span></li>
         </ul>
-        <div class="tele">
-          <div class="tele-c"><div class="tele-n">6</div><div class="tele-l">Merged PRs to earn commit access</div></div>
-          <div class="tele-c"><div class="tele-n">3</div><div class="tele-l">Subprojects · Flang · MLIR · ClangIR</div></div>
-          <div class="tele-c"><div class="tele-n">SVE</div><div class="tele-l">Scalable-vector mask bug, found &amp; fixed</div></div>
-          <div class="tele-c"><div class="tele-n">'26</div><div class="tele-l">Committer since Feb</div></div>
-        </div>
         <div class="feat-chips">
           <a href="https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aadit4443ya" target="_blank" class="chip">↗ My LLVM PRs</a>
-          <a href="https://github.com/llvm/llvm-project/pull/180714" target="_blank" class="chip">↗ ClangIR #180714</a>
         </div>
       </div>
     </div>
@@ -1335,20 +1413,20 @@ nav{
       <div class="dos-rail">
         <div class="dos-num">03</div>
         <div class="dos-beam"></div>
-        <div class="dos-tick">TRANSMISSION</div>
+        <div class="dos-tick">SEPT 2024 → SEPT 2025</div>
       </div>
       <div class="dos-main">
-        <p class="feat-stamp"><span class="live"></span>Google Summer of Code 2025 · Fortran-Lang · Sept 2024 → Sept 2025</p>
+        <p class="feat-stamp"><span class="live"></span>LFortran · Google Summer of Code 2025 · Fortran-Lang</p>
         <h3 class="feat-name"><a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">LFortran — OpenMP &amp; <em>GPU Offloading</em></a></h3>
         <p class="feat-org">C++ · Fortran · OpenMP · CUDA · MPI · ASR / LLVM</p>
         <div class="feat-body">
-          <p>LFortran's OpenMP support was tied to the <span class="tag-a">DoConcurrentLoop</span> path. I redesigned it around a dedicated <span class="tag-a">OMPRegion ASR node</span>, which gives OpenMP its own place in the IR and makes nested and hierarchical parallelism straightforward to represent. On top of that I implemented <span class="hi-a">13+ constructs</span> and <span class="hi-a">8+ clauses</span> through parsing, semantics and lowering.</p>
-          <p>I then extended the C backend for <span class="tag-r">OpenMP target offloading</span> on NVIDIA GPUs. It generates code in two modes, OpenMP and CUDA, and a <span class="hi-c">CUDA runtime emulator under 250 lines</span> lets CI test it without a GPU. I also helped compile the MPI-parallel <span class="hi-a">POT3D</span> solar-physics code end-to-end: compile time is within 5% of GFortran and runtime is 0.75× GFortran's speed on 2 ranks. Along the way I built <span class="tag-c">fortran_mpi</span> and resolved <span class="hi-r">50+ compiler issues</span>.</p>
+          <p>LFortran's OpenMP support was tied to the <span class="tag-a">DoConcurrentLoop</span> path. I redesigned it around a dedicated <span class="tag-a">OMPRegion ASR node</span>, then implemented <span class="hi-a">13+ constructs</span> and <span class="hi-a">8+ clauses</span> through parsing, semantics and lowering.</p>
+          <p>I extended the C backend for <span class="tag-r">OpenMP target offloading</span> on NVIDIA GPUs, with OpenMP/CUDA dual-mode code generation and a <span class="hi-c">CUDA runtime emulator under 250 lines</span> for testing. LFortran also compiled and ran the MPI-parallel <span class="hi-a">POT3D</span> solar-physics code end-to-end: compile time within 5% of GFortran, and 0.75× of its runtime speed on 2 MPI ranks. Along the way I built <span class="tag-c">fortran_mpi</span>, pure-Fortran wrappers over 30+ MPI routines, and resolved <span class="hi-r">50+ compiler issues</span>.</p>
         </div>
         <div class="tele">
           <div class="tele-c"><div class="tele-n">13+</div><div class="tele-l">OpenMP constructs end-to-end</div></div>
           <div class="tele-c"><div class="tele-n">‹250</div><div class="tele-l">LOC · CUDA runtime emulator</div></div>
-          <div class="tele-c"><div class="tele-n">≤5%</div><div class="tele-l">POT3D compile-time gap vs GFortran</div></div>
+          <div class="tele-c"><div class="tele-n">0.75×</div><div class="tele-l">Of GFortran's speed on POT3D · 2 ranks</div></div>
           <div class="tele-c"><div class="tele-n">50+</div><div class="tele-l">Compiler issues resolved</div></div>
         </div>
         <div class="feat-chips">
@@ -1359,87 +1437,18 @@ nav{
         </div>
       </div>
     </div>
-  </div>
-  </div>
-</section>
 
-<style>
-/* ───── FLIGHT PATH (experience) — unboxed glowing trajectory ───── */
-#exp .tl-node{box-shadow:0 0 10px color-mix(in oklab,var(--amber) 55%,transparent)}
-#exp .tl-row::after{background:linear-gradient(to bottom,color-mix(in oklab,var(--amber) 55%,transparent),rgba(232,162,107,0.06))}
-#exp .tl-name a{background:linear-gradient(var(--amber),var(--amber)) 0 100% / 0 1px no-repeat;transition:background-size .4s}
-#exp .tl-name a:hover{background-size:100% 1px;color:var(--ink)}
-</style>
-<section id="exp" class="flo">
-  <div class="flo-scrim"></div>
-  <div class="s-head"><p class="s-eyebrow">02 / Experience</p><div class="s-coord">SECTOR 02 · TRAJECTORY<br><b>2022 → now</b></div></div>
-  <h2 class="s-title">Where I've <span class="rose">shipped.</span></h2>
-  <div class="console"><span class="cbar"></span>
-  <div class="tl fu">
-        <div class="tl-row now">
-          <div class="tl-date"><b>Jul 2026 →</b>present</div>
-          <div class="tl-node"></div>
-          <div class="tl-body">
-            <h3 class="tl-name"><a href="https://www.qualcomm.com/" target="_blank">Qualcomm — Compiler Engineer</a></h3>
-            <div class="tl-role">ARM LLVM Team · Hyderabad</div>
-            <div class="tl-stack">MLIR · LLVM · Triton · torch-mlir · AArch64 SVE / SME · OpenBLAS</div>
-            <ul class="pts">
-              <li>Added a vectorized math-approximation pass, Linalg elementwise fusion and buffer deallocation to <span class="tag-a">cpu-mlir</span>, Qualcomm's open-source Triton/PyTorch MLIR compiler for ARM64. Activations are <span class="hi-a">4.9–20.2× faster</span> on SVE, LayerNorm peak memory went from <span class="hi-a">756 to 44 MB</span>, and GPT-2 now runs.</li>
-              <li>Large inner-dimension transposes now lower through an <span class="tag-c">SME ZA tile</span>, with a measured size threshold for streaming-mode overhead. GPT-2's lm_head transpose is <span class="hi-c">4.84× faster</span>; other shapes and dtypes are 1.6–2.9×.</li>
-              <li>Made Triton softmax <span class="hi-r">1.28–2.05× faster</span> on device by vectorizing masked-load copies and generic reductions (in review).</li>
-              <li>Enabled SME MatMul kernels via OpenBLAS in Meta's <span class="tag-r">FAISS</span>: IndexFlat search is up to <span class="hi-r">2.2× faster</span> and RCQ training 1.45× faster.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-date"><b>Feb 2026 →</b>present</div>
-          <div class="tl-node"></div>
-          <div class="tl-body">
-            <h3 class="tl-name"><a href="https://github.com/llvm/llvm-project/pulls?q=is%3Apr+author%3Aadit4443ya" target="_blank">LLVM — Committer</a></h3>
-            <div class="tl-role">Flang OpenMP · MLIR · ClangIR</div>
-            <div class="tl-stack">C++ · Flang · MLIR OpenMP / Vector dialects · ClangIR · LIT / FileCheck</div>
-            <ul class="pts">
-              <li>Granted <span class="tag-c">commit access</span> after <span class="hi-c">6 merged PRs</span> across Flang OpenMP semantics, MLIR OpenMP lowering and ClangIR codegen.</li>
-              <li>Fixed OpenMP LINEAR and common-block crashes and false positives <a href="https://github.com/llvm/llvm-project/pull/203250" target="_blank">[#203250]</a> <a href="https://github.com/llvm/llvm-project/pull/189170" target="_blank">[#189170]</a> <a href="https://github.com/llvm/llvm-project/pull/189215" target="_blank">[#189215]</a>, and added LINEAR privatization with ALLOCATABLE support. Also implemented x86 <span class="hi-r">rdtsc / rdtscp</span> in ClangIR <a href="https://github.com/llvm/llvm-project/pull/180714" target="_blank">[#180714]</a>.</li>
-              <li>Found and fixed an MLIR Vector bug that dropped scalable dims from a masked multi_reduction's mask (in review). Reported an AArch64 loop-vectorizer missed optimization.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-date"><b>Sept 2024 → Sept 2025</b></div>
-          <div class="tl-node"></div>
-          <div class="tl-body">
-            <h3 class="tl-name"><a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">LFortran · Google Summer of Code 2025</a></h3>
-            <div class="tl-role">Open-Source Contributor · Fortran-Lang</div>
-            <div class="tl-stack">C++ · Fortran · OpenMP · CUDA · MPI · ASR / IR</div>
-            <ul class="pts">
-              <li>Redesigned OpenMP representation around an <span class="tag-a">OMPRegion-based ASR</span>, then implemented <span class="hi-a">13+ constructs</span> and <span class="hi-a">8+ clauses</span> through parsing, semantics and lowering. <a href="https://gsoc-blogs-5vgw.vercel.app/" target="_blank">[GSoC blog]</a></li>
-              <li>Extended the C backend for <span class="tag-r">OpenMP target offloading</span> on NVIDIA GPUs, with OpenMP/CUDA dual-mode codegen and a CUDA runtime emulator under 250 LOC for testing. <a href="https://github.com/lfortran/lfortran/issues/4497#issuecomment-3089155987" target="_blank">[Thread]</a></li>
-              <li>Compiled and ran <span class="tag-a">POT3D</span> (MPI) end-to-end: compile time within 5% of GFortran, runtime 0.75× its speed on 2 ranks. <a href="https://lfortran.org/blog/2025/03/lfortran-compiles-pot3d/" target="_blank">[Blog]</a></li>
-              <li>Built pure-Fortran MPI wrappers over 30+ routines with ISO_C_BINDING <a href="https://github.com/lfortran/fortran_mpi/" target="_blank">[fortran_mpi]</a>, and resolved <span class="hi-r">50+ issues</span> across OpenMP, OOP, derived types and strings.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-date"><b>Nov 2022 → May 2026</b></div>
-          <div class="tl-node"></div>
-          <div class="tl-body">
-            <h3 class="tl-name">Indian Institute of Technology, Jodhpur</h3>
-            <div class="tl-role">B.Tech, Computer Science &amp; Engineering · CGPA 8.03</div>
-            <div class="tl-stack">HPC research · dynamic graph algorithms</div>
-            <ul class="pts">
-              <li>HPC research with <span class="hi-a">Prof. Dip Sankar Banerjee</span>. Four papers, the latest at <span class="hi-a">ICPP 2026</span>.</li>
-              <li>JEE Advanced 2022 · All India Rank <span class="hi-c">2989</span>.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div class="upstream fu">
+      <div class="up-tick">Education</div>
+      <p class="up-text"><b>IIT Jodhpur</b> — B.Tech, Computer Science &amp; Engineering, Nov 2022 → May 2026 · CGPA 8.03. HPC research with Prof. Dip Sankar Banerjee on dynamic graph algorithms (see Research below). JEE Advanced 2022, All India Rank 2989.</p>
+    </div>
+  </div>
   </div>
 </section>
 
 <section id="research" class="flo">
   <div class="flo-scrim"></div>
-  <div class="s-head"><p class="s-eyebrow">03 / Research</p><div class="s-coord">SECTOR 03 · RESEARCH<br><b>4 papers · ICPP · PDP · HiPC</b></div></div>
+  <div class="s-head"><p class="s-eyebrow">02 / Research</p><div class="s-coord">SECTOR 02 · RESEARCH<br><b>4 papers · ICPP · PDP · HiPC</b></div></div>
   <h2 class="s-title">Four papers, <span class="rose">one problem.</span></h2>
   <p class="s-lede">Maintaining a <strong>Maximal Independent Set</strong> on dynamic graphs as edges are inserted and deleted — at <strong>billion-edge scale</strong> — with parallel GPU and multi-core compute.</p>
   <div class="console"><span class="cbar"></span>
@@ -1552,7 +1561,7 @@ nav{
 </style>
 <section id="projects" class="flo">
   <div class="flo-scrim"></div>
-  <div class="s-head"><p class="s-eyebrow">04 / Projects</p><div class="s-coord">SECTOR 04 · CATALOG<br><b>6 objects</b></div></div>
+  <div class="s-head"><p class="s-eyebrow">03 / Projects</p><div class="s-coord">SECTOR 03 · CATALOG<br><b>6 objects</b></div></div>
   <h2 class="s-title">Systems work, <span class="cyan">bottom-up.</span></h2>
   <div class="console"><span class="cbar"></span>
   <div class="obs fu">
@@ -1655,7 +1664,7 @@ nav{
 </style>
 <section id="stack" class="flo">
   <div class="flo-scrim"></div>
-  <div class="s-head"><p class="s-eyebrow">05 / Stack</p><div class="s-coord">SECTOR 05 · INSTRUMENTS<br><b>5 bands</b></div></div>
+  <div class="s-head"><p class="s-eyebrow">04 / Stack</p><div class="s-coord">SECTOR 04 · INSTRUMENTS<br><b>5 bands</b></div></div>
   <h2 class="s-title">The tools I <em>reach for.</em></h2>
   <div class="console"><span class="cbar"></span>
   <div class="spectra fu">
@@ -1709,7 +1718,7 @@ nav{
 </style>
 <section id="contact" class="flo">
   <div class="flo-scrim"></div>
-  <p class="s-eyebrow" style="justify-content:center">06 / Contact</p>
+  <p class="s-eyebrow" style="justify-content:center">05 / Contact</p>
   <h2 class="s-title" style="text-align:center">Let's talk <em>compilers.</em></h2>
   <div class="console" style="margin-top:40px"><span class="cbar"></span>
   <p class="ct">I'm <strong>on Qualcomm's ARM LLVM team</strong>, working on MLIR codegen for SVE/SME. I'm <span class="ink-a">always happy to talk with the community</span> about vectorization, scalable vectors, Flang/OpenMP, ML compilers or parallel runtimes, and I'm glad to review your patch or get a second pair of eyes on mine.</p>
@@ -2333,6 +2342,233 @@ addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40
   // GPU Grid is the default theme — boot its renderer as soon as THREE is ready
   function bootGPU(){if(current==='gpu'&&!gpuRunning&&window.THREE)initGPU();}
   if(window.THREE){bootGPU();}else{addEventListener('load',bootGPU);}
+})();
+</script>
+<script>
+/* ───── ZA TILE PLAYGROUND — lit, shadowed 16×16 tile you can orbit and transpose ───── */
+(function(){
+  const wrap=document.getElementById('za'),cv=document.getElementById('za-cv');
+  if(!wrap||!cv)return;
+  if(!window.THREE){wrap.classList.add('za-off');return;}
+  let renderer;
+  try{renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});}
+  catch(e){wrap.classList.add('za-off');return;}
+  const N=16,COUNT=N*N,HALF=(N-1)/2;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=0.82;
+  renderer.shadowMap.enabled=true;
+  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+  const scene=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(32,4/3,0.1,200);
+
+  /* lighting: one shadow-casting key, two coloured rims, soft fill */
+  const key=new THREE.DirectionalLight(0xffffff,1.05);
+  key.position.set(10,20,7);key.castShadow=true;
+  key.shadow.mapSize.set(1024,1024);key.shadow.bias=-0.0008;key.shadow.radius=3;
+  const sc=key.shadow.camera;sc.left=-14;sc.right=14;sc.top=14;sc.bottom=-14;sc.near=1;sc.far=60;
+  const rimA=new THREE.PointLight(0xffffff,1.3,70,2);rimA.position.set(-15,6,-11);
+  const rimB=new THREE.PointLight(0xffffff,1.0,70,2);rimB.position.set(15,4,13);
+  scene.add(key,rimA,rimB,new THREE.HemisphereLight(0x8c9bb0,0x040406,0.3));
+
+  /* substrate: a die with etched traces */
+  function dieTexture(){
+    const c=document.createElement('canvas');c.width=c.height=512;
+    const g=c.getContext('2d');
+    g.fillStyle='#0c0f13';g.fillRect(0,0,512,512);
+    g.lineWidth=1;g.strokeStyle='rgba(255,255,255,0.045)';
+    for(let i=0;i<=32;i++){
+      g.beginPath();g.moveTo(i*16+.5,0);g.lineTo(i*16+.5,512);g.stroke();
+      g.beginPath();g.moveTo(0,i*16+.5);g.lineTo(512,i*16+.5);g.stroke();
+    }
+    let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+    g.strokeStyle='rgba(255,255,255,0.11)';
+    for(let k=0;k<90;k++){
+      let x=(rnd()*32|0)*16+8,y=(rnd()*32|0)*16+8;
+      g.beginPath();g.moveTo(x,y);
+      for(let s=0;s<3;s++){
+        if(rnd()<.5)x+=((rnd()*7|0)-3)*16;else y+=((rnd()*7|0)-3)*16;
+        g.lineTo(x,y);
+      }
+      g.stroke();
+      g.fillStyle='rgba(255,255,255,0.18)';g.fillRect(x-2,y-2,4,4);
+    }
+    const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=4;return t;
+  }
+  const slabGeo=new THREE.BoxGeometry(N+3,0.7,N+3);
+  const slab=new THREE.Mesh(slabGeo,new THREE.MeshStandardMaterial({map:dieTexture(),metalness:0.85,roughness:0.42,envMapIntensity:0.9}));
+  slab.position.y=-0.35;slab.receiveShadow=true;scene.add(slab);
+  const frameMat=new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.55});
+  const dieEdge=new THREE.LineSegments(new THREE.EdgesGeometry(slabGeo),frameMat);
+  dieEdge.position.copy(slab.position);scene.add(dieEdge);
+  /* soft contact shadow under the die so it sits in space rather than floating flat */
+  (function(){
+    const c=document.createElement('canvas');c.width=c.height=256;const g=c.getContext('2d');
+    const gr=g.createRadialGradient(128,128,20,128,128,128);
+    gr.addColorStop(0,'rgba(0,0,0,0.75)');gr.addColorStop(1,'rgba(0,0,0,0)');
+    g.fillStyle=gr;g.fillRect(0,0,256,256);
+    const m=new THREE.Mesh(new THREE.PlaneGeometry((N+3)*1.7,(N+3)*1.7),
+      new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false}));
+    m.rotation.x=-Math.PI/2;m.position.y=-1.5;scene.add(m);
+  })();
+
+  /* the tile: one instanced block per element. Height encodes the value (a ramp along
+     each row), colour encodes the source row, the diagonal is marked — so a transpose is
+     visible as the ramp and the colour bands swapping axes while the diagonal stays put. */
+  const cellMat=new THREE.MeshStandardMaterial({color:0xffffff,metalness:0.6,roughness:0.3,envMapIntensity:0.75});
+  const cells=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),cellMat,COUNT);
+  cells.castShadow=true;cells.receiveShadow=true;cells.frustumCulled=false;scene.add(cells);
+  const H=new Float32Array(COUNT),HL=new Float32Array(COUNT);
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++)
+    H[i*N+j]=0.3+1.55*Math.pow(j/(N-1),1.15)*(0.62+0.38*Math.sin(i*0.8+0.5));
+
+  /* theme-aware colour + environment reflections */
+  const colA=new THREE.Color(),colB=new THREE.Color(),colD=new THREE.Color(),tmpC=new THREE.Color();
+  const pmrem=new THREE.PMREMGenerator(renderer);let envRT=null;
+  function cssColor(name,fallback){
+    const v=getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    try{return new THREE.Color(v||fallback);}catch(e){return new THREE.Color(fallback);}
+  }
+  function applyTheme(){
+    const gpu=document.documentElement.getAttribute('data-theme')==='gpu';
+    const a=cssColor('--amber',gpu?'#41e8ff':'#e8a26b');
+    const b=gpu?cssColor('--rose','#a8ff60'):cssColor('--cyan','#7dd3e8');
+    colA.copy(a).convertSRGBToLinear();colB.copy(b).convertSRGBToLinear();
+    colD.setRGB(0.9,0.9,0.9).lerp(colA,0.2);
+    rimA.color.copy(a);rimB.color.copy(b);frameMat.color.copy(a);
+    const es=new THREE.Scene(),made=[];
+    const panel=(col,k,w,h,x,y,z)=>{
+      const geo=new THREE.PlaneGeometry(w,h);
+      const mat=new THREE.MeshBasicMaterial({color:col.clone().multiplyScalar(k),side:THREE.DoubleSide});
+      const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.lookAt(0,0,0);es.add(m);made.push(geo,mat);
+    };
+    const white=new THREE.Color(1,1,1);
+    panel(white,2.2,9,9,0,13,2);
+    panel(colA,4.5,6,13,-13,3,5);
+    panel(colB,4,6,13,13,4,-7);
+    panel(white,0.7,18,3,0,1,15);
+    const rt=pmrem.fromScene(es,0.035);
+    if(envRT)envRT.dispose();
+    envRT=rt;scene.environment=rt.texture;
+    made.forEach(o=>o.dispose());
+  }
+  applyTheme();
+  new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+  /* state */
+  let T=0,animFrom=0,animP=1,mode='H',hover=-1;
+  let theta=0.72,phi=1.02,vTheta=0,lastTouch=-1e9,dragging=false,moved=0,px=0,py=0;
+  const sliceEl=document.getElementById('za-slice'),stateEl=document.getElementById('za-state');
+  const goBtn=document.getElementById('za-go'),hvBtn=document.getElementById('za-hv');
+  const pad=n=>(n<10?'0':'')+n;
+  function label(){
+    sliceEl.textContent='ZA0'+mode+'.S['+(hover<0?'··':pad(hover))+']';
+    stateEl.textContent=T?'Aᵀ':'A';
+  }
+  function transpose(){
+    if(animP<1)return;
+    animFrom=T;T=1-T;animP=reduce?1:0;hover=-1;label();
+  }
+  goBtn.addEventListener('click',()=>{lastTouch=performance.now();transpose();});
+  hvBtn.addEventListener('click',()=>{
+    mode=mode==='H'?'V':'H';hover=-1;
+    hvBtn.textContent='Slices: '+(mode==='H'?'horizontal':'vertical');label();
+  });
+
+  /* pointer: drag orbits, a still click transposes, hover picks a slice */
+  const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
+  function pick(e){
+    if(animP<1)return;
+    const r=cv.getBoundingClientRect();
+    ndc.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
+    ray.setFromCamera(ndc,cam);
+    const hit=ray.intersectObject(cells)[0];
+    let h=-1;
+    if(hit&&hit.instanceId!=null){
+      const i=(hit.instanceId/N)|0,j=hit.instanceId%N;
+      const row=T?j:i,col=T?i:j;
+      h=mode==='H'?row:col;
+    }
+    if(h!==hover){hover=h;label();}
+  }
+  cv.addEventListener('pointerdown',e=>{
+    dragging=true;moved=0;px=e.clientX;py=e.clientY;lastTouch=performance.now();
+    try{cv.setPointerCapture(e.pointerId);}catch(_){}
+  });
+  cv.addEventListener('pointermove',e=>{
+    if(dragging){
+      const dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;
+      moved+=Math.abs(dx)+Math.abs(dy);
+      theta-=dx*0.008;vTheta=-dx*0.008;
+      phi=Math.min(1.32,Math.max(0.42,phi-dy*0.006));
+      lastTouch=performance.now();
+    }else pick(e);
+  });
+  cv.addEventListener('pointerup',e=>{
+    if(dragging&&moved<6)transpose();
+    dragging=false;
+  });
+  cv.addEventListener('pointercancel',()=>{dragging=false;});
+  cv.addEventListener('pointerleave',()=>{if(!dragging&&hover!==-1){hover=-1;label();}});
+
+  /* sizing */
+  const stage=cv.parentElement;
+  function resize(){
+    const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;
+    renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();
+  }
+  if(window.ResizeObserver)new ResizeObserver(resize).observe(stage);else addEventListener('resize',resize);
+  resize();
+
+  /* frame */
+  const M=new THREE.Matrix4(),P=new THREE.Vector3(),Q=new THREE.Quaternion(),SC=new THREE.Vector3();
+  const ease=x=>x*x*(3-2*x);
+  let last=performance.now(),visible=false,running=false,demoDone=false;
+  function frame(now){
+    if(!visible||document.hidden){running=false;return;}
+    requestAnimationFrame(frame);
+    const dt=Math.min(0.05,(now-last)/1000);last=now;
+    if(animP<1)animP=Math.min(1,animP+dt/1.9);
+    if(!dragging){
+      theta+=vTheta;vTheta*=0.92;
+      if(!reduce&&now-lastTouch>3500)theta+=dt*0.1;
+    }
+    const R=43*Math.max(1,1.25/cam.aspect);
+    cam.position.set(R*Math.sin(phi)*Math.sin(theta),R*Math.cos(phi),R*Math.sin(phi)*Math.cos(theta));
+    cam.lookAt(0,-1.1,0);
+    for(let i=0;i<N;i++)for(let j=0;j<N;j++){
+      const k=i*N+j,h=H[k];
+      /* settled layout: untransposed puts (i,j) at row i, col j; transposed swaps them */
+      const r1=T?j:i,c1=T?i:j;
+      let x=c1-HALF,z=r1-HALF,lift=0;
+      if(animP<1){
+        const r0=animFrom?j:i,c0=animFrom?i:j;
+        const q=ease(Math.min(1,Math.max(0,animP*1.65-(r0/(N-1))*0.65)));
+        x=(c0-HALF)+(c1-c0)*q;z=(r0-HALF)+(r1-r0)*q;
+        if(i!==j)lift=Math.sin(Math.PI*q)*(1.1+0.15*Math.abs(i-j));
+      }
+      const on=animP>=1&&hover>=0&&(mode==='H'?r1:c1)===hover?1:0;
+      HL[k]+=(on-HL[k])*Math.min(1,dt*12);
+      P.set(x,h/2+lift+HL[k]*0.45,z);SC.set(0.84,h,0.84);
+      M.compose(P,Q,SC);cells.setMatrixAt(k,M);
+      if(i===j)tmpC.copy(colD);else tmpC.copy(colA).lerp(colB,i/(N-1));
+      tmpC.multiplyScalar((0.42+0.5*h/1.85)*(1+HL[k]*1.6));
+      cells.setColorAt(k,tmpC);
+    }
+    cells.instanceMatrix.needsUpdate=true;
+    if(cells.instanceColor)cells.instanceColor.needsUpdate=true;
+    renderer.render(scene,cam);
+  }
+  function start(){if(!running&&visible&&!document.hidden){running=true;last=performance.now();requestAnimationFrame(frame);}}
+  new IntersectionObserver(es=>{
+    visible=es[0].isIntersecting;start();
+    if(visible&&!demoDone&&!reduce){demoDone=true;setTimeout(()=>{if(performance.now()-lastTouch>1200)transpose();},1500);}
+  },{threshold:0.2}).observe(wrap);
+  document.addEventListener('visibilitychange',start);
+  label();
 })();
 </script>
 </body>
